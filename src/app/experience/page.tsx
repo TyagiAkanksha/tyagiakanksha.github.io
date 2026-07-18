@@ -22,7 +22,7 @@ export default function ExperiencePage() {
         title="Experience"
         lede="Four years across research labs and industry — reinforcement learning, security, and shipped software."
       />
-      <Section index="01" label="Timeline" className="rise rise-2">
+      <Section label="Timeline" className="fade">
         <ol>
           {experience.map((entry) => (
             <TimelineItem
@@ -37,8 +37,8 @@ export default function ExperiencePage() {
         </ol>
       </Section>
 
-      <Section index="02" label="Publications" className="mt-14">
-        <div className="grid gap-4">
+      <Section label="Publications" className="mt-14">
+        <div className="space-y-5">
           {publications.map((pub) => (
             <PublicationCard key={pub.doi} pub={pub} />
           ))}

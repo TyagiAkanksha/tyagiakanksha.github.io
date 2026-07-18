@@ -18,7 +18,7 @@ export default function AboutPage() {
         title="About"
         lede="From research lab to product code — I like problems where the model and the software both have to work."
       />
-      <div className="rise rise-2 max-w-2xl space-y-4 text-[15.5px] leading-relaxed text-fg">
+      <div className="fade max-w-2xl space-y-4 text-[15.5px] leading-relaxed text-fg">
         <p>
           I&apos;m a full-stack engineer with a Master&apos;s in Computer
           Science from the University of Arkansas. My research years were spent
@@ -35,18 +35,18 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <Section index="01" label="Education" className="mt-14">
-        <div className="grid gap-4">
+      <Section label="Education" className="mt-14">
+        <div className="space-y-5">
           {education.map((edu) => (
             <EducationItem key={edu.degree} edu={edu} />
           ))}
         </div>
       </Section>
 
-      <Section index="02" label="Skills" className="mt-14">
-        <div className="grid gap-4 sm:grid-cols-2">
-          {skillGroups.map((group, i) => (
-            <SkillGroup key={group.label} group={group} index={i} />
+      <Section label="Skills" className="mt-14">
+        <div className="grid gap-6 sm:grid-cols-2">
+          {skillGroups.map((group) => (
+            <SkillGroup key={group.label} group={group} />
           ))}
         </div>
       </Section>

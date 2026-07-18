@@ -1,12 +1,9 @@
 /** Section heading in the v1 voice — plain Quicksand, no numbering, no rule. */
 export function Section({
-  index,
   label,
   children,
   className,
 }: {
-  /** @deprecated ignored — numbering removed in the v1 restyle (prop deleted in a later task) */
-  index?: string;
   label: string;
   children: React.ReactNode;
   className?: string;

@@ -22,10 +22,10 @@ export function TimelineItem({
         aria-hidden
       />
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="font-display text-lg font-medium tracking-tight">
+        <h3 className="font-display text-base font-semibold tracking-tight">
           {entry.title}
         </h3>
-        <span className="font-mono text-xs text-faint">{entry.dates}</span>
+        <span className="font-mono text-[11px] text-faint">{entry.dates}</span>
       </div>
       <p className="mt-0.5 text-sm text-muted">
         {entry.org}
@@ -45,7 +45,7 @@ export function TimelineItem({
         ))}
       </ul>
       {projects.length > 0 ? (
-        <p className="mt-3 font-mono text-xs text-muted">
+        <p className="mt-3 font-mono text-[11.5px] text-muted">
           Case {projects.length === 1 ? "study" : "studies"}:{" "}
           {projects.map((p, i) => (
             <span key={p.slug}>
