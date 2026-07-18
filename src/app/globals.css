@@ -1,26 +1,184 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+/* next-themes stamps data-theme on <html>; make Tailwind's dark: variant follow it */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------------------------------------------------------------------------
+   Engineering-fieldbook palette
+   Light: warm paper + ink text + ember accent
+   Dark:  deep warm ink + bone text + apricot accent
+--------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #faf7f2;
+  --surface: #f2ede4;
+  --fg: #1c1917;
+  --muted: #5c564f;
+  --faint: #8a8378;
+  --line: #e3dcd0;
+  --accent: #a33a0a;
+  --accent-strong: #832e07;
+  --accent-soft: rgba(163, 58, 10, 0.08);
+  --ring: rgba(163, 58, 10, 0.45);
+}
+
+[data-theme="dark"] {
+  --bg: #141110;
+  --surface: #1d1917;
+  --fg: #ece7df;
+  --muted: #aaa39a;
+  --faint: #7d766d;
+  --line: #2c2722;
+  --accent: #f28a55;
+  --accent-strong: #f7a97e;
+  --accent-soft: rgba(242, 138, 85, 0.1);
+  --ring: rgba(242, 138, 85, 0.5);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-instrument), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Faint paper grain for materiality (decorative only) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* -------------------------------------------------------------------------
+   Load-in reveal: staggered rise, CSS-only
+------------------------------------------------------------------------- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rise-1 { animation-delay: 60ms; }
+.rise-2 { animation-delay: 140ms; }
+.rise-3 { animation-delay: 220ms; }
+.rise-4 { animation-delay: 300ms; }
+.rise-5 { animation-delay: 380ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise,
+  .rise-1,
+  .rise-2,
+  .rise-3,
+  .rise-4,
+  .rise-5 {
+    animation: none;
+  }
+  body {
+    transition: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Case-study prose: typography plugin, retuned to the fieldbook palette
+------------------------------------------------------------------------- */
+.prose-fieldbook {
+  --tw-prose-body: var(--fg);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-counters: var(--accent);
+  --tw-prose-bullets: var(--accent);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--muted);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-code: var(--fg);
+  --tw-prose-pre-code: var(--fg);
+  --tw-prose-pre-bg: var(--surface);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+  --tw-prose-captions: var(--muted);
+}
+
+.prose-fieldbook h2,
+.prose-fieldbook h3 {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+.prose-fieldbook h2 {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.4rem;
+}
+
+.prose-fieldbook a {
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 3px;
+  transition: color 150ms ease;
+}
+
+.prose-fieldbook a:hover {
+  color: var(--accent-strong);
+}
+
+.prose-fieldbook code {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.86em;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.35rem;
+}
+
+.prose-fieldbook pre {
+  border: 1px solid var(--line);
+}
+
+.prose-fieldbook pre code {
+  background: none;
+  border: none;
+  padding: 0;
 }
