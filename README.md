@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# tyagiakanksha.github.io
 
-## Getting Started
+Personal portfolio of **Akanksha Tyagi** — full-stack engineer with an
+applied-ML research background. Live at
+**[tyagiakanksha.github.io](https://tyagiakanksha.github.io)**.
 
-First, run the development server:
+Built with Next.js 16 (App Router, static export), TypeScript, and
+Tailwind CSS v4. Deployed to GitHub Pages via GitHub Actions on every push
+to `master`.
+
+## Adding a project
+
+Drop one file into `content/projects/`:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+content/projects/my-new-project.mdx
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```mdx
+---
+title: "My New Project"
+summary: "One line, ≤160 chars — shown on cards and in meta tags."
+role: "Full-Stack Engineer"
+dates: "Aug 2026"
+tech: ["Next.js", "Node.js", "Prisma", "PostgreSQL"]
+tags: ["Full-Stack"]          # ML | Full-Stack | Security | CV
+links:
+  github: "https://github.com/TyagiAkanksha/my-new-project"
+  demo: "https://example.com"
+featured: true                # surfaces on the home page
+order: 1                      # sort position
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Problem
+...
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Approach
+...
 
-## Learn More
+## Architecture & Tech
+...
 
-To learn more about Next.js, take a look at the following resources:
+## Results & Impact
+...
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What I'd do next
+...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Optionally add a cover image at `public/images/projects/<slug>.png`
+(compressed, <200 KB) and reference it with `image: "/images/projects/<slug>.png"`.
 
-## Deploy on Vercel
+Frontmatter is validated with Zod at build time (`src/lib/content.ts`) —
+bad data fails the build, not the visitor. Push to `master` and the
+GitHub Actions workflow builds and deploys automatically.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # static export → out/
+```
+
+Site data (experience, education, skills, publications, contact) lives in
+`src/data/*.ts`. The résumé PDF is served from
+`public/resume/Akanksha_Tyagi.pdf` — keep that path stable, it's linked
+from printed résumés.
+
+## Previous version
+
+The original hand-coded static site is preserved at branch `v1` / tag
+`v1-static`.
