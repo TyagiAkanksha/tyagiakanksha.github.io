@@ -1,0 +1,62 @@
+---
+title: "Anomaly Detection in Cyber-Physical Water Systems"
+summary: "GNN-based anomaly detection for water infrastructure — ensemble Oracle F1 0.854 on SWaT, with an operator dashboard and LLM root-cause explanations."
+role: "Research Assistant · Master's Thesis"
+dates: "Jan 2024 – Present"
+tech: ["Python", "PyTorch", "Graph Neural Networks", "Time-Series ML", "Ensembles"]
+tags: ["ML", "Security"]
+links:
+  paper: "https://doi.org/10.1109/CSR64739.2025.11129986"
+highlights:
+  - "Ensemble Oracle F1 0.854 on SWaT — above the published GDN baseline"
+featured: true
+order: 2
+---
+
+## Problem
+
+Water treatment plants are cyber-physical systems: dozens of sensors and
+actuators driven by industrial controllers, all attackable. A compromised
+pump or a spoofed sensor reading can quietly push a plant into an unsafe
+state. My master's thesis asks: can we detect those anomalies in real time
+from the multivariate sensor streams alone — reliably enough that an
+operator would actually trust the alerts?
+
+## Approach
+
+I built on Graph Deviation Networks (GDN, AAAI '21), which learn a graph of
+sensor relationships and flag deviations from expected behavior. Reproducing
+the paper surfaced the real engineering problems:
+
+- **Training instability.** Stock GDN failed on ~40% of random seeds. I
+  traced it to embedding initialization and fixed it with orthogonal
+  initialization — eliminating the failures entirely.
+- **Single-model brittleness.** Individual models disagree about which
+  sensors matter. I built a diverse ensemble (varying seeds, top-k, learning
+  rates) that averages per-sensor anomaly scores.
+- **One signal isn't enough.** I added a frozen reconstruction decoder
+  (GDN-RD) so prediction error and reconstruction error vote together.
+
+## Architecture & Tech
+
+PyTorch training pipeline over three testbeds — SWaT (51 sensors), WADI
+(127), and ACWA (7, an extreme low-data benchmark) — with a config-driven
+experiment system, five-seed evaluation across Oracle F1 / PA-F1 / LDH F1 /
+AUC-ROC, graph-based stage localization for root-cause analysis, an LLM
+pipeline that turns raw detections into operator-readable explanations, and
+an interactive dashboard for exploring alerts.
+
+## Results & Impact
+
+- Ensemble Oracle F1 **0.854** on SWaT 2015 vs **0.810** for published GDN
+  (our GDN reproduction: 0.767) — with PA-F1 0.905 and AUC-ROC 0.892.
+- Detected 18/35 attack segments on SWaT; evaluated honestly on WADI and
+  ACWA including where low data hurts.
+- The stability fix turned a research prototype into something that trains
+  reliably — the difference between a paper result and a deployable system.
+
+## What I'd do next
+
+Stream the pipeline against live testbed data, quantify detection latency,
+and harden the dashboard into an on-call tool with alert triage and
+feedback capture for continual evaluation.

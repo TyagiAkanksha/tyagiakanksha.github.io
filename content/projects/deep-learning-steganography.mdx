@@ -1,0 +1,48 @@
+---
+title: "Deep-Learning Image Steganography"
+summary: "A deep-learning framework that hides a full image inside another with high imperceptibility and robust recovery of the hidden data."
+role: "Graduate Researcher"
+dates: "Jan 2024 – Present"
+tech: ["Python", "PyTorch", "Computer Vision", "Encoder–Decoder Networks"]
+tags: ["CV", "Security"]
+order: 6
+---
+
+## Problem
+
+Classical steganography hides bits in an image's least-significant noise —
+easy to detect, easy to destroy. The harder version: embed an *entire
+image* inside another so that (a) the carrier looks untouched to humans
+and statistical detectors, and (b) the hidden image survives extraction
+intact.
+
+## Approach
+
+An encoder–decoder framework trained end to end: the encoder fuses the
+secret image into the cover image; the decoder recovers the secret from
+the resulting container. The loss balances two competing objectives —
+imperceptibility (container ≈ cover) and recoverability (extracted ≈
+secret) — so the network learns where in the cover's structure information
+can hide without visible cost.
+
+## Architecture & Tech
+
+PyTorch implementation with joint training of the hiding and reveal
+networks. I iterated on the network architecture and training parameters
+specifically to push concealment accuracy: deeper fusion layers where
+capacity was the bottleneck, and loss re-weighting where artifacts crept
+into flat image regions.
+
+## Results & Impact
+
+The optimized framework embeds one image within another with high
+imperceptibility and robust recoverability of the hidden data — secure
+image-in-image transmission that survives the round trip. The
+optimization work measurably increased concealment accuracy over the
+initial architecture.
+
+## What I'd do next
+
+Test robustness under real-world channel distortions — JPEG
+recompression, resizing, screenshots — and evaluate against learned
+steganalysis detectors rather than only statistical ones.
