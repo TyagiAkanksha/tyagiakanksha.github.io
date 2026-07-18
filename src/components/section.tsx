@@ -1,10 +1,11 @@
-/** Section with a mono index label and rule — the fieldbook's table-of-contents motif. */
+/** Section heading in the v1 voice — plain Quicksand, no numbering, no rule. */
 export function Section({
   index,
   label,
   children,
   className,
 }: {
+  /** @deprecated ignored — numbering removed in the v1 restyle (prop deleted in a later task) */
   index?: string;
   label: string;
   children: React.ReactNode;
@@ -12,34 +13,22 @@ export function Section({
 }) {
   return (
     <section className={className}>
-      <div className="mb-6 flex items-baseline gap-3">
-        {index ? (
-          <span className="font-mono text-xs text-accent">{index}</span>
-        ) : null}
-        <h2 className="font-mono text-xs uppercase tracking-[0.18em] text-muted">
-          {label}
-        </h2>
-        <span className="h-px flex-1 self-center bg-line" aria-hidden />
-      </div>
+      <h2 className="mb-5 font-display text-[22px] font-semibold tracking-tight">
+        {label}
+      </h2>
       {children}
     </section>
   );
 }
 
-export function PageHeader({
-  title,
-  lede,
-}: {
-  title: string;
-  lede?: string;
-}) {
+export function PageHeader({ title, lede }: { title: string; lede?: string }) {
   return (
-    <div className="rise pb-10 pt-14 sm:pt-20">
-      <h1 className="font-display text-4xl font-medium tracking-tight sm:text-5xl">
+    <div className="fade pb-8 pt-12 sm:pt-16">
+      <h1 className="font-display text-4xl font-semibold tracking-tight">
         {title}
       </h1>
       {lede ? (
-        <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-muted">
+        <p className="mt-4 max-w-xl text-[15.5px] leading-relaxed text-muted">
           {lede}
         </p>
       ) : null}
