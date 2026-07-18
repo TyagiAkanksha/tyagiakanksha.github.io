@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MdxContent } from "@/components/mdx-content";
 import { ProjectMeta } from "@/components/project-meta";
-import { Badge } from "@/components/badge";
+import { TechChip } from "@/components/badge";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
 
 // Static export: every slug is prerendered; unknown slugs 404 at build time.
@@ -44,21 +44,21 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <article className="pt-12 sm:pt-16">
+    <article className="fade pt-10 sm:pt-14">
       <Link
         href="/projects"
-        className="rise inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent"
+        className="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent"
       >
         <ArrowLeft className="size-3.5" aria-hidden /> All projects
       </Link>
 
-      <header className="rise rise-1 mt-6">
+      <header className="mt-6">
         <div className="mb-3 flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
-            <Badge key={tag}>{tag}</Badge>
+            <TechChip key={tag}>{tag}</TechChip>
           ))}
         </div>
-        <h1 className="font-display text-3xl font-medium leading-tight tracking-tight sm:text-[2.6rem]">
+        <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
           {project.title}
         </h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-muted">
@@ -66,12 +66,12 @@ export default async function ProjectPage({
         </p>
       </header>
 
-      <div className="rise rise-2 mt-8">
+      <div className="mt-8">
         <ProjectMeta project={project} />
       </div>
 
       {project.image ? (
-        <div className="rise rise-3 mt-8 overflow-hidden rounded-lg border border-line">
+        <div className="mt-8 overflow-hidden rounded-lg border border-line">
           <Image
             src={project.image}
             alt={`${project.title} — illustration`}
@@ -82,7 +82,7 @@ export default async function ProjectPage({
         </div>
       ) : null}
 
-      <div className="rise rise-3 mt-10">
+      <div className="mt-10">
         <MdxContent source={project.body} />
       </div>
     </article>

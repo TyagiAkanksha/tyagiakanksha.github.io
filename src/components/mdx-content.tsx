@@ -17,7 +17,7 @@ const components = {
 /** Renders a project's MDX body inside the fieldbook prose theme. */
 export function MdxContent({ source }: { source: string }) {
   return (
-    <div className="prose-fieldbook prose max-w-none prose-headings:scroll-mt-24">
+    <div className="prose-v1 prose max-w-none prose-headings:scroll-mt-24">
       <MDXRemote source={source} components={components} />
     </div>
   );

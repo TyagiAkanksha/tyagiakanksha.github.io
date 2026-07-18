@@ -3,7 +3,7 @@ import type { Project } from "@/lib/content";
 import { GitHubIcon } from "@/components/social-links";
 import { TechChip } from "@/components/badge";
 
-/** Meta grid on the case-study page: role · timeline · stack · links. */
+/** Plain label/value meta lines (v1 style) — no boxed card. */
 export function ProjectMeta({ project }: { project: Project }) {
   const links = [
     project.links.github && {
@@ -24,53 +24,51 @@ export function ProjectMeta({ project }: { project: Project }) {
   ].filter(Boolean) as { href: string; label: string; icon: React.ReactNode }[];
 
   return (
-    <div className="grid gap-x-8 gap-y-5 rounded-lg border border-line bg-surface/50 p-5 sm:grid-cols-2">
-      <MetaItem label="Role">{project.role}</MetaItem>
-      <MetaItem label="Timeline">{project.dates}</MetaItem>
-      <MetaItem label="Stack" className="sm:col-span-2">
+    <dl className="space-y-3 border-y border-line py-4">
+      <MetaRow label="Role">{project.role}</MetaRow>
+      <MetaRow label="Timeline">{project.dates}</MetaRow>
+      <MetaRow label="Stack">
         <span className="flex flex-wrap gap-1.5">
           {project.tech.map((t) => (
             <TechChip key={t}>{t}</TechChip>
           ))}
         </span>
-      </MetaItem>
+      </MetaRow>
       {links.length > 0 ? (
-        <MetaItem label="Links" className="sm:col-span-2">
-          <span className="flex flex-wrap gap-2">
+        <MetaRow label="Links">
+          <span className="flex flex-wrap gap-4">
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-8 items-center gap-1.5 rounded-md border border-line px-2.5 font-mono text-xs text-muted transition-colors hover:border-accent hover:text-accent"
+                className="inline-flex items-center gap-1.5 font-mono text-xs text-accent transition-colors hover:text-accent-strong"
               >
                 {l.icon}
                 {l.label}
               </a>
             ))}
           </span>
-        </MetaItem>
+        </MetaRow>
       ) : null}
-    </div>
+    </dl>
   );
 }
 
-function MetaItem({
+function MetaRow({
   label,
   children,
-  className,
 }: {
   label: string;
   children: React.ReactNode;
-  className?: string;
 }) {
   return (
-    <div className={className}>
-      <div className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-faint">
+    <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
+      <dt className="w-24 shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
         {label}
-      </div>
-      <div className="text-sm text-fg">{children}</div>
+      </dt>
+      <dd className="text-sm text-fg">{children}</dd>
     </div>
   );
 }

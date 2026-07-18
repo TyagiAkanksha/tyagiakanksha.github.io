@@ -17,7 +17,7 @@ export default function ProjectsPage() {
         title="Projects"
         lede="Each project is written up as a case study: the problem, the approach, the architecture, and what actually came of it."
       />
-      <div className="rise rise-2">
+      <div className="fade">
         <ProjectList projects={projects} />
       </div>
     </>
