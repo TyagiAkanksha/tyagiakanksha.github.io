@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ProjectGrid } from "@/components/project-card";
+import { ProjectList } from "@/components/project-card";
 import { PageHeader } from "@/components/section";
 import { getAllProjects } from "@/lib/content";
 
@@ -18,7 +18,7 @@ export default function ProjectsPage() {
         lede="Each project is written up as a case study: the problem, the approach, the architecture, and what actually came of it."
       />
       <div className="rise rise-2">
-        <ProjectGrid projects={projects} />
+        <ProjectList projects={projects} />
       </div>
     </>
   );
