@@ -11,7 +11,7 @@ export function ThemeToggle() {
       type="button"
       aria-label="Toggle color theme"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="inline-flex size-8 items-center justify-center rounded-md border border-line text-muted transition-colors hover:border-accent hover:text-accent"
+      className="inline-flex size-8 items-center justify-center text-muted transition-colors hover:text-accent"
     >
       {/* Both icons rendered; CSS picks one via [data-theme] — no mounted
           state, no hydration mismatch, no flicker. */}

@@ -20,7 +20,7 @@ export function LinkedInIcon({ className }: { className?: string }) {
 
 export function SocialLinks({ className }: { className?: string }) {
   const linkCls =
-    "inline-flex size-8 items-center justify-center rounded-md border border-line text-muted transition-colors hover:border-accent hover:text-accent";
+    "inline-flex size-8 items-center justify-center text-muted transition-colors hover:text-accent";
   return (
     <div className={`flex items-center gap-2.5 ${className ?? ""}`}>
       <a
@@ -30,7 +30,7 @@ export function SocialLinks({ className }: { className?: string }) {
         aria-label="GitHub"
         className={linkCls}
       >
-        <GitHubIcon className="size-4" />
+        <GitHubIcon className="size-[18px]" />
       </a>
       <a
         href={site.linkedin}
@@ -39,10 +39,10 @@ export function SocialLinks({ className }: { className?: string }) {
         aria-label="LinkedIn"
         className={linkCls}
       >
-        <LinkedInIcon className="size-4" />
+        <LinkedInIcon className="size-[18px]" />
       </a>
       <a href={`mailto:${site.email}`} aria-label="Email" className={linkCls}>
-        <Mail className="size-4" aria-hidden />
+        <Mail className="size-[18px]" aria-hidden />
       </a>
     </div>
   );
