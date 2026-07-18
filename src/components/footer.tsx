@@ -10,7 +10,7 @@ export function Footer() {
           <a
             href={site.resume}
             download
-            className="text-muted transition-colors hover:text-accent"
+            className="text-muted underline decoration-muted/40 underline-offset-2 transition-colors hover:text-accent"
           >
             Résumé
           </a>{" "}
@@ -19,7 +19,7 @@ export function Footer() {
             href={`${site.github}/tyagiakanksha.github.io`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted transition-colors hover:text-accent"
+            className="text-muted underline decoration-muted/40 underline-offset-2 transition-colors hover:text-accent"
           >
             view source
           </a>
