@@ -23,7 +23,7 @@ export default function ExperiencePage() {
         lede="Four years across research labs and industry — reinforcement learning, security, and shipped software."
       />
       <Section index="01" label="Timeline" className="rise rise-2">
-        <ol className="group">
+        <ol>
           {experience.map((entry) => (
             <TimelineItem
               key={`${entry.title}-${entry.org}`}

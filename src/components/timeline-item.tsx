@@ -11,7 +11,7 @@ export function TimelineItem({
   projects: Pick<Project, "slug" | "title">[];
 }) {
   return (
-    <li className="relative pb-12 pl-7 last:pb-0">
+    <li className="group relative pb-12 pl-7 last:pb-0">
       {/* rail + node */}
       <span
         className="absolute left-[5px] top-2.5 h-full w-px bg-line group-last:hidden"
