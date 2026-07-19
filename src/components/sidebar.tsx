@@ -73,6 +73,12 @@ export function Sidebar() {
         >
           <FileDown className="size-4" aria-hidden /> Résumé
         </a>
+      </div>
+
+      {/* v1 pattern: on desktop the toggle floats fixed in the viewport's
+          top-right corner (stays put while scrolling); mobile keeps the
+          toggle in the identity block above. */}
+      <div className="fixed right-6 top-6 z-40 hidden lg:block">
         <ThemeToggle />
       </div>
     </header>
