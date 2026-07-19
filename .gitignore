@@ -42,3 +42,6 @@ next-env.d.ts
 
 # brainstorming companion sessions
 .superpowers/
+
+# internal design docs (kept local only)
+docs/superpowers/
