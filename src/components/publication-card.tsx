@@ -18,7 +18,7 @@ export function PublicationCard({ pub }: { pub: Publication }) {
           href={pub.doiUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-accent transition-colors hover:text-accent-strong"
+          className="text-accent underline decoration-accent/40 underline-offset-2 transition-colors hover:text-accent-strong"
         >
           doi:{pub.doi}
         </a>

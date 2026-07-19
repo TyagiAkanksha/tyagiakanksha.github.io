@@ -79,7 +79,7 @@ export default function Home() {
           <h3 className="mb-4 mt-10 font-display text-lg font-semibold tracking-tight">
             Skills
           </h3>
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {skillGroups.map((group) => (
               <SkillGroup key={group.label} group={group} />
             ))}
