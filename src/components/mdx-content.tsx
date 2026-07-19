@@ -14,7 +14,7 @@ const components = {
   a: ProseLink,
 };
 
-/** Renders a project's MDX body inside the fieldbook prose theme. */
+/** Renders a project's MDX body inside the v1 prose theme. */
 export function MdxContent({ source }: { source: string }) {
   return (
     <div className="prose-v1 prose max-w-none prose-headings:scroll-mt-24">
