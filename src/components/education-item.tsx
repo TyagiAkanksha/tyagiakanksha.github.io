@@ -5,9 +5,9 @@ export function EducationItem({ edu }: { edu: Education }) {
   return (
     <article className="border-b border-line pb-5 last:border-b-0 last:pb-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="font-display text-base font-semibold tracking-tight">
+        <h4 className="font-display text-base font-semibold tracking-tight">
           {edu.degree}
-        </h3>
+        </h4>
         <span className="font-mono text-[11px] text-faint">{edu.date}</span>
       </div>
       <p className="mt-0.5 text-sm text-muted">
