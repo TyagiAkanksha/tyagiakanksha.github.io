@@ -18,7 +18,7 @@ export default function AboutPage() {
         title="About"
         lede="From research lab to product code — I like problems where the model and the software both have to work."
       />
-      <div className="fade max-w-2xl space-y-4 text-[15.5px] leading-relaxed text-fg">
+      <div className="max-w-2xl space-y-4 text-[15.5px] leading-relaxed text-fg">
         <p>
           I&apos;m a full-stack engineer with a Master&apos;s in Computer
           Science from the University of Arkansas. My research years were spent

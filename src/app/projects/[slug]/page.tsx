@@ -44,7 +44,7 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <article className="fade pt-10 sm:pt-14">
+    <article className="pt-10 sm:pt-14">
       <Link
         href="/projects"
         className="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent"

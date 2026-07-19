@@ -22,7 +22,7 @@ export default function ExperiencePage() {
         title="Experience"
         lede="Four years across research labs and industry — reinforcement learning, security, and shipped software."
       />
-      <Section label="Timeline" className="fade">
+      <Section label="Timeline">
         <ol>
           {experience.map((entry) => (
             <TimelineItem

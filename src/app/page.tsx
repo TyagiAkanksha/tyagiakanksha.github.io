@@ -23,7 +23,7 @@ const personJsonLd = {
 export default function Home() {
   const featured = getFeaturedProjects();
   return (
-    <div className="fade">
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

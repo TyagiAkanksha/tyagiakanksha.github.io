@@ -36,7 +36,7 @@ const rows = [
 
 export default function ContactPage() {
   return (
-    <div className="fade">
+    <div>
       <PageHeader
         title="Contact"
         lede="Open to full-stack and forward-deployed engineering roles. The fastest way to reach me is email — I read everything."
