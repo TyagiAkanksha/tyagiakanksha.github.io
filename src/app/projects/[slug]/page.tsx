@@ -46,7 +46,7 @@ export default async function ProjectPage({
   return (
     <article className="pt-10 sm:pt-14">
       <Link
-        href="/projects"
+        href="/#projects"
         className="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent"
       >
         <ArrowLeft className="size-3.5" aria-hidden /> All projects

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -42,19 +40,9 @@ export default function RootLayout({
 }>) {
   return (
     // suppressHydrationWarning: next-themes mutates <html data-theme> pre-paint
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${quicksand.variable} h-full`}
-    >
-      <body className="flex min-h-screen flex-col">
-        <ThemeProvider>
-          <Header />
-          <main className="mx-auto w-full max-w-3xl flex-1 px-5 sm:px-8">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+    <html lang="en" suppressHydrationWarning className={quicksand.variable}>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
