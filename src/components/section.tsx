@@ -19,18 +19,3 @@ export function Section({
     </section>
   );
 }
-
-export function PageHeader({ title, lede }: { title: string; lede?: string }) {
-  return (
-    <div className="pb-8 pt-12 sm:pt-16">
-      <h1 className="font-display text-4xl font-semibold tracking-tight">
-        {title}
-      </h1>
-      {lede ? (
-        <p className="mt-4 max-w-xl text-[15.5px] leading-relaxed text-muted">
-          {lede}
-        </p>
-      ) : null}
-    </div>
-  );
-}
