@@ -23,7 +23,7 @@ const personJsonLd = {
   email: `mailto:${site.email}`,
   url: site.url,
   image: `${site.url}/images/dp.jpeg`,
-  jobTitle: "Full-Stack Engineer",
+  jobTitle: "Full Stack Engineer",
   alumniOf: "University of Arkansas",
   sameAs: [site.github, site.linkedin],
 };
@@ -48,26 +48,28 @@ export default function Home() {
         <Section id="about" label="About" className={SECTION_SCROLL}>
           <div className="space-y-4 text-[15.5px] leading-relaxed text-fg">
             <p>
-              I build full-stack, AI-integrated web apps — shipping across the
-              React/Next.js, FastAPI, and Postgres/pgvector stack with RAG,
-              vector search, and agentic MCP tooling, backed by peer-reviewed
-              research in reinforcement learning and security.
+              I am a full stack engineer who builds AI integrated web
+              applications. I work with React, Next.js, FastAPI, and Postgres
+              with pgvector, and I have built features that use retrieval
+              augmented generation, vector search, and agentic MCP tooling. My
+              background also includes peer reviewed research in reinforcement
+              learning and security.
             </p>
             <p>
-              I&apos;m a full-stack engineer with a Master&apos;s in Computer
-              Science from the University of Arkansas. My research years were
-              spent on reinforcement learning for fuzzing and anomaly detection
-              in cyber-physical water systems — work that ended up in two
-              peer-reviewed publications. Along the way I kept building the
-              software around the models: data pipelines, APIs, dashboards,
-              tooling.
+              I hold a Master of Science in Computer Science from the
+              University of Arkansas. During my research years I worked on
+              reinforcement learning for fuzzing and on anomaly detection in
+              cyber-physical water systems, and that work led to two peer
+              reviewed publications. Alongside the research I built the
+              software around the models, including data pipelines, APIs,
+              dashboards, and tooling.
             </p>
             <p>
-              That combination is what I bring to full-stack and
-              forward-deployed engineering roles: I can sit with a customer
-              problem, design the system, ship it in React/Next.js and Node or
-              Python, and — when the problem needs it — build and evaluate the
-              ML that powers it.
+              This combination is what I bring to full stack and forward
+              deployed engineering roles. I can take a customer problem,
+              design the system, and ship it in React, Next.js, Node, or
+              Python. When the problem calls for it, I can also build and
+              evaluate the machine learning behind it.
             </p>
           </div>
           <div className="mt-8 flex flex-wrap gap-x-7 gap-y-2 border-y border-line py-3.5 font-mono text-xs text-muted">
@@ -136,8 +138,8 @@ export default function Home() {
           className={`mt-20 ${SECTION_SCROLL}`}
         >
           <p className="max-w-lg text-[15.5px] leading-relaxed text-muted">
-            Open to full-stack and forward-deployed engineering roles. The
-            fastest way to reach me is email — I read everything.
+            I am open to full stack and forward deployed engineering roles.
+            The fastest way to reach me is by email.
           </p>
           <div className="mt-4">
             <ContactRows />

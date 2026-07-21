@@ -1,6 +1,6 @@
 ---
-title: "RL for Emergency-Vehicle Traffic Optimization"
-summary: "Lane-level reinforcement learning with V2V communication that speeds emergency-vehicle traversal in simulated traffic. Best Student Paper nominee, VEHITS 2024."
+title: "RL for Emergency Vehicle Traffic Optimization"
+summary: "Lane-level reinforcement learning with V2V communication that speeds emergency vehicle traversal in simulated traffic. Best Student Paper nominee, VEHITS 2024."
 role: "Research Intern · IIIT Hyderabad"
 dates: "Jun 2022 – Dec 2023"
 tech: ["Python", "Stable-Baselines3", "SUMO", "Reinforcement Learning", "V2V"]
@@ -8,7 +8,7 @@ tags: ["ML"]
 links:
   paper: "https://doi.org/10.5220/0012637200003702"
 highlights:
-  - "Best Student Paper Award nominee — VEHITS 2024"
+  - "Best Student Paper Award nominee, VEHITS 2024"
 featured: true
 order: 4
 ---
@@ -16,37 +16,40 @@ order: 4
 ## Problem
 
 When an ambulance is stuck in traffic, the seconds lost to surrounding
-vehicles reacting late — or not at all — cost lives. Lane-level dynamics
-are the bottleneck: which vehicle should yield, into which lane, and when.
-Fixed traffic rules handle this badly; we wanted to learn it.
+vehicles reacting late can cost lives. Lane-level dynamics are the
+bottleneck: which vehicle should yield, into which lane, and at what
+moment. Fixed traffic rules handle this poorly, so we set out to learn
+the behavior instead.
 
 ## Approach
 
 We modeled lane selection as a reinforcement learning problem with
-vehicle-to-vehicle (V2V) communication in the loop: vehicles share state so
-the policy can coordinate yielding behavior ahead of the emergency vehicle
-rather than reacting to it. Policies were trained with Stable-Baselines3
-and evaluated in SUMO across multi-modal traffic environments — from
-grid-world abstractions to road networks inspired by real layouts.
+vehicle-to-vehicle (V2V) communication in the loop. Vehicles share state,
+which allows the policy to coordinate yielding behavior ahead of the
+emergency vehicle rather than reacting to it. Policies were trained with
+Stable-Baselines3 and evaluated in SUMO across multi-modal traffic
+environments, ranging from grid-world abstractions to road networks
+inspired by real layouts.
 
 ## Architecture & Tech
 
-A SUMO simulation stack drives the environments; a Gym-style wrapper
-exposes lane-level state (including V2V-shared observations) to SB3
-agents. The evaluation suite compares learned policies against baseline
-and human-level driving behavior on traversal time and safety metrics.
+A SUMO simulation stack drives the environments, and a Gym style wrapper
+exposes lane-level state, including V2V shared observations, to the
+Stable-Baselines3 agents. The evaluation suite compares learned policies
+against baseline and human-level driving behavior on traversal time and
+safety metrics.
 
 ## Results & Impact
 
-- Learned policies **reduced emergency-vehicle traversal times
-  significantly**, surpassing human-level performance on the evaluated
+- The learned policies reduced emergency vehicle traversal times
+  significantly and surpassed human-level performance on the evaluated
   networks.
-- Published as *"Improving Lane Level Dynamics for EV Traversal: A
-  Reinforcement Learning Approach"* at **VEHITS 2024** — nominated for the
-  **Best Student Paper Award**.
+- The work was published as "Improving Lane Level Dynamics for EV
+  Traversal: A Reinforcement Learning Approach" at VEHITS 2024, where it
+  was nominated for the Best Student Paper Award.
 
 ## What I'd do next
 
-Stress the policies under partial V2V adoption (only some vehicles
-communicating), add sensor noise, and test sim-to-real transfer on scaled
-testbeds.
+I would stress the policies under partial V2V adoption, where only some
+vehicles communicate, add sensor noise to the observations, and test
+sim-to-real transfer on scaled testbeds.

@@ -1,6 +1,6 @@
 ---
 title: "City Complaint Management System"
-summary: "Civic complaint reporting platform built at Codeventure Tech — PHP, WordPress, and JavaScript, shipped to real users to speed up issue response times."
+summary: "A civic complaint reporting platform built at Codeventure Tech with PHP, WordPress, and JavaScript, shipped to real users to improve response times."
 role: "Software Engineer · Codeventure Tech LLP"
 dates: "Jun 2021 – Apr 2022"
 tech: ["PHP", "WordPress", "JavaScript", "HTML", "CSS", "MySQL"]
@@ -11,37 +11,38 @@ order: 5
 
 ## Problem
 
-Civic complaints — broken streetlights, water issues, garbage collection —
-were reaching the city through phone calls and paper, with no tracking, no
-ownership, and no way for a resident to know whether anything happened.
-Response times suffered because the intake itself was the bottleneck.
+Civic complaints about issues such as broken streetlights, water problems,
+and garbage collection were reaching the city through phone calls and
+paper. There was no tracking, no ownership, and no way for a resident to
+know whether anything had happened. Response times suffered because the
+intake process itself was the bottleneck.
 
 ## Approach
 
-Build the simplest system that closes the loop: residents file a complaint
-online with category and location, the system routes it to the right
-department, and status updates are visible until resolution. I designed and
-developed the platform end to end within the team's WordPress-based stack —
-custom PHP for the complaint workflow, JavaScript for the interactive
-front end.
+The goal was the simplest system that closes the loop. Residents file a
+complaint online with a category and location, the system routes it to the
+right department, and status updates remain visible until the complaint is
+resolved. I designed and developed the platform end to end within the
+team's WordPress based stack, using custom PHP for the complaint workflow
+and JavaScript for the interactive front end.
 
 ## Architecture & Tech
 
-WordPress as the CMS backbone with custom PHP modules for complaint
-intake, categorization, routing, and status tracking, backed by MySQL.
-The front end is hand-built HTML/CSS/JavaScript tuned for low-end devices
-and patchy connectivity — the users are residents, not tech workers.
+WordPress serves as the CMS backbone, with custom PHP modules for
+complaint intake, categorization, routing, and status tracking, backed by
+MySQL. The front end is hand built HTML, CSS, and JavaScript, tuned for
+low-end devices and unreliable connectivity, because the users are
+residents rather than technical staff.
 
 ## Results & Impact
 
-The system was shipped and used for real civic issue reporting, improving
-issue visibility and response times over the manual process it replaced.
-This is the project that taught me production software: real users, real
-data, real consequences when a form breaks.
+The system was shipped and used for real civic issue reporting, and it
+improved issue visibility and response times over the manual process it
+replaced. This project taught me what production software involves: real
+users, real data, and real consequences when something breaks.
 
 ## What I'd do next
 
-Today I'd rebuild it as a Next.js + Node application with a
-PostgreSQL/Prisma backend, SMS notifications for status changes, and an
-analytics view so the city can see *where* complaints cluster — the
-architecture I now default to for exactly this kind of civic tool.
+Today I would build it as a Next.js and Node application with a PostgreSQL
+backend, SMS notifications for status changes, and an analytics view that
+shows the city where complaints cluster.

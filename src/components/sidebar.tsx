@@ -33,7 +33,7 @@ export function Sidebar() {
             {site.name}
           </h1>
           <p className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-accent">
-            Full-Stack Engineer · AI-Integrated Web Apps
+            Full Stack Engineer · AI Integrated Web Apps
           </p>
         </div>
         <div className="ml-auto self-start lg:hidden">
@@ -46,7 +46,7 @@ export function Sidebar() {
           className="mr-2 inline-block size-[7px] rounded-full bg-accent"
           aria-hidden
         />
-        Open to full-stack &amp; forward-deployed engineering roles
+        Open to full stack and forward deployed engineering roles
       </p>
 
       <nav aria-label="Main" className="mt-6 lg:mt-10">

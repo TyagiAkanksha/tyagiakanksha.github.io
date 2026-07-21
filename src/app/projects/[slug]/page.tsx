@@ -74,7 +74,7 @@ export default async function ProjectPage({
         <div className="mt-8 overflow-hidden rounded-lg border border-line">
           <Image
             src={project.image}
-            alt={`${project.title} — illustration`}
+            alt={`${project.title} illustration`}
             width={1200}
             height={630}
             className="w-full object-cover"

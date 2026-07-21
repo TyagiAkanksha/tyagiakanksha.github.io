@@ -1,60 +1,63 @@
 ---
 title: "Anomaly Detection in Cyber-Physical Water Systems"
-summary: "GNN-based anomaly detection for water infrastructure — ensemble Oracle F1 0.854 on SWaT, with an operator dashboard and LLM root-cause explanations."
+summary: "GNN based anomaly detection for water infrastructure, reaching an ensemble Oracle F1 of 0.854 on SWaT, with an operator dashboard and LLM explanations."
 role: "Research Assistant · Master's Thesis"
 dates: "Jan 2024 – Jun 2026"
 tech: ["Python", "PyTorch", "Graph Neural Networks", "Time-Series ML", "Ensembles"]
 tags: ["ML", "Security"]
 highlights:
-  - "Ensemble Oracle F1 0.854 on SWaT — above the published GDN baseline"
+  - "Ensemble Oracle F1 0.854 on SWaT, above the published GDN baseline"
 featured: true
 order: 3
 ---
 
 ## Problem
 
-Water treatment plants are cyber-physical systems: dozens of sensors and
-actuators driven by industrial controllers, all attackable. A compromised
-pump or a spoofed sensor reading can quietly push a plant into an unsafe
-state. My master's thesis asks: can we detect those anomalies in real time
-from the multivariate sensor streams alone — reliably enough that an
-operator would actually trust the alerts?
+Water treatment plants are cyber-physical systems. Dozens of sensors and
+actuators are driven by industrial controllers, and all of them can be
+attacked. A compromised pump or a spoofed sensor reading can quietly push
+a plant into an unsafe state. My master's thesis asked whether we can
+detect those anomalies in real time from the multivariate sensor streams
+alone, and do it reliably enough that an operator would trust the alerts.
 
 ## Approach
 
-I built on Graph Deviation Networks (GDN, AAAI '21), which learn a graph of
-sensor relationships and flag deviations from expected behavior. Reproducing
-the paper surfaced the real engineering problems:
+I built on Graph Deviation Networks (GDN, AAAI 2021), which learn a graph
+of sensor relationships and flag deviations from expected behavior.
+Reproducing the paper surfaced the real engineering problems.
 
-- **Training instability.** Stock GDN failed on ~40% of random seeds. I
-  traced it to embedding initialization and fixed it with orthogonal
-  initialization — eliminating the failures entirely.
-- **Single-model brittleness.** Individual models disagree about which
-  sensors matter. I built a diverse ensemble (varying seeds, top-k, learning
-  rates) that averages per-sensor anomaly scores.
-- **One signal isn't enough.** I added a frozen reconstruction decoder
-  (GDN-RD) so prediction error and reconstruction error vote together.
+- Training instability. Stock GDN failed on about 40 percent of random
+  seeds. I traced the problem to embedding initialization and fixed it
+  with orthogonal initialization, which eliminated the failures entirely.
+- Single model brittleness. Individual models disagree about which sensors
+  matter, so I built a diverse ensemble that varies seeds, top-k values,
+  and learning rates, and averages the per-sensor anomaly scores.
+- A single signal is not enough. I added a frozen reconstruction decoder
+  (GDN-RD) so that prediction error and reconstruction error vote
+  together.
 
 ## Architecture & Tech
 
-PyTorch training pipeline over three testbeds — SWaT (51 sensors), WADI
-(127), and ACWA (7, an extreme low-data benchmark) — with a config-driven
-experiment system, five-seed evaluation across Oracle F1 / PA-F1 / LDH F1 /
-AUC-ROC, graph-based stage localization for root-cause analysis, an LLM
-pipeline that turns raw detections into operator-readable explanations, and
-an interactive dashboard for exploring alerts.
+The PyTorch training pipeline covers three testbeds: SWaT with 51 sensors,
+WADI with 127, and ACWA with 7, which serves as an extreme low data
+benchmark. It includes a config driven experiment system, five seed
+evaluation across Oracle F1, PA-F1, LDH F1, and AUC-ROC, graph based stage
+localization for root cause analysis, an LLM pipeline that turns raw
+detections into explanations an operator can read, and an interactive
+dashboard for exploring alerts.
 
 ## Results & Impact
 
-- Ensemble Oracle F1 **0.854** on SWaT 2015 vs **0.810** for published GDN
-  (our GDN reproduction: 0.767) — with PA-F1 0.905 and AUC-ROC 0.892.
-- Detected 18/35 attack segments on SWaT; evaluated honestly on WADI and
-  ACWA including where low data hurts.
-- The stability fix turned a research prototype into something that trains
-  reliably — the difference between a paper result and a deployable system.
+- The ensemble reached an Oracle F1 of 0.854 on SWaT 2015, compared with
+  0.810 for published GDN and 0.767 for our GDN reproduction, with a PA-F1
+  of 0.905 and an AUC-ROC of 0.892.
+- It detected 18 of 35 attack segments on SWaT, and the evaluation on WADI
+  and ACWA is reported honestly, including where limited data hurts.
+- The stability fix turned a research prototype into a system that trains
+  reliably, which matters for anything meant to be deployed.
 
 ## What I'd do next
 
-Stream the pipeline against live testbed data, quantify detection latency,
-and harden the dashboard into an on-call tool with alert triage and
-feedback capture for continual evaluation.
+I would stream the pipeline against live testbed data, quantify detection
+latency, and harden the dashboard into an operational tool with alert
+triage and feedback capture for continual evaluation.

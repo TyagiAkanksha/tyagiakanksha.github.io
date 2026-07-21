@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="mt-20 flex flex-col gap-4 border-t border-line py-7 sm:flex-row sm:items-center sm:justify-between">
       <p className="font-mono text-xs text-faint">
-        © {new Date().getFullYear()} {site.name} — {site.location} ·{" "}
+        © {new Date().getFullYear()} {site.name} · {site.location} ·{" "}
         <a
           href={site.resume}
           download

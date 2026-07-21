@@ -1,6 +1,6 @@
 ---
-title: "Reinforcement Learning–Guided Fuzzing"
-summary: "RL agent that learns multi-parametric input mutation strategies for fuzzing, improving vulnerability detection and code coverage. Published at IEEE CSR 2025."
+title: "Reinforcement Learning Guided Fuzzing"
+summary: "An RL agent that learns multi-parametric input mutation strategies for fuzzing, improving vulnerability detection and coverage. Published at IEEE CSR 2025."
 role: "Research Assistant"
 dates: "Jan 2024 – Jun 2026"
 tech: ["Python", "Reinforcement Learning", "Fuzzing", "Security Tooling"]
@@ -15,39 +15,40 @@ order: 2
 
 ## Problem
 
-Fuzzers find bugs by mutating inputs and watching what breaks — but classic
-mutation strategies are blind. They spend most of their budget on inputs
-that exercise the same shallow paths, while the interesting states sit
-behind specific mutation sequences the fuzzer has no way to prefer.
+Fuzzers find bugs by mutating program inputs and watching what breaks, but
+classic mutation strategies are blind. They spend most of their budget on
+inputs that exercise the same shallow paths, while the interesting program
+states sit behind specific mutation sequences that the fuzzer has no way
+to prefer.
 
 ## Approach
 
-We framed mutation selection as a reinforcement learning problem: the agent
-observes feedback from the target program and learns which mutation
-parameters — not just *which* mutator, but *how* to apply it — are worth
-spending budget on. The multi-parametric formulation is the core idea:
-instead of a single discrete mutator choice, the agent controls several
-mutation parameters jointly, which lets it discover strategies that fixed
-heuristics can't express.
+We framed mutation selection as a reinforcement learning problem. The
+agent observes feedback from the target program and learns which mutation
+parameters are worth spending budget on, covering both the choice of
+mutator and how it is applied. The multi-parametric formulation is the
+core idea. Instead of making a single discrete mutator choice, the agent
+controls several mutation parameters jointly, which lets it discover
+strategies that fixed heuristics cannot express.
 
 ## Architecture & Tech
 
-A Python training loop couples the RL agent to the fuzzing harness:
-program feedback (coverage and crash signals) becomes the reward, and the
-agent's policy updates steer subsequent mutation batches. Experiments
-compare the learned policy against traditional fuzzing baselines on
-coverage growth and vulnerability discovery.
+A Python training loop couples the RL agent to the fuzzing harness.
+Program feedback in the form of coverage and crash signals becomes the
+reward, and the agent's policy updates steer the following mutation
+batches. Experiments compare the learned policy against traditional
+fuzzing baselines on coverage growth and vulnerability discovery.
 
 ## Results & Impact
 
 The learned mutation policies significantly improved vulnerability
 detection and code coverage over traditional fuzzing techniques. The work
-was peer-reviewed and published as *"A Reinforcement Learning Approach to
-Multi-Parametric Input Mutation for Fuzzing"* at the **2025 IEEE
-International Conference on Cyber Security and Resilience (CSR)**.
+was peer reviewed and published as "A Reinforcement Learning Approach to
+Multi-Parametric Input Mutation for Fuzzing" at the 2025 IEEE
+International Conference on Cyber Security and Resilience (CSR).
 
 ## What I'd do next
 
-Scale the evaluation to a broader target corpus, study transfer — does a
-policy trained on one target family warm-start another? — and package the
-harness so the RL layer can bolt onto off-the-shelf fuzzers.
+I would scale the evaluation to a broader set of target programs, study
+whether a policy trained on one target family transfers to another, and
+package the harness so the RL layer can be attached to existing fuzzers.

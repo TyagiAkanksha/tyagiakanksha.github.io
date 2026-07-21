@@ -1,6 +1,6 @@
 ---
 title: "Generative Image Synthesis with Diffusion Models"
-summary: "DDPM texture synthesis on ALOT and latent diffusion for text-to-image generation — cross-attention U-Net conditioning, evaluated with FID and IS."
+summary: "DDPM texture synthesis on ALOT and latent diffusion models for text-to-image generation, evaluated on CelebA-HQ and LAION with FID and IS."
 role: "Graduate Researcher"
 dates: "Jan 2024 – Jun 2026"
 tech: ["Python", "PyTorch", "Diffusion Models", "U-Net", "Autoencoders"]
@@ -10,42 +10,44 @@ order: 6
 
 ## Problem
 
-Two related questions in one line of work: can diffusion models synthesize
-*useful* training data (textures diverse and faithful enough to augment
-real datasets), and can they do high-resolution generation *efficiently*
-(without paying the full pixel-space diffusion cost)?
+This line of work asked two related questions. Can diffusion models
+synthesize training data that is useful in practice, meaning textures
+diverse and faithful enough to augment real datasets? And can they
+generate high resolution images efficiently, without paying the full cost
+of diffusion in pixel space?
 
 ## Approach
 
-**Texture synthesis.** I trained denoising diffusion probabilistic models
+For texture synthesis, I trained denoising diffusion probabilistic models
 (DDPM) on the Amsterdam Library of Textures (ALOT) to generate artificial
-textures that resemble the originals while adding diversity — directly
-usable for augmenting texture datasets.
+textures that resemble the originals while adding diversity, which makes
+them directly usable for augmenting texture datasets.
 
-**Latent diffusion.** I implemented latent diffusion models (LDM): a
+For latent diffusion, I implemented latent diffusion models (LDM). A
 pretrained autoencoder compresses images into a latent space, diffusion
-runs there instead of in pixels, and a cross-attention U-Net conditions
-generation on text prompts.
+runs in that space instead of in pixels, and a cross-attention U-Net
+conditions the generation on text prompts.
 
 ## Architecture & Tech
 
-PyTorch end to end: DDPM noise-schedule training on ALOT; for LDM, a
-pretrained autoencoder pair, latent-space diffusion, and cross-attention
-conditioning wired into the U-Net. Evaluation on CelebA-HQ and LAION using
-FID and Inception Score.
+The implementation is PyTorch end to end. It covers DDPM noise schedule
+training on ALOT, and for the LDM work a pretrained autoencoder pair,
+diffusion in the latent space, and cross-attention conditioning wired into
+the U-Net. Evaluation used CelebA-HQ and LAION with FID and Inception
+Score.
 
 ## Results & Impact
 
-- DDPM produced diverse, high-fidelity artificial textures resembling the
-  ALOT originals — a practical augmentation source for texture-hungry
-  models.
-- The LDM implementation reproduced the core efficiency argument: diffusion
-  in latent space delivers conditional high-resolution synthesis at a
-  fraction of the pixel-space compute, quantified with FID/IS on
+- The DDPM produced diverse, high fidelity artificial textures that
+  resemble the ALOT originals, providing a practical augmentation source
+  for texture datasets.
+- The LDM implementation reproduced the core efficiency result. Diffusion
+  in latent space delivers conditional high resolution synthesis at a
+  fraction of the pixel space compute, quantified with FID and IS on
   CelebA-HQ and LAION.
 
 ## What I'd do next
 
-Measure the downstream effect directly — train a texture classifier with
-and without synthetic augmentation — and explore fine-tuning the LDM
-text encoder for domain-specific vocabularies.
+I would measure the downstream effect directly by training a texture
+classifier with and without synthetic augmentation, and I would explore
+fine tuning the LDM text encoder for domain specific vocabularies.

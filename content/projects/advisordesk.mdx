@@ -1,7 +1,7 @@
 ---
-title: "AdvisorDesk — AI-Powered Advisory Content Platform"
-summary: "Content hub for financial advisory firms — CMS + client app with a cited RAG assistant and an agentic MCP layer over published guidance."
-role: "Full-Stack Engineer"
+title: "AdvisorDesk: AI-Powered Advisory Content Platform"
+summary: "A content hub for financial advisory firms, with a CMS, a client app, a RAG assistant that cites its sources, and an agentic MCP content layer."
+role: "Full Stack Engineer"
 dates: "2026"
 tech: ["React", "Next.js", "TypeScript", "FastAPI", "Supabase (Postgres + pgvector)", "OpenAI", "MCP", "Docker", "AWS"]
 tags: ["Full-Stack", "ML"]
@@ -14,49 +14,50 @@ order: 1
 ## Problem
 
 Financial advisory firms produce a steady stream of written guidance, but
-their clients can't easily get answers from it. Guidance lives in documents
-and portals; a client with a question either digs through them or waits for
-an advisor to reply. A generic chatbot is worse — in a regulated space, an
-answer that isn't traceable to the firm's own published guidance is a
-liability, not a feature.
+their clients cannot easily get answers from it. The guidance lives in
+documents and portals, so a client with a question has to search through
+them or wait for an advisor to reply. A generic chatbot does not solve
+this either. In a regulated space, an answer that cannot be traced back to
+the firm's own published guidance creates risk instead of value.
 
 ## Approach
 
-Treat the firm's published content as the single source of truth and build
-everything around it:
+I treated the firm's published content as the single source of truth and
+built the platform around it.
 
-- **A CMS for advisors** to create, edit, tag, and publish guidance —
-  publishing is what makes content eligible for the assistant.
-- **A client app with a RAG assistant** that answers questions using vector
-  search over published content only, and returns grounded answers **with
-  source citations** — every answer points back to the guidance it came
-  from.
-- **An agentic content layer**: CMS operations (draft, tag, search,
-  publish) are exposed as MCP tools, so a content manager can run the
-  editorial workflow through natural language instead of manual UI steps.
+- A CMS lets advisors create, edit, tag, and publish guidance. Publishing
+  is what makes content available to the assistant.
+- A client app includes a RAG assistant that answers questions using
+  vector search over published content only. Every answer is grounded in
+  that content and includes citations that point back to the source
+  guidance.
+- An agentic content layer exposes the CMS operations for drafting,
+  tagging, searching, and publishing as MCP tools, so a content manager
+  can run the editorial workflow through natural language instead of
+  manual UI steps.
 
 ## Architecture & Tech
 
-Two Next.js frontends — the internal CMS and the client app — share one
-FastAPI backend with Google OAuth. Content and embeddings live in Supabase
-(Postgres + pgvector); retrieval runs vector search over published content
-and OpenAI generates the cited answers. The MCP server exposes the CMS
-operations as tools for agentic use. The whole stack is containerized with
-Docker and deployed on AWS.
+Two Next.js frontends, the internal CMS and the client app, share one
+FastAPI backend with Google OAuth. Content and embeddings live in Supabase,
+which provides Postgres with pgvector. Retrieval runs vector search over
+published content, and OpenAI generates the cited answers. An MCP server
+exposes the CMS operations as tools for agentic use. The whole stack is
+containerized with Docker and deployed on AWS.
 
 ## Results & Impact
 
 - Clients get instant, cited answers grounded in exactly what the firm has
-  published — no hallucinated advice, every claim traceable to a source.
+  published, and every claim is traceable to a source.
 - Advisors manage the content lifecycle in one place, and the MCP layer
-  turns multi-step editorial chores into single natural-language requests.
-- The platform demonstrates the full stack end to end: typed React/Next.js
-  frontends, a Python API, vector search, LLM integration, and cloud
-  deployment.
+  turns multi-step editorial tasks into single natural language requests.
+- The platform covers the full stack end to end, including typed React and
+  Next.js frontends, a Python API, vector search, LLM integration, and
+  cloud deployment.
 
 ## What I'd do next
 
-Add an evaluation harness that scores answer groundedness against the
-cited sources, stream assistant responses for snappier UX, and extend the
-MCP toolset to cover analytics ("what are clients asking that we haven't
-published guidance for?") — closing the loop between questions and content.
+I would add an evaluation harness that scores how well answers are
+grounded in their cited sources, stream assistant responses for a faster
+feel, and extend the MCP toolset to cover analytics, such as reporting
+which client questions have no published guidance yet.
