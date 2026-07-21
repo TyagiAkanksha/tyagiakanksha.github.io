@@ -3,37 +3,33 @@ export type SkillGroup = {
   skills: string[];
 };
 
-// Ordered full-stack-first for FDE/full-stack positioning.
+// Mirrors the resume's grouping (updated Jul 2026) — AI-integrated web apps first.
 export const skillGroups: SkillGroup[] = [
   {
-    label: "Frontend",
-    skills: ["React", "Next.js", "TypeScript", "JavaScript", "HTML", "CSS"],
+    label: "Languages",
+    skills: ["Python", "TypeScript", "JavaScript", "SQL", "C/C++"],
   },
   {
-    label: "Backend & Data",
-    skills: [
-      "Node.js",
-      "Python",
-      "FastAPI",
-      "Prisma ORM",
-      "PostgreSQL",
-      "MongoDB / Mongoose",
-      "SQL",
-      "PHP",
-    ],
+    label: "Web",
+    skills: ["React", "Next.js", "Node.js", "FastAPI", "REST APIs", "HTML/CSS"],
   },
   {
-    label: "Machine Learning",
+    label: "AI & ML",
     skills: [
+      "LLM integration",
+      "RAG",
+      "AI agents (MCP)",
       "PyTorch",
-      "TensorFlow",
-      "scikit-learn",
       "Reinforcement Learning",
       "Graph Neural Networks",
     ],
   },
   {
-    label: "Tools & Languages",
-    skills: ["Git", "C", "C#", "LaTeX", "Jupyter"],
+    label: "Databases",
+    skills: ["PostgreSQL", "MongoDB", "Supabase (pgvector)"],
+  },
+  {
+    label: "Cloud & DevOps",
+    skills: ["Docker", "AWS", "Git", "Linux"],
   },
 ];

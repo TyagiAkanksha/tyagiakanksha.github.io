@@ -1,0 +1,62 @@
+---
+title: "AdvisorDesk — AI-Powered Advisory Content Platform"
+summary: "Content hub for financial advisory firms — CMS + client app with a cited RAG assistant and an agentic MCP layer over published guidance."
+role: "Full-Stack Engineer"
+dates: "2026"
+tech: ["React", "Next.js", "TypeScript", "FastAPI", "Supabase (Postgres + pgvector)", "OpenAI", "MCP", "Docker", "AWS"]
+tags: ["Full-Stack", "ML"]
+highlights:
+  - "RAG answers grounded in published content, with source citations"
+featured: true
+order: 1
+---
+
+## Problem
+
+Financial advisory firms produce a steady stream of written guidance, but
+their clients can't easily get answers from it. Guidance lives in documents
+and portals; a client with a question either digs through them or waits for
+an advisor to reply. A generic chatbot is worse — in a regulated space, an
+answer that isn't traceable to the firm's own published guidance is a
+liability, not a feature.
+
+## Approach
+
+Treat the firm's published content as the single source of truth and build
+everything around it:
+
+- **A CMS for advisors** to create, edit, tag, and publish guidance —
+  publishing is what makes content eligible for the assistant.
+- **A client app with a RAG assistant** that answers questions using vector
+  search over published content only, and returns grounded answers **with
+  source citations** — every answer points back to the guidance it came
+  from.
+- **An agentic content layer**: CMS operations (draft, tag, search,
+  publish) are exposed as MCP tools, so a content manager can run the
+  editorial workflow through natural language instead of manual UI steps.
+
+## Architecture & Tech
+
+Two Next.js frontends — the internal CMS and the client app — share one
+FastAPI backend with Google OAuth. Content and embeddings live in Supabase
+(Postgres + pgvector); retrieval runs vector search over published content
+and OpenAI generates the cited answers. The MCP server exposes the CMS
+operations as tools for agentic use. The whole stack is containerized with
+Docker and deployed on AWS.
+
+## Results & Impact
+
+- Clients get instant, cited answers grounded in exactly what the firm has
+  published — no hallucinated advice, every claim traceable to a source.
+- Advisors manage the content lifecycle in one place, and the MCP layer
+  turns multi-step editorial chores into single natural-language requests.
+- The platform demonstrates the full stack end to end: typed React/Next.js
+  frontends, a Python API, vector search, LLM integration, and cloud
+  deployment.
+
+## What I'd do next
+
+Add an evaluation harness that scores answer groundedness against the
+cited sources, stream assistant responses for snappier UX, and extend the
+MCP toolset to cover analytics ("what are clients asking that we haven't
+published guidance for?") — closing the loop between questions and content.

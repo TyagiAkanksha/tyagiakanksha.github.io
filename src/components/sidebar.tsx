@@ -33,7 +33,7 @@ export function Sidebar() {
             {site.name}
           </h1>
           <p className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-accent">
-            Full-Stack Engineer · Applied-ML Researcher
+            Full-Stack Engineer · AI-Integrated Web Apps
           </p>
         </div>
         <div className="ml-auto self-start lg:hidden">

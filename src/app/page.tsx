@@ -48,9 +48,10 @@ export default function Home() {
         <Section id="about" label="About" className={SECTION_SCROLL}>
           <div className="space-y-4 text-[15.5px] leading-relaxed text-fg">
             <p>
-              I build full-stack products — and the ML behind them. I work
-              across React, Next.js, Node.js, TypeScript, and Python, with
-              peer-reviewed research in reinforcement learning and security.
+              I build full-stack, AI-integrated web apps — shipping across the
+              React/Next.js, FastAPI, and Postgres/pgvector stack with RAG,
+              vector search, and agentic MCP tooling, backed by peer-reviewed
+              research in reinforcement learning and security.
             </p>
             <p>
               I&apos;m a full-stack engineer with a Master&apos;s in Computer
@@ -74,7 +75,7 @@ export default function Home() {
               <span className="text-accent">02</span> peer-reviewed publications
             </span>
             <span>Best Student Paper nominee · VEHITS 2024</span>
-            <span>MS Computer Science · GPA 3.83/4.0</span>
+            <span>MS Computer Science · GPA 3.75/4.0</span>
           </div>
           <h3 className="mb-4 mt-10 font-display text-lg font-semibold tracking-tight">
             Skills

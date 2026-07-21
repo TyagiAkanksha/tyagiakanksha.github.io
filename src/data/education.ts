@@ -13,12 +13,10 @@ export const education: Education[] = [
     school: "University of Arkansas",
     location: "Fayetteville, AR",
     date: "May 2026",
-    gpa: "3.83 / 4.0",
+    gpa: "3.75 / 4.0",
     coursework: [
       "Image Processing",
       "Privacy Enhancing Technology",
-      "Computer Security",
-      "Graph and Combinatorial Algorithms",
       "Full Stack Deep Learning",
       "Machine Learning",
     ],
