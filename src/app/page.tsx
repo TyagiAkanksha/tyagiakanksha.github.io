@@ -54,7 +54,7 @@ export default function Home() {
           priority
           className="h-auto w-full"
         />
-        <div className="absolute bottom-3 left-4 rounded-md bg-white px-3 py-1.5 shadow-sm">
+        <div className="absolute bottom-3 right-4 rounded-md bg-white px-3 py-1.5 shadow-md">
           <Image
             src="/images/ua-logo.png"
             alt="University of Arkansas"

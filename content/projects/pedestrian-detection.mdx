@@ -1,0 +1,49 @@
+---
+title: "Real-time Pedestrian Detection and Safety Alert System"
+summary: "Real-time pedestrian detection on the NVIDIA Jetson Nano with YOLO and MobileNet SSD, optimized with TensorRT, driving audio-visual safety alerts."
+role: "Graduate Project, University of Arkansas"
+dates: "Jan 2025 – Apr 2025"
+tech: ["Python", "YOLO", "MobileNet SSD", "TensorRT", "DeepStream", "NVIDIA Jetson"]
+tags: ["CV"]
+order: 8
+---
+
+## Problem
+
+Intersections are most dangerous in the moments rules are broken: a
+pedestrian stepping into the road against a restricted signal, or a
+vehicle speeding through a red light. Alerts for those moments only help
+if they fire immediately, which rules out shipping video to a server —
+the detection has to run in real time on a small edge device at the
+intersection itself.
+
+## Approach
+
+I built a real-time pedestrian detection system on the NVIDIA Jetson
+Nano, training YOLO and MobileNet SSD models on the CityPersons and
+Caltech pedestrian datasets and comparing them for accuracy and speed on
+edge hardware. On top of the detections, I developed audio-visual alerts
+that trigger when pedestrians enter restricted roadways and when
+vehicles speed through red lights.
+
+## Architecture & Tech
+
+The models run on the Jetson Nano through NVIDIA's inference stack. To
+reach real-time frame rates on a device this small, I optimized
+inference with quantization and pruning, compiled the models with
+TensorRT, and used DeepStream for the video pipeline. The alert logic
+sits on the detection stream and drives the audio-visual warnings.
+
+## Results & Impact
+
+The system detects pedestrians and triggers its safety alerts in real
+time entirely on the edge device — no server round-trip — covering both
+alert scenarios: pedestrians in restricted roadways and vehicles
+speeding through red lights.
+
+## What I'd do next
+
+I would evaluate the system across more intersection geometries and
+lighting conditions, and measure how much further INT8 calibration and
+newer lightweight detector architectures could push the frame rate on
+the same hardware.
