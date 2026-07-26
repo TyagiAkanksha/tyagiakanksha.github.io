@@ -44,8 +44,9 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       {/* Cover banner: Old Main, University of Arkansas.
-          Photo: Michael Barera, Wikimedia Commons, CC BY-SA 4.0 (credited in footer). */}
-      <div className="mt-6 overflow-hidden rounded-lg border border-line lg:mt-10">
+          Photo: Michael Barera, Wikimedia Commons, CC BY-SA 4.0 (credited in
+          footer). Caption is real text over a scrim, not baked into the image. */}
+      <div className="relative mt-6 overflow-hidden rounded-lg border border-line lg:mt-10">
         <Image
           src="/images/ua-banner.jpg"
           alt="Old Main, University of Arkansas"
@@ -54,6 +55,13 @@ export default function Home() {
           priority
           className="h-auto w-full"
         />
+        <div
+          className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/55 to-transparent"
+          aria-hidden
+        />
+        <p className="absolute bottom-2.5 left-4 font-mono text-[10.5px] uppercase tracking-[0.22em] text-white sm:bottom-3">
+          University of Arkansas · Fayetteville
+        </p>
       </div>
       <div className="flex w-full flex-col lg:flex-row lg:gap-20">
         <Sidebar />
