@@ -2,6 +2,7 @@ import { Mail } from "lucide-react";
 import { GitHubIcon, LinkedInIcon } from "@/components/social-links";
 import { site } from "@/data/site";
 
+/* Display strings derived from site.ts — single source of truth. */
 const rows = [
   {
     label: "Email",
@@ -12,14 +13,14 @@ const rows = [
   },
   {
     label: "GitHub",
-    value: "github.com/TyagiAkanksha",
+    value: site.github.replace("https://", ""),
     href: site.github,
     icon: <GitHubIcon className="size-4" />,
     external: true,
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/tyagiakanksha",
+    value: site.linkedin.replace("https://", ""),
     href: site.linkedin,
     icon: <LinkedInIcon className="size-4" />,
     external: true,

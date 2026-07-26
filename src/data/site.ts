@@ -9,4 +9,5 @@ export const site = {
   github: "https://github.com/TyagiAkanksha",
   linkedin: "https://linkedin.com/in/tyagiakanksha",
   resume: "/resume/Akanksha_Tyagi.pdf",
+  repoUrl: "https://github.com/TyagiAkanksha/tyagiakanksha.github.io",
 } as const;
