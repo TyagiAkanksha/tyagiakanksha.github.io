@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FileDown } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { ContactRows } from "@/components/contact-rows";
@@ -37,12 +38,25 @@ export default function Home() {
   const bySlug = new Map(projects.map((p) => [p.slug, p]));
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col px-5 sm:px-8 lg:flex-row lg:gap-20">
+    <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
-      <Sidebar />
+      {/* Cover banner: Old Main, University of Arkansas.
+          Photo: Michael Barera, Wikimedia Commons, CC BY-SA 4.0 (credited in footer). */}
+      <div className="mt-6 overflow-hidden rounded-lg border border-line lg:mt-10">
+        <Image
+          src="/images/ua-banner.jpg"
+          alt="Old Main, University of Arkansas"
+          width={1536}
+          height={384}
+          priority
+          className="h-auto w-full"
+        />
+      </div>
+      <div className="flex w-full flex-col lg:flex-row lg:gap-20">
+        <Sidebar />
 
       <main className="min-w-0 flex-1 pb-4 pt-12 lg:max-w-2xl lg:pt-20">
         <Section id="about" label="About" className={SECTION_SCROLL}>
@@ -153,6 +167,7 @@ export default function Home() {
 
         <Footer />
       </main>
+      </div>
     </div>
   );
 }

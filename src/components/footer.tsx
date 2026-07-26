@@ -15,12 +15,30 @@ export function Footer() {
         </a>{" "}
         ·{" "}
         <a
-          href={`${site.github}/tyagiakanksha.github.io`}
+          href={site.repoUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted underline decoration-muted/40 underline-offset-2 transition-colors hover:text-accent"
         >
           view source
+        </a>{" "}
+        · Banner:{" "}
+        <a
+          href="https://commons.wikimedia.org/wiki/File:University_of_Arkansas_May_2017_07_(Old_Main).jpg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted underline decoration-muted/40 underline-offset-2 transition-colors hover:text-accent"
+        >
+          Old Main
+        </a>{" "}
+        by Michael Barera,{" "}
+        <a
+          href="https://creativecommons.org/licenses/by-sa/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted underline decoration-muted/40 underline-offset-2 transition-colors hover:text-accent"
+        >
+          CC BY-SA 4.0
         </a>
       </p>
       <SocialLinks />
