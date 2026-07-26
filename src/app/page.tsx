@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FileDown } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { ContactRows } from "@/components/contact-rows";
@@ -42,11 +43,26 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
-      {/* Cover band: token-driven gradient, adapts to theme. */}
-      <div className="cover-band relative mt-6 h-32 overflow-hidden rounded-lg border border-line sm:h-40 lg:mt-10">
-        <p className="absolute bottom-3 left-4 font-mono text-[10.5px] uppercase tracking-[0.22em] text-muted">
-          University of Arkansas · Fayetteville
-        </p>
+      {/* Cover banner: Old Main in autumn (user-provided photo); official
+          U of A lockup on a white plate, bottom-left. */}
+      <div className="relative mt-6 overflow-hidden rounded-lg border border-line lg:mt-10">
+        <Image
+          src="/images/ua-banner.jpg"
+          alt="Old Main, University of Arkansas, in autumn"
+          width={1280}
+          height={384}
+          priority
+          className="h-auto w-full"
+        />
+        <div className="absolute bottom-3 left-4 rounded-md bg-white px-3 py-1.5 shadow-sm">
+          <Image
+            src="/images/ua-logo.png"
+            alt="University of Arkansas"
+            width={900}
+            height={221}
+            className="h-7 w-auto sm:h-9"
+          />
+        </div>
       </div>
       <div className="flex w-full flex-col lg:flex-row lg:gap-20">
         <Sidebar />
