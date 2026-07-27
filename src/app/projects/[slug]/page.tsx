@@ -26,6 +26,9 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
+    // Own canonical — otherwise the layout-level canonical "/" cascades
+    // here and marks every case study as a duplicate of the homepage.
+    alternates: { canonical: `/projects/${slug}` },
     openGraph: {
       title: project.title,
       description: project.summary,
