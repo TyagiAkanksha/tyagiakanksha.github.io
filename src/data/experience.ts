@@ -15,6 +15,7 @@ export const experience: Experience[] = [
     org: "Cybersecurity Lab, University of Arkansas",
     location: "Fayetteville, AR",
     dates: "Jan 2024 – May 2026",
+    advisor: "Dr. Qinghua Li",
     bullets: [
       "Designed the core algorithm of a reinforcement learning fuzzer that mutates multiple input parameters per round. It reached 70% code coverage and twice the crashes of traditional fuzzing on a power generation control system. This work was published at IEEE CSR 2025.",
       "For my master's thesis, I built graph based and ensemble anomaly detection models for the SWaT water treatment testbed (51 sensors across 6 stages, 35 labeled attacks). They reached a mean F1 of 0.886 (SD 0.009) across five seeds, against a published benchmark of 0.81.",
