@@ -1,9 +1,9 @@
 ---
 title: "RL for Emergency Vehicle Traffic Optimization"
-summary: "Lane-level reinforcement learning with V2V communication that speeds emergency vehicle traversal in simulated traffic. Best Student Paper nominee, VEHITS 2024."
+summary: "Reinforcement learning lane selection that cut emergency vehicle traversal time by up to 10.9% in SUMO. Best Student Paper nominee, VEHITS 2024."
 role: "Research Assistant · IIIT Hyderabad"
 dates: "Jun 2022 – Dec 2023"
-tech: ["Python", "Stable-Baselines3", "SUMO", "Reinforcement Learning", "V2V"]
+tech: ["Python", "PyTorch", "Stable-Baselines3", "SUMO", "Reinforcement Learning", "V2V"]
 tags: ["ML"]
 links:
   paper: "https://doi.org/10.5220/0012637200003702"
@@ -35,15 +35,18 @@ inspired by real layouts.
 
 A SUMO simulation stack drives the environments, and a Gym style wrapper
 exposes lane-level state, including V2V shared observations, to the
-Stable-Baselines3 agents. The evaluation suite compares learned policies
-against baseline and human-level driving behavior on traversal time and
-safety metrics.
+Stable-Baselines3 agents. The evaluation suite compares the learned policy
+against three heuristic baselines: SUMO's default lane changing, a fixed
+lane policy, and a utility weighted best lane heuristic. An empty road run
+serves as the theoretical lower bound on traversal time.
 
 ## Results & Impact
 
-- The learned policies reduced emergency vehicle traversal times
-  significantly and surpassed human-level performance on the evaluated
-  networks.
+- The learned policies cut emergency vehicle traversal time by up to 10.9%
+  against the strongest of the three baselines, on a 2 km four lane
+  network, evaluated over 100 runs per setting.
+- I validated the policy against New York City traffic speed data and
+  wrote the peer review response defending the method.
 - The work was published as "Improving Lane Level Dynamics for EV
   Traversal: A Reinforcement Learning Approach" at VEHITS 2024, where it
   was nominated for the Best Student Paper Award.
