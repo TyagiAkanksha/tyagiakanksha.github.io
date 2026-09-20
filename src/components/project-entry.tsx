@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/lib/content";
 import { TechChip } from "@/components/badge";
+import { GitHubIcon } from "@/components/social-links";
 
 /** Rich stacked entry (v1 style) — no card box, no index, no hover-lift. */
 export function ProjectEntry({ project }: { project: Project }) {
@@ -35,6 +36,26 @@ export function ProjectEntry({ project }: { project: Project }) {
         >
           Case study <ArrowRight className="size-3.5" aria-hidden />
         </Link>
+        {project.links.demo ? (
+          <a
+            href={project.links.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-accent"
+          >
+            Live app <ExternalLink className="size-3.5" aria-hidden />
+          </a>
+        ) : null}
+        {project.links.github ? (
+          <a
+            href={project.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-accent"
+          >
+            Source <GitHubIcon className="size-3.5" />
+          </a>
+        ) : null}
         {project.links.paper ? (
           <a
             href={project.links.paper}

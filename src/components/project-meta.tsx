@@ -18,7 +18,7 @@ export function ProjectMeta({ project }: { project: Project }) {
     },
     project.links.demo && {
       href: project.links.demo,
-      label: "Live demo",
+      label: "Live app",
       icon: <ExternalLink className="size-3.5" aria-hidden />,
     },
   ].filter(Boolean) as { href: string; label: string; icon: React.ReactNode }[];
