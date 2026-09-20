@@ -1,12 +1,15 @@
 ---
 title: "AdvisorDesk: AI-Powered Advisory Content Platform"
-summary: "A content hub for financial advisory firms, with a CMS, a client app, a RAG assistant that cites its sources, and an agentic MCP content layer."
-role: "Full Stack Engineer"
-dates: "2026"
-tech: ["React", "Next.js", "TypeScript", "FastAPI", "Supabase (Postgres + pgvector)", "OpenAI", "MCP", "Docker", "AWS"]
+summary: "A publishing platform for financial advisory content, with an admin CMS, a client portal, and an AI assistant that answers with source citations."
+role: "Full Stack Engineer · Independent project"
+dates: "Mar 2026 – Present"
+tech: ["Next.js", "React", "TypeScript", "FastAPI", "Supabase (Postgres + pgvector)", "OpenAI", "MCP", "OAuth 2.1", "Docker", "AWS"]
 tags: ["Full-Stack", "ML"]
+links:
+  demo: "https://advisordesk.tyagiakanksha.com/"
+  github: "https://github.com/TyagiAkanksha/AdvisorDesk"
 highlights:
-  - "RAG answers grounded in published content, with source citations"
+  - "93% mean source support on an 80 question evaluation, 733 ms median time to first token in production"
 featured: true
 order: 1
 ---
@@ -25,39 +28,87 @@ the firm's own published guidance creates risk instead of value.
 I treated the firm's published content as the single source of truth and
 built the platform around it.
 
-- A CMS lets advisors create, edit, tag, and publish guidance. Publishing
-  is what makes content available to the assistant.
-- A client app includes a RAG assistant that answers questions using
-  vector search over published content only. Every answer is grounded in
-  that content and includes citations that point back to the source
-  guidance.
+- An admin CMS lets advisors create, edit, tag, and publish guidance.
+  Publishing is what makes content available to the assistant. Drafts stay
+  invisible to it.
+- A client portal includes a RAG assistant that answers questions using
+  vector search over published content only. Every answer includes
+  numbered citations that link back to the source articles. When nothing
+  published covers the question, the assistant says so instead of guessing.
 - An agentic content layer exposes the CMS operations for drafting,
   tagging, searching, and publishing as MCP tools, so a content manager
-  can run the editorial workflow through natural language instead of
-  manual UI steps.
+  can run the editorial workflow through natural language, either from an
+  agent panel inside the CMS or from Claude.
+- An evaluation loop measures how well answers are supported by their
+  sources, flags the weak ones, and checks every proposed content fix
+  before it is accepted.
 
 ## Architecture & Tech
 
-Two Next.js frontends, the internal CMS and the client app, share one
-FastAPI backend with Google OAuth. Content and embeddings live in Supabase,
-which provides Postgres with pgvector. Retrieval runs vector search over
-published content, and OpenAI generates the cited answers. An MCP server
-exposes the CMS operations as tools for agentic use. The whole stack is
-containerized with Docker and deployed on AWS.
+Two Next.js applications, the admin CMS and the client portal, share one
+FastAPI backend. The backend is a modular monolith, and its import
+boundaries are enforced in CI, so the layering holds as the code grows.
+TypeScript API types are generated from the backend's OpenAPI spec, and CI
+fails when the committed spec or the generated types drift, which catches
+frontend and backend mismatches before they ship.
+
+Content and embeddings live in Supabase, which provides Postgres with
+pgvector. Publishing an article chunks it, embeds it, and writes the
+vectors in one transaction. Retrieval runs a similarity search over
+published chunks, OpenAI generates the cited answer, and the answer streams
+to the browser over Server-Sent Events.
+
+All 14 MCP tools live in one registry with two ways in. The agent panel in
+the CMS calls them in process, and a remote MCP server exposes the same
+tools to Claude behind an OAuth 2.1 authorization flow. A tool behaves the
+same way no matter which side calls it. Advisors sign in with Google, and
+access is limited to an email allowlist.
+
+The three services run as Docker images on a single AWS EC2 host behind
+Caddy, which handles TLS.
+
+## Evaluation
+
+I evaluated the assistant on 80 questions across three runs, covering
+answerable questions, near misses, off topic questions, and questions that
+need more than one source. It reached 93% mean source support, and it
+refused correctly every time the published content had no answer.
+
+The same harness drives a feedback loop. Questions that retrieve poorly are
+grouped into a weak query report for content managers. When someone
+proposes a content fix, the platform compares evaluation runs from before
+and after, and it accepts the fix only if no question got worse. In one
+rehearsal, a deliberately bad draft raised the overall score and was still
+blocked, because two individual questions regressed.
 
 ## Results & Impact
 
-- Clients get instant, cited answers grounded in exactly what the firm has
-  published, and every claim is traceable to a source.
-- Advisors manage the content lifecycle in one place, and the MCP layer
-  turns multi-step editorial tasks into single natural language requests.
-- The platform covers the full stack end to end, including typed React and
-  Next.js frontends, a Python API, vector search, LLM integration, and
-  cloud deployment.
+- In production, the median time to first token is 733 ms, and the
+  estimated model cost is about $0.0013 per answer.
+- An automated check runs every six hours against the deployed site. It
+  asks a real question and verifies that a cited answer streams back, so
+  it tests the whole chat path and not only a health endpoint.
+- The codebase has roughly 1,000 backend tests and 500 frontend tests, and
+  CI enforces a 95% coverage floor on the backend.
+- Content managers can draft, search, and publish articles from Claude
+  through the OAuth protected MCP tools.
+
+The live site is seeded with sample guidance for a fictional advisory
+firm. It holds no real client data. This project is also the case study
+for my talk, Beyond RAG: Building an Evaluated, Self-Improving Agentic AI
+System.
+
+## Try it
+
+The [client portal](https://advisordesk.tyagiakanksha.com/) is public and
+needs no login, including the
+[assistant](https://advisordesk.tyagiakanksha.com/chat). The admin CMS
+runs at admin.advisordesk.tyagiakanksha.com and accepts only allowlisted
+Google accounts, so it is described here instead of linked.
 
 ## What I'd do next
 
-I would add an evaluation harness that scores how well answers are
-grounded in their cited sources, stream assistant responses for a faster
-feel, and extend the MCP toolset to cover analytics, such as reporting
-which client questions have no published guidance yet.
+I would finish a larger round of human labels to calibrate the evaluation
+judge, since the current agreement check rests on a small sample. I would
+also move the in process rate limit and latency counters into Redis, so
+the API can run more than one worker.

@@ -1,0 +1,102 @@
+---
+title: "SentinelBrief: AI Security Alert Triage Platform"
+summary: "Turns live SSH honeypot sessions into prioritized security alerts with severity, reasoning, and recommended actions, backed by a measured evaluation harness."
+role: "Full Stack Engineer · Independent project"
+dates: "Jul 2026 – Present"
+tech: ["Python", "FastAPI", "PostgreSQL", "Redis", "ARQ", "Next.js", "TypeScript", "OpenAI", "Docker", "AWS"]
+tags: ["Security", "Full-Stack", "ML"]
+links:
+  demo: "https://sentinelbrief.tyagiakanksha.com/"
+  github: "https://github.com/TyagiAkanksha/SentinelBrief"
+highlights:
+  - "About $0.0012 per alert and 1.1 s median model latency across 252 evaluation sessions"
+featured: true
+order: 2
+---
+
+## Problem
+
+A honeypot that faces the internet records attacker sessions all day, and
+each one arrives as raw JSON. Most of it is routine scanning, and a small
+part deserves a closer look. An analyst reading that stream by hand
+either falls behind or stops looking. What they need is a short, ranked
+queue where every entry explains itself.
+
+## Approach
+
+SentinelBrief sits between the honeypot and the analyst. It ingests real
+SSH sessions, lets a model gather context through tool calls, and
+publishes a verdict for each session with a severity, a category, a
+confidence score, written reasoning, and a recommended action.
+
+The human always decides. Nothing in the system blocks an address,
+isolates a host, or answers an attacker. It only ranks and explains.
+
+I also built it to be measured. Accuracy, cost, and latency are scored
+against a fixed set of sessions whenever the prompt or the model changes,
+and the results are published in the repository, including the runs that
+came out worse than the ones before them.
+
+## Architecture & Tech
+
+A Cowrie SSH honeypot runs on its own host in a separate network. When a
+session ends, a small shipper posts it to the API with an HMAC signature.
+The FastAPI service verifies the signature, drops duplicates by
+fingerprint, stores the alert in PostgreSQL, and returns right away.
+
+All model work happens in a background worker built on ARQ and Redis, so
+alert ingestion never waits for a model response. The worker runs a triage
+agent with five enrichment tools: IP reputation, geolocation and network
+owner, alert history for the same source, the commands typed in the
+session, and information about the targeted asset. The verdict is
+validated against a schema and retried once if it does not parse.
+
+A small model handles every alert first. When it reports a high severity
+or a low confidence, the alert is run again on a stronger model. Every
+tool call is stored with its arguments, result, and latency, so the
+timeline on the dashboard is the real trace and not a summary.
+
+Failed jobs retry automatically with backoff. Attacker controlled text
+reaches the model only as clearly marked data, and the public endpoints
+are rate limited.
+
+The dashboard is a public Next.js app with no login. It receives new
+verdicts live over Server-Sent Events and falls back to polling. The
+whole stack runs as Docker containers on AWS behind Caddy.
+
+## Evaluation
+
+The evaluation harness uses 252 real honeypot sessions, including a group
+chosen because they attempt prompt injection. The labels are AI generated
+by a stronger model, so the scores measure agreement with that model and
+not human ground truth. I state that plainly next to the results.
+
+The same harness runs as a regression check in CI. It compares severity
+agreement and critical alert recall against a stored baseline. To prove
+the check works, I ran it against a deliberately degraded prompt, and it
+rejected the change.
+
+## Results & Impact
+
+- Triage costs an estimated $0.0012 per alert, with a 1.1 second median
+  model latency across the 252 evaluation sessions.
+- In its first week live, the platform triaged more than 800 real attacker
+  sessions with no failed jobs.
+- In a controlled restart test, the system recovered from a worker crash
+  without producing duplicate verdicts.
+- The backend test suite enforces a 90% coverage floor in CI, along with
+  strict type checks and import boundary rules that keep model calls
+  inside the worker.
+
+## Try it
+
+The [live dashboard](https://sentinelbrief.tyagiakanksha.com/) is public
+and read only. Open any alert to see the verdict, the reasoning, and the
+full tool trace behind it.
+
+## What I'd do next
+
+I would label a subset of sessions by hand to calibrate the AI generated
+labels. I would also rebalance the evaluation set, because most real
+sessions are low severity, and the rarer high severity cases are the ones
+that matter most.
