@@ -1,19 +1,21 @@
 ---
 title: "City Complaint Management System"
-summary: "A civic complaint reporting platform built at Codeventure Tech with PHP, WordPress, and JavaScript, shipped to real users to improve response times."
+summary: "A complaint management system for Roorkee's municipal body, built in PHP, JavaScript, and MySQL on WordPress, routing about 300 citizen complaints a month."
 role: "Software Engineer · Codeventure Tech LLP"
 dates: "Jun 2021 – Apr 2022"
 tech: ["PHP", "WordPress", "JavaScript", "HTML", "CSS", "MySQL"]
 tags: ["Full-Stack"]
+highlights:
+  - "About 300 citizen complaints a month routed to the responsible departments"
 featured: true
 order: 6
 ---
 
 ## Problem
 
-Civic complaints about issues such as broken streetlights, water problems,
-and garbage collection were reaching the city through phone calls and
-paper. There was no tracking, no ownership, and no way for a resident to
+In Roorkee, civic complaints about issues such as broken streetlights,
+water problems, and garbage collection were reaching the municipal body
+through phone calls and paper. There was no tracking, no ownership, and no way for a resident to
 know whether anything had happened. Response times suffered because the
 intake process itself was the bottleneck.
 
@@ -26,20 +28,31 @@ resolved. I designed and developed the platform end to end within the
 team's WordPress based stack, using custom PHP for the complaint workflow
 and JavaScript for the interactive front end.
 
+I built the citizen facing reporting interface with validation on both the
+client and the server, so complaints reached the department queues
+complete.
+
 ## Architecture & Tech
 
 WordPress serves as the CMS backbone, with custom PHP modules for
 complaint intake, categorization, routing, and status tracking, backed by
-MySQL. The front end is hand built HTML, CSS, and JavaScript, tuned for
+MySQL. I designed the relational schema for complaint records and their
+handling states, from submission through routing to resolution. The front
+end is hand built HTML, CSS, and JavaScript, tuned for
 low-end devices and unreliable connectivity, because the users are
 residents rather than technical staff.
 
 ## Results & Impact
 
-The system was shipped and used for real civic issue reporting, and it
-improved issue visibility and response times over the manual process it
-replaced. This project taught me what production software involves: real
-users, real data, and real consequences when something breaks.
+- The system launched for Roorkee's municipal body and routed about 300
+  citizen complaints a month to the responsible departments.
+- Complaints arrived complete, so staff no longer had to contact citizens
+  again for missing details.
+- At handover, I trained the administrative staff on the response
+  workflow.
+
+This project taught me what production software involves: real users, real
+data, and real consequences when something breaks.
 
 ## What I'd do next
 
