@@ -2,7 +2,7 @@
 
 Personal portfolio of **Akanksha Tyagi** — full-stack engineer with an
 applied-ML research background. Live at
-**[tyagiakanksha.github.io](https://tyagiakanksha.github.io)**.
+**[tyagiakanksha.com](https://tyagiakanksha.com)**.
 
 Built with Next.js 16 (App Router, static export), TypeScript, and
 Tailwind CSS v4. Deployed to GitHub Pages via GitHub Actions on every push

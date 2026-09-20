@@ -3,33 +3,72 @@ export type SkillGroup = {
   skills: string[];
 };
 
-// Mirrors the resume's grouping (updated Jul 2026) — AI-integrated web apps first.
+// Mirrors the resume's six groups (updated Sep 2026); six fills the two column grid evenly.
 export const skillGroups: SkillGroup[] = [
   {
     label: "Languages",
-    skills: ["Python", "TypeScript", "JavaScript", "SQL", "C/C++"],
+    skills: ["Python", "TypeScript", "JavaScript", "SQL", "C", "PHP", "HTML/CSS"],
   },
   {
-    label: "Web",
-    skills: ["React", "Next.js", "Node.js", "FastAPI", "REST APIs", "HTML/CSS"],
+    label: "Backend & APIs",
+    skills: [
+      "FastAPI",
+      "Node.js",
+      "Pydantic",
+      "SQLAlchemy",
+      "REST APIs",
+      "OpenAPI",
+      "Server-Sent Events",
+      "OAuth 2.1",
+    ],
+  },
+  {
+    label: "Frontend",
+    skills: [
+      "Next.js 16 (App Router, RSC)",
+      "React 19",
+      "Redux Toolkit",
+      "Material UI",
+      "Tailwind CSS",
+    ],
   },
   {
     label: "AI & ML",
     skills: [
       "LLM integration",
       "RAG",
-      "AI agents (MCP)",
+      "AI agents",
+      "MCP",
       "PyTorch",
       "Reinforcement Learning",
       "Graph Neural Networks",
     ],
   },
   {
-    label: "Databases",
-    skills: ["PostgreSQL", "MongoDB", "Supabase (pgvector)"],
+    label: "Data & Cloud",
+    skills: [
+      "PostgreSQL",
+      "pgvector",
+      "Supabase",
+      "MySQL",
+      "Redis",
+      "ARQ",
+      "AWS (EC2, ECR, S3, SSM, VPC)",
+      "Docker",
+      "Caddy",
+    ],
   },
   {
-    label: "Cloud & DevOps",
-    skills: ["Docker", "AWS", "Git", "Linux"],
+    label: "Testing & DevOps",
+    skills: [
+      "pytest",
+      "mypy",
+      "Vitest",
+      "ESLint",
+      "GitHub Actions",
+      "CI/CD",
+      "Git",
+      "Linux",
+    ],
   },
 ];

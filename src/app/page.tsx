@@ -5,14 +5,14 @@ import { ContactRows } from "@/components/contact-rows";
 import { EducationItem } from "@/components/education-item";
 import { Footer } from "@/components/footer";
 import { ProjectEntryList } from "@/components/project-entry";
-import { PublicationCard } from "@/components/publication-card";
+import { PublicationCard, TalkCard } from "@/components/publication-card";
 import { Section } from "@/components/section";
 import { Sidebar } from "@/components/sidebar";
 import { SkillGroup } from "@/components/skill-group";
 import { TimelineItem } from "@/components/timeline-item";
 import { education } from "@/data/education";
 import { experience } from "@/data/experience";
-import { publications } from "@/data/publications";
+import { publications, talks } from "@/data/publications";
 import { site } from "@/data/site";
 import { skillGroups } from "@/data/skills";
 import { getAllProjects } from "@/lib/content";
@@ -71,12 +71,14 @@ export default function Home() {
         <Section id="about" label="About" className={SECTION_SCROLL}>
           <div className="space-y-4 text-[15.5px] leading-relaxed text-fg">
             <p>
-              I am a full stack engineer who builds AI integrated web
-              applications. I work with React, Next.js, FastAPI, and Postgres
-              with pgvector, and I have built features that use retrieval
-              augmented generation, vector search, and agentic MCP tooling. My
-              background also includes peer reviewed research in reinforcement
-              learning and security.
+              I am a full stack software engineer with more than three years
+              of professional experience. I build web applications with
+              Python, FastAPI, React, Next.js, and PostgreSQL, and I have
+              hands on experience integrating AI features such as retrieval
+              augmented generation, AI agents, and MCP tooling, testing them
+              for reliability, and deploying them on AWS. My two most recent
+              projects, AdvisorDesk and SentinelBrief, are both live, and you
+              can try them from the projects section below.
             </p>
             <p>
               I hold a Master of Science in Computer Science from the
@@ -146,11 +148,14 @@ export default function Home() {
             ))}
           </ol>
           <h3 className="mb-5 mt-12 font-display text-lg font-semibold tracking-tight">
-            Publications
+            Publications and talks
           </h3>
           <div className="space-y-5">
             {publications.map((pub) => (
               <PublicationCard key={pub.doi} pub={pub} />
+            ))}
+            {talks.map((talk) => (
+              <TalkCard key={talk.title} talk={talk} />
             ))}
           </div>
         </Section>

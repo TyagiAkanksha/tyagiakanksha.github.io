@@ -1,4 +1,4 @@
-import type { Publication } from "@/data/publications";
+import type { Publication, Talk } from "@/data/publications";
 
 /** Plain citation (v1 style) — hanging indent, mono DOI, no badge pills. */
 export function PublicationCard({ pub }: { pub: Publication }) {
@@ -25,6 +25,20 @@ export function PublicationCard({ pub }: { pub: Publication }) {
         {pub.award ? (
           <span className="ml-3 font-semibold text-accent">{pub.award}</span>
         ) : null}
+      </p>
+    </article>
+  );
+}
+
+/** Same citation typography as PublicationCard, for talks (no DOI line). */
+export function TalkCard({ talk }: { talk: Talk }) {
+  return (
+    <article className="max-w-2xl">
+      <p className="pl-5 -indent-5 text-sm leading-relaxed">
+        <span className="text-muted">{talk.kind}</span>{" "}
+        <span className="text-faint">({talk.date}).</span>{" "}
+        <span className="font-medium italic">{talk.title}.</span>{" "}
+        <span className="text-muted">{talk.location}.</span>
       </p>
     </article>
   );

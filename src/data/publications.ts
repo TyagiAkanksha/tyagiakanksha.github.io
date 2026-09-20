@@ -34,3 +34,20 @@ export const publications: Publication[] = [
     award: "Best Student Paper Award Nominee",
   },
 ];
+
+export type Talk = {
+  title: string;
+  kind: string;
+  location: string;
+  date: string;
+};
+
+export const talks: Talk[] = [
+  {
+    title:
+      "Beyond RAG: Building an Evaluated, Self-Improving Agentic AI System",
+    kind: "Technical talk",
+    location: "Charlotte, NC",
+    date: "Sep 2026",
+  },
+];
