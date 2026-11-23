@@ -22,6 +22,8 @@ question was how far each family of model gets on the same data, from a
 classical support vector machine to a convolutional network, and what it
 takes to close the gap.
 
+<Figure src="/images/projects/fashion-mnist-classification/cnn-vs-fully-connected-tops.webp" alt="Two rows of three copies of the same grayscale clothing image, 28 by 28 pixels shown enlarged. Top row: ground truth Dress; CNN prediction Dress, correct; NN prediction Coat, wrong. Bottom row: ground truth Shirt; CNN prediction Shirt, correct; NN prediction T-shirt/top, wrong." caption="Two Fashion-MNIST images, a dress and a shirt, as my plotting code drew them, with what my CNN and my fully connected network (NN) predicted for each. The CNN gets both right. The fully connected network calls the dress a coat and the shirt a T-shirt, classes that look much alike at this size. Images from Fashion-MNIST by Zalando Research." width="1375" height="968" />
+
 ## Approach
 
 I built every model in one codebase, with a configuration file per
@@ -45,6 +47,8 @@ experiment so each run could be repeated and compared.
   footwear (sandal, sneaker, ankle boot) and everything else, to see how
   well the CNN captures overall shape.
 
+<Figure src="/images/projects/fashion-mnist-classification/svm-accuracy-by-pca-components.webp" alt="Line chart titled Test Accuracy vs Dimensionality: SVM-RBF test accuracy in percent against the number of PCA components, on a log scale, five points. The highest point is at 100 components; the points for more components are all lower." caption="Test accuracy of my SVM against the number of principal components it keeps, on a log scale. It peaks at 100 components, and keeping more did not help." width="1025" height="765" />
+
 ## Results & Impact
 
 Test accuracy on the 10,000 test images:
@@ -54,11 +58,15 @@ Test accuracy on the 10,000 test images:
 - Baseline CNN: 90.87%
 - Deeper CNN with dropout, AdamW and a cosine schedule: 93.39%
 
+<Figure src="/images/projects/fashion-mnist-classification/baseline-cnn-loss.webp" alt="Line chart titled Training and Validation Loss for the baseline CNN, loss against epoch. Train loss in blue falls steadily. Validation loss in red jumps up early, then falls, then rises again over the last epochs." caption="Training loss (blue) and validation loss (red) of my baseline CNN. The validation loss jumps early in training and drifts back up at the end." width="1033" height="672" />
+
 The baseline CNN beat the SVM on PCA features by more than 4 points and
 reached a weighted F1 score of 0.91, a sign that keeping the image's spatial
 structure matters on this data. The tuned network raised accuracy to 93.39%
 with a weighted F1 of 0.93, and its loss curve was smoother and steadier than
 the baseline's.
+
+<Figure src="/images/projects/fashion-mnist-classification/tuned-cnn-loss.webp" alt="Line chart titled Training and Validation Loss for the tuned CNN, loss against epoch. Train loss in blue and validation loss in red both fall and end lower than the baseline's, with the validation loss levelling off instead of rising at the end." caption="The same curves for the tuned CNN with dropout, AdamW and the cosine schedule. Both losses end lower than the baseline's (the scales differ), and the validation loss levels off instead of climbing at the end." width="1027" height="672" />
 
 The confusion matrices showed where the remaining errors are. Shirt was the
 hardest class, most often mistaken for T-shirt or coat. The

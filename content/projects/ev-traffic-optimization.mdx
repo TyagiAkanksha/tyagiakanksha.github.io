@@ -8,7 +8,7 @@ tags: ["ML"]
 links:
   paper: "https://doi.org/10.5220/0012637200003702"
 highlights:
-  - "Best Student Paper Award nominee, VEHITS 2024"
+  - "First author of a full paper at VEHITS 2024, which had a 21% full paper acceptance rate"
 category: "research"
 order: 3
 ---
@@ -21,6 +21,8 @@ mostly ignore the lane it drives in, and on a busy road with several lanes,
 being in the right lane at the right moment saves real time. Fixed rules for
 lane changes handle this poorly. At IIIT Hyderabad, advised by Dr. Praveen
 Paruchuri, we set out to learn the lane choice instead.
+
+<Figure src="/images/projects/ev-traffic-optimization/lane-selection-loop.svg" alt="Flow diagram. The A2C agent, Reinforcement Learning based Lane Search, trained for 700,000 steps in Python and PyTorch, chooses an action: which lane the emergency vehicle should be in, decided again at every interval. The SUMO traffic simulator, driven from Python through TraCI, runs a 2 km one way stretch with four lanes in normal traffic, or in congestion made by slowing several vehicles at regular intervals. Two things come back to the agent. The state: the vehicle directly ahead, with the distance between them, their speed difference and its acceleration, and the free space in each lane within V2V range. The reward: the distance covered in each interval against an empty road, with the gap squared, clipped, and summed over the trip for an episode score." caption="How the lane policy learns. At every interval the agent picks a lane for the emergency vehicle, SUMO moves the traffic on, and the reward measures how much ground the vehicle lost against an empty road. Drawn from the approach described below." width="678" height="418" />
 
 ## Approach
 
@@ -51,6 +53,8 @@ Python through its TraCI interface. The road is a 2 km one way stretch with
 four lanes. In normal traffic a new vehicle enters with a 60% chance every
 second; congestion is simulated by slowing several vehicles at regular
 intervals, for example three every 40 seconds or nine every 60 seconds.
+
+<Figure src="/images/projects/ev-traffic-optimization/simulated-road.webp" alt="Part of the simulated four lane one way road seen from above, with the emergency vehicle in red among white and yellow cars." caption="One of our runs in SUMO. The emergency vehicle is the red one; the yellow vehicles are the ones slowed to make congestion, and the white ones are normal traffic. From our VEHITS 2024 paper." width="977" height="330" />
 
 I compared the learned policy with three heuristic baselines: SUMO's default
 lane changing, a policy that stays in one fixed lane, and a best lane

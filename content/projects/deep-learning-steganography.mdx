@@ -28,7 +28,7 @@ inside a cover image of the same size using three convolutional neural
 networks trained together. A preparation network turns the secret image into
 useful features, a hiding network blends them into the cover image to make a
 container image, and a reveal network recovers the secret from the container.
-Because the networks are trained as a pair, they decide for themselves where
+Because the networks are trained together, they decide for themselves where
 and how to spread the secret across the bits of the cover, instead of
 following a fixed rule. The paper trained on images from ImageNet.
 
@@ -37,6 +37,8 @@ the cover and the container and enhance it strongly (the paper uses 20
 times), parts of the secret image become visible. And the method makes no
 explicit attempt to hide from machine detection that a secret is there at
 all.
+
+<Figure src="/images/projects/deep-learning-steganography/hide-and-reveal.svg" alt="Flow diagram. The secret image, the image to hide, goes through a permutation that scrambles the positions of its pixels, then the preparation network, which turns the secret into useful features. The hiding network blends them into the cover image, which comes in from above, and makes the container image. The reveal network recovers the secret from the container; without the permutation the revealed image is just scrambled pixels, and the last step unscrambles it. Below, under Protecting the permutation: AES encrypts the permutation list, which is large; RSA encrypts the AES key; the receiver recovers the AES key with the RSA private key; and the AES key decrypts the permutation, which feeds the unscramble step. A legend marks the preparation, hiding and reveal networks as the three convolutional neural networks, trained together." caption="How our version works. The three networks are the paper's; the permutation before them and the AES and RSA steps that let the receiver undo it are the encryption we added, described in the next section. Drawn from the text on this page." width="678" height="506" />
 
 ## What we reproduced
 
@@ -64,6 +66,8 @@ We then extended the paper in two directions.
 
 ReLU activations worked better than tanh, and adding the SSIM term improved
 training and the quality of the results.
+
+<Figure src="/images/projects/deep-learning-steganography/cover-secret-container-revealed.webp" alt="Two rows of six small images from our notebook. Columns: Cover, Secret, Permutated, Encoded Cover, Decoded Secret, Recovered. Top row: a stadium scoreboard as the cover and a green insect as the secret. Bottom row: a dragonfly on a stem as the cover and a red mushroom as the secret. In both rows the permutated and decoded secrets are colored noise, the encoded cover looks like the cover, and the recovered image shows the secret again." caption="Two of the pairs our notebook drew from our trained model; the rows above them are left out. Left to right: the cover, the secret, the secret after our permutation, the container image (Encoded Cover), what the reveal network returns (Decoded Secret) and that output unscrambled (Recovered). Without the permutation, the revealed image is just scrambled pixels. Images from Tiny ImageNet." width="942" height="340" />
 
 To see how much of the secret leaks into the container, we compared the
 residual between cover and container at 1, 3 and 5 times enhancement against

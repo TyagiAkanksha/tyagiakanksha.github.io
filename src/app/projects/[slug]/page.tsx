@@ -31,10 +31,18 @@ export async function generateMetadata({
     // Own canonical — otherwise the layout-level canonical "/" cascades
     // here and marks every case study as a duplicate of the homepage.
     alternates: { canonical: `/projects/${slug}` },
+    // Both blocks replace the layout's whole, so each restates its image:
+    // the project's own when it has one, otherwise the site's default card.
     openGraph: {
       title: project.title,
       description: project.summary,
-      images: project.image ? [project.image] : undefined,
+      images: [project.image ?? "/og.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.summary,
+      images: [project.image ?? "/og.png"],
     },
   };
 }

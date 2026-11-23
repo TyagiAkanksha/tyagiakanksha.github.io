@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="226" viewBox="0 0 678 226" role="img" aria-labelledby="t">
+  <title id="t">AdvisorDesk architecture: who connects, the EC2 host, and the managed services</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .h { font-size: 13px; font-weight: 600; fill: #555555; letter-spacing: .02em; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .host { font-size: 14px; font-weight: 700; fill: #0c5d57; }
+    .bar-t { font-size: 14px; font-weight: 600; fill: #ffffff; }
+    .bar-s { font-size: 13px; fill: #ffffff; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .ctr { fill: #ffffff; stroke: #0f766e; stroke-opacity: .45; }
+  </style>
+  <rect width="678" height="226" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Who connects -->
+  <text class="h" x="0" y="15">Who connects</text>
+  <rect class="box" x="0.5" y="28.5" width="134" height="44" rx="7"/>
+  <text class="t" x="12" y="55.5">Browser: client</text>
+  <rect class="box" x="0.5" y="84.5" width="134" height="44" rx="7"/>
+  <text class="t" x="12" y="111.5">Browser: admin</text>
+  <rect class="box" x="0.5" y="140.5" width="134" height="44" rx="7"/>
+  <text class="t" x="12" y="167.5">Claude (MCP)</text>
+
+  <line x1="140" y1="124" x2="162" y2="124" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- EC2 host -->
+  <rect x="168.5" y="28.5" width="266" height="192" rx="9" fill="#eef6f5" stroke="#0f766e" stroke-width="1.5"/>
+  <text class="host" x="182" y="52">EC2 t3.small · Elastic IP</text>
+  <rect x="180" y="64" width="243" height="46" rx="6" fill="#0f766e"/>
+  <text class="bar-t" x="192" y="83">Caddy</text>
+  <text class="bar-s" x="192" y="101">HTTPS certificates, routing</text>
+  <rect class="ctr" x="180.5" y="122.5" width="75" height="72" rx="6"/>
+  <text class="t" x="190" y="145">client</text>
+  <text class="s" x="190" y="164">Next.js</text>
+  <rect class="ctr" x="264.5" y="122.5" width="75" height="72" rx="6"/>
+  <text class="t" x="274" y="145">admin</text>
+  <text class="s" x="274" y="164">Next.js</text>
+  <rect class="ctr" x="348.5" y="122.5" width="75" height="72" rx="6"/>
+  <text class="t" x="358" y="145">api</text>
+  <text class="s" x="358" y="164">FastAPI +</text>
+  <text class="s" x="358" y="182">MCP</text>
+
+  <line x1="440" y1="124" x2="462" y2="124" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Managed services -->
+  <text class="h" x="468" y="15">Managed services</text>
+  <rect class="box" x="468.5" y="28.5" width="209" height="56" rx="7"/>
+  <text class="t" x="480" y="51">Postgres + pgvector</text>
+  <text class="s" x="480" y="71">articles, embeddings, OAuth</text>
+  <rect class="box" x="468.5" y="96.5" width="209" height="56" rx="7"/>
+  <text class="t" x="480" y="119">LLM API</text>
+  <text class="s" x="480" y="139">embeddings and answers</text>
+  <rect class="box" x="468.5" y="164.5" width="209" height="56" rx="7"/>
+  <text class="t" x="480" y="187">Parameter Store, ECR</text>
+  <text class="s" x="480" y="207">secrets and images</text>
+</svg>

@@ -9,6 +9,10 @@ highlights:
   - "Audited my thesis evaluation and rebuilt it so model choice never sees test data"
 category: "research"
 order: 1
+materials:
+  - label: "Graph Neural Network-Based Anomaly Detection in Multivariate Time Series (AAAI 2021)"
+    href: "https://ojs.aaai.org/index.php/AAAI/article/view/16523"
+    note: "the GDN paper my work starts from"
 ---
 
 ## Problem
@@ -32,6 +36,8 @@ Kabir Sikder of Old Dominion University.
 My main testbed was SWaT, a real water treatment testbed with 51 sensors and
 actuators spread across six process stages. Its 2015 data contains 35
 labeled attack segments.
+
+<Figure src="/images/projects/water-anomaly-detection/detection-pipeline.svg" alt="Flow diagram. Readings from the plant's sensors and actuators across six stages, a recent window of each, go into the Graph Deviation Network, which gives every sensor a learned embedding, links it to the few sensors it most resembles, predicts each sensor's next reading from its neighbors and is trained on normal operation only. Two errors come out for each sensor: the prediction error, and a reconstruction error from a decoder, trained with GDN frozen, that rebuilds the recent window from GDN's internal features. Each error is normalized and smoothed over the last few steps, and the larger of the two is the per sensor score. An ensemble of several GDN models, differing in seed, number of neighbors and learning rate, averages its per sensor scores. The highest per sensor score is the score for the moment, a score above the threshold raises an alarm, and the alarm is explained: the top sensors are mapped to the six stages, a two hop search runs on the learned graph, and the Claude API writes the operator's alert." caption="How a moment of plant data becomes an explained alarm. GDN predicts each sensor from the sensors it most resembles, and the decoder adds a second error for attacks that are easy to predict, such as a slow ramp or a sensor stuck at one value. I leave out the learnable decision head, whose result is withdrawn. Drawn from the approach described below." width="678" height="546" />
 
 ## Approach
 
@@ -65,11 +71,13 @@ normal operation. Around it I built five pieces.
   the ultrafiltration stage to check. An interactive dashboard shows the
   results.
 
+<Figure src="/images/projects/water-anomaly-detection/operator-alert.webp" alt="An operator alert from my dashboard, written by the Claude API: ALERT: Chemical dosing pump P206 malfunction detected with system-wide impacts. Check P206 status immediately and verify chemical feed rates. Secondary check required on raw water pump P101 and backwash flow FIT601." caption="A plain language alert in my dashboard, written by the Claude API from the structured summary of the root cause analysis. It names the pump to check first and what to check after it. It comes from the thesis version of the pipeline, and the audit did not rerun the alerts, so it shows what an operator would read, not how often the alerts are right." width="664" height="184" />
+
 ## Architecture & Tech
 
 The pipeline is Python and PyTorch, and every run is driven by a
 configuration file and saved with its settings, so each result can be traced
-back to the run that produced it. It has six stages:
+back to the run that produced it. It has six steps:
 
 1. The GDN backbone, trained on normal data only.
 2. The frozen reconstruction decoder, trained after the backbone.
@@ -93,6 +101,8 @@ the test labels, ensemble members were picked by their test score, and the
 decision head was trained on labeled test data. So every number I had
 reported depended on test labels or test statistics. I rebuilt the
 evaluation and ran the work again, and the figures below come from that.
+
+<Figure src="/images/projects/water-anomaly-detection/evaluation-protocol.svg" alt="Diagram of the evaluation protocol. The attack free training file is cut by time: the first 80% trains the model, the next 10% picks the checkpoint and trains the decoder, and the last 10% is calibration data that sets the normalization and a label free threshold. The test file is used to compute the final metrics and, where a result says so, the normalization statistics. Two thresholds: the label free one, the largest score seen on calibration data, needs no labels; the Oracle threshold, the best F1 over every threshold, is found with the test labels and is an upper bound, not a deployable result. Three sources of normalization statistics: calibration data, from the training file only; past observations only, the calibration data plus the test readings before the moment being scored; and the whole test set, the original GDN code's convention, which sees readings after the moment it scores. The legend marks four kinds of box: no test data (the three parts of the training file and calibration normalization), needs no labels (the label free threshold), statistics from past observations only, and test labels or test statistics enter (the Oracle threshold and the whole test set)." caption="What clean means on this page. The model, the checkpoint and the decoder come from the attack free training file alone, and the label free threshold needs no labels. The dashed boxes mark where test labels or whole test set statistics enter: the Oracle threshold, found with the test labels, and normalization over the whole test set, the convention of the original GDN code. Normalization from past observations only uses test readings too, but only those before the moment being scored. Drawn from the protocol described below." width="678" height="580" />
 
 How the results are measured now:
 
@@ -120,6 +130,27 @@ How the results are measured now:
   convention of the original GDN code and of the papers that reuse it. It
   means the normalization has seen the entire test period, including
   readings after the moment it scores.
+
+<p className="mdx-table-caption" id="swat-results-caption">The results on SWaT under that protocol, each with the conditions it holds under; the list below discusses them. Oracle F1 is an upper bound on what the detector can do, not a deployable result, because finding its threshold uses the test labels.</p>
+
+<div className="mdx-table-scroll" role="region" aria-labelledby="swat-results-caption" tabIndex="0">
+<table aria-labelledby="swat-results-caption">
+<thead>
+<tr><th scope="col">Setup</th><th scope="col">Sensors scored</th><th scope="col">Normalization statistics</th><th scope="col">Metric</th><th scope="col">Result</th></tr>
+</thead>
+<tbody>
+<tr><td>Single model, GDN with my training changes, 20 seeds</td><td>All 51</td><td>Test statistics</td><td>Oracle F1</td><td>0.709 ± 0.101; 4 of 20 runs fail, with an Oracle F1 near 0.52</td></tr>
+<tr><td>Single model, constant sensors left out, 20 seeds</td><td>37</td><td>Test statistics</td><td>Oracle F1</td><td>0.760 ± 0.014; no run below 0.60</td></tr>
+<tr><td>The same 20 models</td><td>37</td><td>Past observations only</td><td>Oracle F1</td><td>0.593 ± 0.139</td></tr>
+<tr><td>The same 20 models</td><td>37</td><td>Calibration statistics</td><td>Oracle F1</td><td>0.431 ± 0.214</td></tr>
+<tr><td>With the decoder, trained until its loss stops falling</td><td>All 51</td><td>Test statistics</td><td>Oracle F1</td><td>0.77 to 0.78 ± 0.02; no failed run</td></tr>
+<tr><td>With the decoder</td><td>37</td><td>Test statistics</td><td>F1 at the label free threshold</td><td>0.752 ± 0.051</td></tr>
+<tr><td>Without the decoder</td><td>37</td><td>Test statistics</td><td>F1 at the label free threshold</td><td>0.418 ± 0.375</td></tr>
+<tr><td>Ensemble, averaging all 45 models in the pool</td><td>37</td><td>Test statistics</td><td>Oracle F1</td><td>0.779; at the Oracle threshold, detects 18 of 35 attack segments</td></tr>
+<tr><td>One member of the pool, over its 45 models</td><td>37</td><td>Test statistics</td><td>Oracle F1</td><td>0.766 ± 0.016; at the Oracle threshold, detects 11.0 attack segments on average</td></tr>
+</tbody>
+</table>
+</div>
 
 What holds on SWaT under that protocol:
 

@@ -12,9 +12,10 @@ import { SHELVES, type ShelfId } from "./shelves";
  * validated at build time — bad data fails the build, not the visitor.
  */
 
-const PROJECT_TAGS = ["ML", "Full-Stack", "Security", "CV"] as const;
+const PROJECT_TAGS = ["ML", "Full stack", "Security", "CV"] as const;
 
-const projectSchema = z.object({
+// Strict: a misspelled frontmatter key fails the build instead of vanishing.
+const projectSchema = z.strictObject({
   title: z.string().min(1),
   summary: z.string().min(1).max(160),
   role: z.string().min(1),
@@ -26,15 +27,20 @@ const projectSchema = z.object({
   kind: z.string().min(1).optional(),
   materials: z
     .array(
-      z.object({
+      z.strictObject({
         label: z.string().min(1),
-        href: z.string().regex(/^(\/|http)/, "href must start with / or http"),
+        href: z
+          .string()
+          .regex(
+            /^(\/(?!\/)|https?:\/\/)/,
+            "href must be a site path starting with a single / or a full http:// or https:// URL",
+          ),
         note: z.string().min(1).optional(),
       }),
     )
     .default([]),
   links: z
-    .object({
+    .strictObject({
       github: z.string().url().optional(),
       demo: z.string().url().optional(),
       paper: z.string().url().optional(),

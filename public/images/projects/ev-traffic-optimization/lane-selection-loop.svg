@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="418" viewBox="0 0 678 418" role="img" aria-labelledby="t">
+  <title id="t">How the lane policy learns: the A2C agent chooses a lane, SUMO moves the traffic, and the state and the reward come back to the agent</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .host { font-size: 14px; font-weight: 700; fill: #0c5d57; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .ctr { fill: #ffffff; stroke: #0f766e; stroke-opacity: .45; }
+    .main { fill: #eef6f5; stroke: #0f766e; stroke-width: 1.5; }
+  </style>
+  <rect width="678" height="418" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Agent -->
+  <rect class="main" x="40.5" y="0.5" width="278" height="104" rx="9"/>
+  <text class="host" x="54" y="24">A2C agent</text>
+  <text class="s" x="54" y="46">Reinforcement Learning based Lane</text>
+  <text class="s" x="54" y="64">Search, trained for 700,000 steps</text>
+  <text class="s" x="54" y="82">in Python and PyTorch</text>
+
+  <line x1="322" y1="52" x2="354" y2="52" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Action -->
+  <rect class="ctr" x="360.5" y="0.5" width="317" height="104" rx="7"/>
+  <text class="t" x="372" y="24">Action</text>
+  <text class="s" x="372" y="46">which lane the emergency vehicle</text>
+  <text class="s" x="372" y="64">should be in, decided again at</text>
+  <text class="s" x="372" y="82">every interval</text>
+
+  <line x1="519" y1="108" x2="519" y2="140" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- SUMO -->
+  <rect class="main" x="360.5" y="146.5" width="317" height="270" rx="9"/>
+  <text class="host" x="374" y="170">SUMO traffic simulator</text>
+  <text class="s" x="374" y="190">driven from Python through TraCI</text>
+  <text class="s" x="374" y="218">a 2 km one way stretch</text>
+  <text class="s" x="374" y="236">with four lanes</text>
+  <text class="s" x="374" y="264">normal traffic, or congestion made</text>
+  <text class="s" x="374" y="282">by slowing several vehicles at</text>
+  <text class="s" x="374" y="300">regular intervals</text>
+
+  <!-- State -->
+  <line x1="356" y1="212" x2="324" y2="212" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <rect class="box" x="40.5" y="146.5" width="278" height="132" rx="7"/>
+  <text class="t" x="54" y="170">State</text>
+  <text class="s" x="54" y="190">the vehicle directly ahead: the</text>
+  <text class="s" x="54" y="208">distance between them, their speed</text>
+  <text class="s" x="54" y="226">difference and its acceleration;</text>
+  <text class="s" x="54" y="244">the free space in each lane within</text>
+  <text class="s" x="54" y="262">V2V range</text>
+
+  <line x1="179" y1="143" x2="179" y2="111" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Reward -->
+  <line x1="356" y1="362" x2="324" y2="362" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <rect class="ctr" x="40.5" y="302.5" width="278" height="114" rx="7"/>
+  <text class="t" x="54" y="326">Reward</text>
+  <text class="s" x="54" y="346">distance covered in each interval</text>
+  <text class="s" x="54" y="364">against an empty road; the gap is</text>
+  <text class="s" x="54" y="382">squared, clipped, and summed over</text>
+  <text class="s" x="54" y="400">the trip for an episode score</text>
+
+  <polyline points="37,360 16,360 16,42 34,42" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+</svg>

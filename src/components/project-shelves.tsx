@@ -6,6 +6,8 @@ import { SHELVES, type ShelfId } from "@/lib/shelves";
 export type ShelfTab = {
   id: ShelfId;
   label: string;
+  /** The shelf's public name; shown above its panel when it differs from the tab label, and always without JavaScript. */
+  name: string;
   count: number;
   panel: React.ReactNode;
 };
@@ -18,15 +20,18 @@ export function ProjectShelves({ shelves }: { shelves: ShelfTab[] }) {
   const tabRefs = useRef<Partial<Record<ShelfId, HTMLButtonElement | null>>>({});
 
   useEffect(() => {
-    const fromHash = () => {
+    const fromHash = (onMount: boolean) => {
       const id = window.location.hash.slice(1);
       if (!isShelfId(id)) return;
       setActive(id);
+      // On a reload or Back the browser has already restored the scroll position; keep it.
+      if (onMount && window.scrollY !== 0) return;
       document.getElementById("projects")?.scrollIntoView();
     };
-    fromHash();
-    window.addEventListener("hashchange", fromHash);
-    return () => window.removeEventListener("hashchange", fromHash);
+    fromHash(true);
+    const onHashChange = () => fromHash(false);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
   const select = useCallback((id: ShelfId) => {
@@ -45,7 +50,7 @@ export function ProjectShelves({ shelves }: { shelves: ShelfTab[] }) {
     e.preventDefault();
     const id = shelves[next].id;
     select(id);
-    tabRefs.current[id]?.focus();
+    tabRefs.current[id]?.focus({ preventScroll: true });
   };
 
   return (
@@ -93,13 +98,27 @@ export function ProjectShelves({ shelves }: { shelves: ShelfTab[] }) {
           aria-labelledby={`tab-${s.id}`}
           hidden={s.id !== active}
         >
+          <p
+            data-shelf-name
+            className={`mb-3 text-sm text-muted ${s.name === s.label ? "hidden" : ""}`}
+          >
+            {s.name}
+          </p>
           {s.panel}
         </div>
       ))}
+      {/* Without JavaScript the tabs cannot work: hide the tab row and show
+          every panel under its shelf's name. Tailwind's preflight hides
+          [hidden] with !important inside @layer base, which outranks an
+          unlayered !important, so the override has to sit in that layer too. */}
       <noscript>
         <style
           dangerouslySetInnerHTML={{
-            __html: '[role="tabpanel"][hidden]{display:block !important}',
+            __html:
+              '@layer base{[role="tabpanel"][hidden]{display:block!important}}' +
+              '[role="tablist"]{display:none!important}' +
+              '[data-shelf-name]{display:block!important;margin-top:2rem;font-weight:600}' +
+              '[role="tablist"]+[role="tabpanel"] [data-shelf-name]{margin-top:0}',
           }}
         />
       </noscript>

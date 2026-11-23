@@ -1,4 +1,6 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { Figure, FigureRow } from "@/components/figure";
+import { Video } from "@/components/video";
 
 function ProseLink(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   const external = props.href?.startsWith("http");
@@ -12,6 +14,9 @@ function ProseLink(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
 
 const components = {
   a: ProseLink,
+  Figure,
+  FigureRow,
+  Video,
 };
 
 /** Renders a project's MDX body inside the v1 prose theme. */

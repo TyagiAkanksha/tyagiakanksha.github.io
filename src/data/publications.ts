@@ -32,7 +32,7 @@ export const publications: Publication[] = [
     pages: "134–143",
     doi: "10.5220/0012637200003702",
     doiUrl: "https://doi.org/10.5220/0012637200003702",
-    award: "Best Student Paper Award Nominee",
+    award: "Best Student Paper nominee",
     note: "Full paper, 21% full paper acceptance rate",
   },
 ];

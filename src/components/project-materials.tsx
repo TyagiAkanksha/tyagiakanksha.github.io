@@ -6,7 +6,8 @@ export function ProjectMaterials({ items }: { items: Project["materials"] }) {
 
   return (
     <section className="mt-12 border-t border-line pt-8">
-      <h2 className="font-display text-xl font-semibold tracking-tight">
+      {/* Same size and weight as the MDX body's h2 (prose h2 with the .prose-v1 overrides). */}
+      <h2 className="font-display text-2xl font-semibold tracking-[-0.01em]">
         Materials
       </h2>
       <ul className="mt-4 space-y-3">
@@ -15,14 +16,14 @@ export function ProjectMaterials({ items }: { items: Project["materials"] }) {
           return (
             <li
               key={`${item.href}|${item.label}`}
-              className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3"
+              className="flex flex-col gap-0.5"
             >
               <a
                 href={item.href}
                 {...(external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className="text-sm text-accent underline-offset-4 transition-colors hover:text-accent-strong hover:underline"
+                className="self-start text-sm text-accent underline-offset-4 transition-colors hover:text-accent-strong hover:underline"
               >
                 {item.label}
               </a>

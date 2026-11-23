@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="349" viewBox="0 0 678 349" role="img" aria-labelledby="t">
+  <title id="t">The inference pipeline, redrawn from my slide: start inference with python inference.py, load configs, build models, load weights, create the pipeline object, load dataset pairs, build prompts, load images and preprocess, run the PromptDresser pipeline, mask blending, save output, and optional evaluation</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-anchor: middle; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .start { fill: #e6e6e6; stroke: #555555; stroke-opacity: .45; }
+  </style>
+  <rect width="678" height="349" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+  <rect class="start" x="0.5" y="252.5" width="149" height="96" rx="7"/>
+  <text class="t" x="74.5" y="296">Start Inference</text>
+  <text class="s" x="74.5" y="314">python inference.py</text>
+  <rect class="box" x="0.5" y="126.5" width="149" height="96" rx="7"/>
+  <text class="t" x="74.5" y="170">1. Load Configs</text>
+  <text class="s" x="74.5" y="188">YAML + Args</text>
+  <rect class="box" x="0.5" y="0.5" width="149" height="96" rx="7"/>
+  <text class="t" x="74.5" y="35">2. Build Models</text>
+  <text class="s" x="74.5" y="53">VAE, UNet, Text Enc,</text>
+  <text class="s" x="74.5" y="71">Cloth Enc, Scheduler</text>
+  <rect class="box" x="176.5" y="0.5" width="149" height="96" rx="7"/>
+  <text class="t" x="250.5" y="44">Load Weights</text>
+  <text class="s" x="250.5" y="62">.safetensors</text>
+  <rect class="box" x="176.5" y="126.5" width="149" height="96" rx="7"/>
+  <text class="t" x="250.5" y="161">Create Pipeline</text>
+  <text class="t" x="250.5" y="179">Object</text>
+  <text class="s" x="250.5" y="197">PromptDresser()</text>
+  <rect class="box" x="176.5" y="252.5" width="149" height="96" rx="7"/>
+  <text class="t" x="250.5" y="278">3. Load Dataset</text>
+  <text class="t" x="250.5" y="296">Pairs</text>
+  <text class="s" x="250.5" y="314">test_pairs +</text>
+  <text class="s" x="250.5" y="332">test_gpt4o.json</text>
+  <rect class="box" x="352.5" y="252.5" width="149" height="96" rx="7"/>
+  <text class="t" x="426.5" y="296">Build Prompts</text>
+  <text class="s" x="426.5" y="314">(full + clothing)</text>
+  <rect class="box" x="352.5" y="126.5" width="149" height="96" rx="7"/>
+  <text class="t" x="426.5" y="152">4. Load Images +</text>
+  <text class="t" x="426.5" y="170">Preprocess</text>
+  <text class="s" x="426.5" y="188">person, mask,</text>
+  <text class="s" x="426.5" y="206">pose, cloth</text>
+  <rect class="box" x="352.5" y="0.5" width="149" height="96" rx="7"/>
+  <text class="t" x="426.5" y="17">5. Run</text>
+  <text class="t" x="426.5" y="35">PromptDresser</text>
+  <text class="t" x="426.5" y="53">Pipeline</text>
+  <text class="s" x="426.5" y="71">latent creation +</text>
+  <text class="s" x="426.5" y="89">UNet + VAE</text>
+  <rect class="box" x="528.5" y="0.5" width="149" height="96" rx="7"/>
+  <text class="t" x="602.5" y="35">6. Mask Blending</text>
+  <text class="s" x="602.5" y="53">preserve face +</text>
+  <text class="s" x="602.5" y="71">hair + background</text>
+  <rect class="box" x="528.5" y="126.5" width="149" height="96" rx="7"/>
+  <text class="t" x="602.5" y="161">Save Output</text>
+  <text class="s" x="602.5" y="179">JPG in</text>
+  <text class="s" x="602.5" y="197">sampled_images/</text>
+  <rect class="box" x="528.5" y="252.5" width="149" height="96" rx="7"/>
+  <text class="t" x="602.5" y="278">Evaluation</text>
+  <text class="t" x="602.5" y="296">(optional)</text>
+  <text class="s" x="602.5" y="314">PSNR/SSIM if</text>
+  <text class="s" x="602.5" y="332">GT exists</text>
+  <line x1="74.5" y1="249.5" x2="74.5" y2="226.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="74.5" y1="123.5" x2="74.5" y2="100.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="152.5" y1="48" x2="172.5" y2="48" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="250.5" y1="100" x2="250.5" y2="122.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="250.5" y1="226" x2="250.5" y2="248.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="328.5" y1="300" x2="348.5" y2="300" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="426.5" y1="249.5" x2="426.5" y2="226.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="426.5" y1="123.5" x2="426.5" y2="100.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="504.5" y1="48" x2="524.5" y2="48" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="602.5" y1="100" x2="602.5" y2="122.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="602.5" y1="226" x2="602.5" y2="248.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+</svg>

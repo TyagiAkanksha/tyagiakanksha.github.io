@@ -3,7 +3,7 @@ export type SkillGroup = {
   skills: string[];
 };
 
-// Mirrors the master resume's eight groups, in its order and wording (updated Nov 2026); eight fills the two column grid evenly.
+// The master resume's eight skill groups, in its order (Nov 2026), with items written in the site's voice; eight fills the two column grid evenly.
 export const skillGroups: SkillGroup[] = [
   {
     label: "Languages",
@@ -28,7 +28,7 @@ export const skillGroups: SkillGroup[] = [
       "Stable Diffusion XL",
       "Hugging Face diffusers and transformers",
       "scikit-learn",
-      "Gym-style RL environments",
+      "Gym style RL environments",
       "Google Colab",
     ],
   },

@@ -23,6 +23,8 @@ a power generation system, whose inputs are configuration files full of
 frequency and RPM settings. We wanted a fuzzer that learns which settings
 are worth mutating, and how.
 
+<Figure src="/images/projects/rl-guided-fuzzing/fuzzing-loop.svg" alt="Flow diagram. The A2C agent, in which an actor network chooses the action, a critic network estimates how good the current state is and the advantage steers each update, chooses an action on every step: a mutation and the parameter it applies to, from six mutators: flip one bit, flip several bits, replace a byte, erase a byte, insert a random byte, shuffle the bytes. The fuzzing harness applies the mutation to the configuration, runs the target program, the control software of a power generation system, measures code coverage and checks for a crash. The configuration gives the state: 40 parameters read from the target's configuration files, 20 frequency settings and 20 RPM settings such as setpoints, offsets, limits and error ranges, which the agent sees. The reward, which combines whether the input crashed with how much of the code it covered, with a crash counting far more than coverage, goes back to the agent." caption="One step of the fuzzer's loop. The agent picks both the mutator and the parameter it applies to, where a traditional fuzzer picks the parameter at random, and the reward for crashes and coverage is how it learns which settings are worth mutating, and how. Drawn from the approach described below." width="678" height="442" />
+
 ## Approach
 
 We framed fuzzing as a Markov decision process and solved it with
@@ -36,7 +38,7 @@ let it learn.
 - **The actions.** A multi-discrete action space, so on every step the agent
   chooses both the mutation and the parameter it applies to. Traditional
   fuzzers apply mutations to parameters picked at random. Letting the agent
-  pick the target is the new part, and it cuts down on wasted mutations.
+  pick the target is the new part, and it is meant to cut down on wasted mutations.
 - **The mutators.** The agent chooses from six mutators: flip one bit, flip
   several bits, replace a byte, erase a byte, insert a random byte, and
   shuffle the bytes.

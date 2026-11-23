@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="452" viewBox="0 0 678 452" role="img" aria-labelledby="t">
+  <title id="t">How PromptDresser produces a try-on: a large multimodal model turns the person and garment photos into attributes that become text prompts, the editing mask is generated from the prompt, and Stable Diffusion XL encodes the images, denoises the masked region with a U-Net that reads the prompts and the garment's features, then decodes and blends the result back so only the clothing changes</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .lab { font-size: 13px; font-weight: 600; fill: #0c5d57; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .net { fill: #eef6f5; stroke: #0f766e; stroke-width: 1.5; }
+  </style>
+  <rect width="678" height="452" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1: the inputs and what PromptDresser adds -->
+  <rect class="box" x="0.5" y="0.5" width="120" height="170" rx="7"/>
+  <text class="t" x="12" y="24">Two photos</text>
+  <text class="s" x="12" y="44">one of a person</text>
+  <text class="s" x="12" y="62">and one of a</text>
+  <text class="s" x="12" y="80">garment</text>
+
+  <line x1="124" y1="85" x2="142" y2="85" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="146.5" y="0.5" width="170" height="170" rx="7"/>
+  <text class="t" x="158" y="24">Large multimodal</text>
+  <text class="t" x="158" y="42">model</text>
+  <text class="s" x="158" y="62">describes the person</text>
+  <text class="s" x="158" y="80">and the garment as</text>
+  <text class="s" x="158" y="98">a set of attributes,</text>
+  <text class="s" x="158" y="116">such as body shape,</text>
+  <text class="s" x="158" y="134">pose, fit, sleeves</text>
+  <text class="s" x="158" y="152">and tucking style</text>
+
+  <line x1="320" y1="85" x2="338" y2="85" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="342.5" y="0.5" width="140" height="170" rx="7"/>
+  <text class="t" x="354" y="24">Text prompts</text>
+  <text class="s" x="354" y="44">those attributes</text>
+  <text class="s" x="354" y="62">become text</text>
+  <text class="s" x="354" y="80">prompts. Change a</text>
+  <text class="s" x="354" y="98">word, from tucked</text>
+  <text class="s" x="354" y="116">in to untucked,</text>
+  <text class="s" x="354" y="134">and the output</text>
+  <text class="s" x="354" y="152">changes with it</text>
+
+  <line x1="486" y1="85" x2="504" y2="85" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="507.5" y="0.5" width="170" height="170" rx="7"/>
+  <text class="t" x="519" y="24">Editing mask</text>
+  <text class="s" x="519" y="44">generated from the</text>
+  <text class="s" x="519" y="62">prompt, so the region</text>
+  <text class="s" x="519" y="80">being repainted can</text>
+  <text class="s" x="519" y="98">grow or shrink to fit</text>
+  <text class="s" x="519" y="116">the new style</text>
+
+  <!-- Into row 2 -->
+  <line x1="60.5" y1="174" x2="60.5" y2="226" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M412.5 174 V192 H230.5 V226" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M592.5 174 V206 H270.5 V226" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Row 2: Stable Diffusion XL and its inpainting variant -->
+  <rect class="box" x="0.5" y="230.5" width="146" height="150" rx="7"/>
+  <text class="t" x="12" y="254">Encode</text>
+  <text class="s" x="12" y="274">the images into a</text>
+  <text class="s" x="12" y="292">compact latent</text>
+  <text class="s" x="12" y="310">space</text>
+
+  <line x1="150" y1="305" x2="172" y2="305" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="177.5" y="230.5" width="146" height="150" rx="7"/>
+  <text class="t" x="189" y="254">U-Net</text>
+  <text class="s" x="189" y="274">denoises the</text>
+  <text class="s" x="189" y="292">masked region</text>
+  <text class="s" x="189" y="310">while reading</text>
+  <text class="s" x="189" y="328">the prompts and</text>
+  <text class="s" x="189" y="346">features of the</text>
+  <text class="s" x="189" y="364">garment photo</text>
+
+  <line x1="327" y1="305" x2="349" y2="305" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="354.5" y="230.5" width="146" height="150" rx="7"/>
+  <text class="t" x="366" y="254">Decode and</text>
+  <text class="t" x="366" y="272">blend back</text>
+  <text class="s" x="366" y="292">so only the</text>
+  <text class="s" x="366" y="310">clothing changes</text>
+
+  <line x1="504" y1="305" x2="526" y2="305" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="531.5" y="230.5" width="146" height="150" rx="7"/>
+  <text class="t" x="543" y="254">The output</text>
+  <text class="s" x="543" y="274">that person</text>
+  <text class="s" x="543" y="292">wearing the</text>
+  <text class="s" x="543" y="310">garment, keeping</text>
+  <text class="s" x="543" y="328">their face, hair,</text>
+  <text class="s" x="543" y="346">pose and</text>
+  <text class="s" x="543" y="364">background</text>
+
+  <text class="lab" x="0" y="404">Stable Diffusion XL and its inpainting variant</text>
+
+  <!-- Legend -->
+  <rect class="net" x="0.5" y="428.5" width="22" height="16" rx="4"/>
+  <text class="s" x="32" y="441">what PromptDresser adds: text, and a mask generated from the prompt</text>
+</svg>

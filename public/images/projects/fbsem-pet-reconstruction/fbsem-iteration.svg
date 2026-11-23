@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="532" viewBox="0 0 678 532" role="img" aria-labelledby="t">
+  <title id="t">How FBSEM reconstructs a PET image: starting from OSEM, each iteration has a small convolutional network denoise the current image, an EM update pull it back toward the measured data, and a fusion step weigh the two; the iterations reuse the same parameters, and training minimizes the mean squared error against the high dose images</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .lab { font-size: 13px; font-weight: 600; fill: #0c5d57; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .net { fill: #eef6f5; stroke: #0f766e; stroke-width: 1.5; }
+    .group { fill: none; stroke: #0f766e; stroke-opacity: .55; stroke-dasharray: 6 5; }
+  </style>
+  <rect width="678" height="532" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Measured data, above the iteration -->
+  <rect class="box" x="306.5" y="0.5" width="160" height="72" rx="7"/>
+  <text class="t" x="318" y="24">Measured data</text>
+  <text class="s" x="318" y="44">raw detector data,</text>
+  <text class="s" x="318" y="62">noisy at low dose</text>
+  <line x1="386.5" y1="76" x2="386.5" y2="116" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- One iteration -->
+  <rect class="group" x="150.5" y="96.5" width="486" height="300" rx="10"/>
+  <text class="lab" x="166" y="122">Each iteration</text>
+
+  <rect class="box" x="0.5" y="190.5" width="124" height="80" rx="7"/>
+  <text class="t" x="12" y="214">Starting image</text>
+  <text class="s" x="12" y="234">10 iterations of</text>
+  <text class="s" x="12" y="252">OSEM</text>
+  <line x1="128" y1="230.5" x2="162" y2="230.5" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="166.5" y="200.5" width="110" height="60" rx="7"/>
+  <text class="t" x="178" y="224">Current</text>
+  <text class="t" x="178" y="242">image</text>
+
+  <path d="M280 220.5 H292 V165.5 H302" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M280 240.5 H292 V295.5 H302" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="306.5" y="120.5" width="160" height="90" rx="7"/>
+  <text class="t" x="318" y="144">EM update</text>
+  <text class="s" x="318" y="164">pulls it back toward</text>
+  <text class="s" x="318" y="182">what the scanner</text>
+  <text class="s" x="318" y="200">actually measured</text>
+
+  <rect class="net" x="306.5" y="240.5" width="160" height="110" rx="7"/>
+  <text class="t" x="318" y="264">Learned prior</text>
+  <text class="s" x="318" y="284">a small</text>
+  <text class="s" x="318" y="302">convolutional</text>
+  <text class="s" x="318" y="320">network denoises</text>
+  <text class="s" x="318" y="338">the current image</text>
+
+  <path d="M470 165.5 H482 V215.5 H492" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <path d="M470 295.5 H482 V245.5 H492" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="496.5" y="190.5" width="124" height="80" rx="7"/>
+  <text class="t" x="508" y="214">Fusion</text>
+  <text class="s" x="508" y="234">weighs the two</text>
+
+  <!-- Loop back: next iteration -->
+  <path d="M558.5 274 V372 H221.5 V266" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <text class="s" x="232" y="390">next iteration, with the same parameters at every step</text>
+
+  <!-- Out of the last iteration -->
+  <path d="M624 230.5 H652 V448.5 H630" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="446.5" y="416.5" width="180" height="64" rx="7"/>
+  <text class="t" x="458" y="444">Reconstructed</text>
+  <text class="t" x="458" y="462">image</text>
+
+  <line x1="443" y1="448.5" x2="404" y2="448.5" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#a)"/>
+
+  <rect class="box" x="0.5" y="416.5" width="398" height="64" rx="7"/>
+  <text class="t" x="12" y="437">Training</text>
+  <text class="s" x="12" y="456">minimizes the mean squared error against</text>
+  <text class="s" x="12" y="476">the high dose images</text>
+
+  <!-- Legend -->
+  <rect class="net" x="0.5" y="504.5" width="22" height="16" rx="4"/>
+  <text class="s" x="32" y="517">learned: FBSEM keeps the physics of the scanner and learns only the prior</text>
+</svg>

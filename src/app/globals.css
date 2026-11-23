@@ -134,3 +134,45 @@ body {
   border: none;
   padding: 0;
 }
+
+/* Tables written as plain HTML in project MDX. MDX does not pass literal
+   JSX tags such as <table> through the components map, so they are styled
+   here: the wrapper scrolls sideways on a phone and the page never does. */
+.prose-v1 .mdx-table-caption {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.prose-v1 .mdx-table-scroll {
+  overflow-x: auto;
+  margin: 0 0 2rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+}
+
+.prose-v1 .mdx-table-scroll table {
+  margin: 0;
+  min-width: 40rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.prose-v1 .mdx-table-scroll th,
+.prose-v1 .mdx-table-scroll td {
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+.prose-v1 .mdx-table-scroll thead th {
+  font-family: var(--font-quicksand), sans-serif;
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--surface);
+}
+
+.prose-v1 .mdx-table-scroll td:last-child {
+  font-variant-numeric: tabular-nums;
+}

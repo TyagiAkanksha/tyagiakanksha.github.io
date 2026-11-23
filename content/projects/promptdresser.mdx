@@ -39,6 +39,8 @@ better image quality than earlier try-on methods in most of their tests, and
 closer agreement with the text. Those results are the paper's; we used the
 released weights and did not retrain the model.
 
+<Figure src="/images/projects/promptdresser/try-on-flow.svg" alt="Flow diagram in two rows. Top row: two photos, one of a person and one of a garment, go to a large multimodal model, which describes the person and the garment as a set of attributes, such as body shape, pose, fit, sleeves and tucking style. Those attributes become text prompts; change a word, from tucked in to untucked, and the output changes with it. The editing mask is generated from the prompt, so the region being repainted can grow or shrink to fit the new style. Bottom row, labelled Stable Diffusion XL and its inpainting variant: encode the images into a compact latent space; a U-Net denoises the masked region while reading the prompts and features of the garment photo; decode and blend back so only the clothing changes; the output is that person wearing the garment, keeping their face, hair, pose and background. Arrows carry the text prompts and the editing mask down into the U-Net. A legend marks the large multimodal model, the text prompts and the editing mask as what PromptDresser adds." caption="How PromptDresser produces a try-on. The text prompt enters in two places: the U-Net reads it while it repaints, and the editing mask is generated from it. The method is the paper's. Drawn from the text on this page." width="678" height="452" />
+
 ## What we reproduced
 
 We were a team of three in an MS deep learning course. We ran the authors'
@@ -48,6 +50,8 @@ test pair the code needs more than the two photos: a clothing mask, a mask of
 the region to repaint, pose keypoints, a body part segmentation and a
 DensePose map of the body's surface, plus a text prompt for the person and
 one for the garment.
+
+<Figure src="/images/projects/promptdresser/garment-and-clothing-mask.webp" alt="Two images side by side. Left: a black long sleeved top photographed on its own against a light grey background, with no person. Right: the clothing mask of the same top, a solid white shape of the garment on black." caption="One garment from the test set as the code receives it: the garment photo and its clothing mask, two of the inputs listed above. Images from VITON-HD." width="784" height="512" />
 
 ## My part
 
@@ -65,6 +69,8 @@ moved through it, and for the live demo.
   builds the prompts, runs the model and saves the result.
 - I built a Gradio web app for the live demo, where a user can change the
   tucking, fit or sleeve attributes in the prompt and see the result.
+
+<Figure src="/images/projects/promptdresser/inference-pipeline.svg" alt="Flow diagram in four columns of three boxes, redrawn from my slide. In order: start inference with python inference.py; load configs, YAML and args; build models, the VAE, UNet, text encoder, cloth encoder and scheduler; load weights from safetensors files; create the pipeline object, PromptDresser(); load the dataset pairs and their prompt file; build prompts, full and clothing; load images and preprocess the person, mask, pose and cloth; run the PromptDresser pipeline, latent creation, UNet and VAE; mask blending to preserve face, hair and background; save output as a JPG in sampled_images; and an optional evaluation, PSNR and SSIM if a ground truth image exists." caption="The inference pipeline I put together: it loads the configs, models and weights, builds the prompts for each person and garment pair, runs the model, blends the result back with the mask and saves it. Redrawn from my slide, with its labels." width="678" height="349" />
 
 ## What we found
 

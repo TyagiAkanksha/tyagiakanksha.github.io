@@ -134,6 +134,7 @@ export default function Home() {
             shelves={SHELVES.map((shelf) => ({
               id: shelf.id,
               label: shelf.tab,
+              name: shelf.name,
               count: byShelf[shelf.id].length,
               panel: (
                 <ProjectEntryList

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="580" viewBox="0 0 678 580" role="img" aria-labelledby="t">
+  <title id="t">The evaluation protocol after the audit: the attack free training file cut by time into three parts, the test file used for the final metrics, the two places where test labels or whole test set statistics enter a reported figure, and normalization from past observations only, which uses test readings too, but only those before the moment being scored</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .h { font-size: 13px; font-weight: 600; fill: #555555; letter-spacing: .02em; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .tag { font-size: 13px; font-weight: 600; fill: #333333; }
+    .bar-t { font-size: 14px; font-weight: 600; fill: #ffffff; }
+    .bar-s { font-size: 13px; fill: #ffffff; }
+    .clean { fill: #eef6f5; stroke: #0f766e; stroke-width: 1.5; }
+    .nolab { fill: #ffffff; stroke: #0f766e; stroke-width: 1.5; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .test { fill: #f9f9f9; stroke: #333333; stroke-width: 1.5; stroke-dasharray: 6 4; }
+  </style>
+  <rect width="678" height="580" fill="#ffffff"/>
+
+  <!-- Training file -->
+  <text class="h" x="0" y="15">Attack free training file, cut by time</text>
+  <rect x="0" y="26" width="678" height="34" rx="6" fill="#0f766e"/>
+  <line x1="542" y1="26" x2="542" y2="60" stroke="#ffffff" stroke-width="2"/>
+  <line x1="610" y1="26" x2="610" y2="60" stroke="#ffffff" stroke-width="2"/>
+  <text class="bar-t" x="12" y="48">80%</text>
+  <text class="bar-t" x="576" y="48" text-anchor="middle">10%</text>
+  <text class="bar-t" x="644" y="48" text-anchor="middle">10%</text>
+
+  <line x1="140" y1="60" x2="140" y2="84" stroke="#0f766e" stroke-width="1.5"/>
+  <polyline points="576,60 576,72 393,72 393,84" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+  <polyline points="644,60 644,72 591,72 591,84" fill="none" stroke="#0f766e" stroke-width="1.5"/>
+
+  <rect class="clean" x="0.5" y="84.5" width="281" height="92" rx="7"/>
+  <text class="t" x="12" y="108">First 80%</text>
+  <text class="s" x="12" y="128">trains the model</text>
+
+  <rect class="clean" x="305.5" y="84.5" width="175" height="92" rx="7"/>
+  <text class="t" x="317" y="108">Next 10%</text>
+  <text class="s" x="317" y="128">picks the checkpoint</text>
+  <text class="s" x="317" y="146">and trains the decoder</text>
+
+  <rect class="clean" x="504.5" y="84.5" width="173" height="92" rx="7"/>
+  <text class="t" x="516" y="108">Last 10%</text>
+  <text class="s" x="516" y="128">calibration data: sets</text>
+  <text class="s" x="516" y="146">the normalization and</text>
+  <text class="s" x="516" y="164">a label free threshold</text>
+
+  <!-- Test file -->
+  <text class="h" x="0" y="207">Test file</text>
+  <rect x="0" y="218" width="678" height="34" rx="6" fill="#555555"/>
+  <text class="bar-s" x="12" y="240">used to compute the final metrics and, where a result says so, the normalization statistics</text>
+
+  <!-- Threshold -->
+  <text class="h" x="0" y="282">Threshold</text>
+  <rect class="nolab" x="0.5" y="292.5" width="329" height="74" rx="7"/>
+  <text class="t" x="12" y="316">Label free</text>
+  <text class="s" x="12" y="336">the largest score seen on calibration</text>
+  <text class="s" x="12" y="354">data, so it needs no labels</text>
+
+  <rect class="test" x="0.75" y="378.75" width="328.5" height="92.5" rx="7"/>
+  <text class="t" x="12" y="402">Oracle</text>
+  <text class="tag" x="318" y="402" text-anchor="end">uses test labels</text>
+  <text class="s" x="12" y="422">the best F1 over every threshold,</text>
+  <text class="s" x="12" y="440">found with the test labels: an upper</text>
+  <text class="s" x="12" y="458">bound, not a deployable result</text>
+
+  <!-- Normalization -->
+  <text class="h" x="348" y="282">Normalization statistics</text>
+  <rect class="clean" x="348.5" y="292.5" width="329" height="56" rx="7"/>
+  <text class="t" x="360" y="316">Calibration data</text>
+  <text class="s" x="360" y="336">from the training file only</text>
+
+  <rect class="box" x="348.5" y="358.5" width="329" height="74" rx="7"/>
+  <text class="t" x="360" y="382">Past observations only</text>
+  <text class="s" x="360" y="402">calibration data plus the test readings</text>
+  <text class="s" x="360" y="420">before the moment being scored</text>
+
+  <rect class="test" x="348.75" y="442.75" width="328.5" height="74.5" rx="7"/>
+  <text class="t" x="360" y="466">Whole test set</text>
+  <text class="tag" x="666" y="466" text-anchor="end">uses test statistics</text>
+  <text class="s" x="360" y="486">the original GDN code's convention; it</text>
+  <text class="s" x="360" y="504">sees readings after the moment it scores</text>
+
+  <!-- Legend -->
+  <rect class="clean" x="0.75" y="532.75" width="30" height="18" rx="3"/>
+  <text class="s" x="38" y="546">no test data</text>
+  <rect class="nolab" x="348.75" y="532.75" width="30" height="18" rx="3"/>
+  <text class="s" x="386" y="546">needs no labels</text>
+  <rect class="box" x="0.75" y="558.75" width="30" height="18" rx="3"/>
+  <text class="s" x="38" y="572">statistics from past observations only</text>
+  <rect class="test" x="348.75" y="558.75" width="30" height="18" rx="3"/>
+  <text class="s" x="386" y="572">test labels or test statistics enter</text>
+</svg>

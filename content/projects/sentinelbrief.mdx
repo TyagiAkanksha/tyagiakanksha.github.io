@@ -3,8 +3,8 @@ title: "SentinelBrief: AI Security Alert Triage Platform"
 summary: "Turns live SSH honeypot sessions into prioritized security alerts with severity, reasoning, and recommended actions, backed by a measured evaluation harness."
 role: "Full Stack AI Engineer · Independent project"
 dates: "Jul 2026 – Present"
-tech: ["Python", "FastAPI", "PostgreSQL", "Redis", "ARQ", "Next.js", "TypeScript", "OpenAI", "Docker", "AWS"]
-tags: ["Security", "Full-Stack", "ML"]
+tech: ["Python", "FastAPI", "PostgreSQL", "Redis", "ARQ", "Next.js", "TypeScript", "Claude API", "Docker", "AWS"]
+tags: ["Security", "Full stack", "ML"]
 links:
   demo: "https://sentinelbrief.tyagiakanksha.com/"
   github: "https://github.com/TyagiAkanksha/SentinelBrief"
@@ -22,12 +22,16 @@ part deserves a closer look. An analyst reading that stream by hand
 either falls behind or stops looking. What they need is a short, ranked
 queue where every entry explains itself.
 
+<Figure src="/images/projects/sentinelbrief/alert-flow.svg" alt="Flow diagram. A Cowrie honeypot host in its own AWS VPC runs a shipper that signs each session with HMAC and keeps a disk spool, retries and a dead letter folder. It posts to the FastAPI ingest, which verifies the signature, drops duplicates, stores the alert and returns right away, then enqueues it for a Redis and ARQ worker. In the worker a triage agent with five enrichment tools works for at most six steps, and a fast model sees every alert first and hands high severity or low confidence alerts to a stronger model, which gets the same evidence but not the first verdict. Verdicts and every tool call go to PostgreSQL. The public Next.js dashboard reads them only through public read endpoints that are rate limited per IP, live over Server-Sent Events with polling every 30 seconds if the stream drops." caption="How one honeypot session becomes a ranked alert. Ingestion only verifies, deduplicates and stores, so it never waits on a model. All model work happens in the worker, and the dashboard only reads. Drawn from the architecture described below." width="678" height="380" />
+
 ## Approach
 
 SentinelBrief sits between the honeypot and the analyst. It ingests real
 SSH sessions, lets a model gather context through tool calls, and
 publishes a verdict for each session with a severity, a category, a
 confidence score, written reasoning, and a recommended action.
+
+<Figure src="/images/projects/sentinelbrief/alert-verdict.webp" alt="One alert's verdict on the SentinelBrief dashboard: severity S4, category successful_intrusion, confidence 80%, escalate yes. The reasoning says the source logged in as root with the weak password 111111 on the first attempt, that no commands, downloads or uploads were recorded, and that the SSH-2.0-Go banner suggests an automated tool. It cites the address's reputation as a known malicious scanner and keeps severity at 4 because of the login itself. The recommended action is to escalate for review, block or monitor the address, which is greyed out, and watch for reuse of the credential." caption="One alert opened on the live dashboard. The verdict carries a severity, a category, a confidence score, written reasoning and a recommended action, and the reasoning draws on what the model found through its tools, here the session's commands and the address's reputation. The attacker's address is greyed out." width="1356" height="800" />
 
 The human always decides. Nothing in the system blocks an address,
 isolates a host, or answers an attacker. It only ranks and explains.
@@ -64,8 +68,12 @@ cost, and latency.
 
 A fast model handles every alert first. When it reports a high severity or
 a low confidence, the alert goes to a stronger model, which sees the same
-evidence but not the first verdict, so it is not anchored by it. Every tool
-call is stored as a reviewable trace.
+evidence but not the first verdict, so it is not anchored by it. The model
+client sits behind one interface with two providers: triage launched on
+OpenAI models and now runs on Claude Haiku 5.5, escalating to
+Claude Sonnet 5.5. Every tool call is stored as a reviewable trace.
+
+<Figure src="/images/projects/sentinelbrief/alert-routing-trace.webp" alt="The routing panel and tool trace for the same alert. Primary model claude-haiku-5-5, final model claude-sonnet-5-5, escalated to strong model yes, prompt version triage-v4, followed by input and output tokens, cost, latency and the verdict time. The tool trace starts with call 0, get_session_commands, with its session ID argument greyed out and the start of a result listing no commands and no downloads." caption="Further down the same alert page. This alert was escalated, so the routing panel names both the fast model that saw it first, claude-haiku-5-5, and the stronger model that gave the final verdict, claude-sonnet-5-5, with the tokens, cost and latency recorded for it. Below that is the first tool call the agent made, with its arguments and the start of its result. The session ID is greyed out." width="1356" height="1228" />
 
 Triage is idempotent. Jobs have deterministic IDs, the alert row is locked
 while it is triaged, and retries are bounded. Integration tests on real
@@ -78,6 +86,8 @@ it live over Server-Sent Events, and if the stream drops it falls back to
 polling every 30 seconds. Each alert page shows its recorded tool calls.
 Every public read endpoint is rate limited per IP address, with the
 counters kept in Redis.
+
+<Figure src="/images/projects/sentinelbrief/alert-queue.webp" alt="The alert queue on the live dashboard, sorted by severity: an S4 successful_intrusion, four S2 brute_force and two S1 scanning alerts, each with the start of its written reasoning and how long ago it arrived." caption="The queue an analyst reads, sorted by severity, so a successful login sits above failed logins and bare scans, and every row starts its own explanation. The source address and sensor columns are left out of this capture, and in one row an attacker's address and a session ID are greyed out." width="1356" height="874" />
 
 The stack runs on AWS EC2 with Docker Compose behind Caddy, with images in
 ECR, secrets in SSM Parameter Store, and IAM deny policies. PostgreSQL is

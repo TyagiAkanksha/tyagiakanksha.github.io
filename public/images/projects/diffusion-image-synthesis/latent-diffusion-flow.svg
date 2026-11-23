@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="432" viewBox="0 0 678 432" role="img" aria-labelledby="t">
+  <title id="t">How our latent diffusion model works: an autoencoder compresses a face image into a small latent, a U-Net removes noise from the latent step by step while reading the caption's embeddings through cross attention, and the decoder turns the latent back into a face</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .lab { font-size: 13px; font-weight: 600; fill: #0c5d57; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .net { fill: #eef6f5; stroke: #0f766e; stroke-width: 1.5; }
+  </style>
+  <rect width="678" height="432" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1: the caption becomes embeddings -->
+  <rect class="box" x="177.5" y="0.5" width="146" height="100" rx="7"/>
+  <text class="t" x="189" y="24">Caption</text>
+  <text class="s" x="189" y="44">words describing</text>
+  <text class="s" x="189" y="62">the face</text>
+
+  <line x1="327" y1="50" x2="349" y2="50" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="354.5" y="0.5" width="146" height="100" rx="7"/>
+  <text class="t" x="366" y="24">Text encoders</text>
+  <text class="s" x="366" y="44">BERT and the CLIP</text>
+  <text class="s" x="366" y="62">ViT-L/14 text</text>
+  <text class="s" x="366" y="80">model, frozen</text>
+
+  <line x1="504" y1="50" x2="526" y2="50" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="531.5" y="0.5" width="146" height="100" rx="7"/>
+  <text class="t" x="543" y="24">Embeddings</text>
+  <text class="s" x="543" y="44">of the caption</text>
+
+  <line x1="604.5" y1="104" x2="604.5" y2="144" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <text class="lab" x="594" y="122" text-anchor="end">cross attention,</text>
+  <text class="lab" x="594" y="139" text-anchor="end">at each step</text>
+
+  <!-- Row 2: image to latent to U-Net -->
+  <rect class="box" x="0.5" y="150.5" width="146" height="130" rx="7"/>
+  <text class="t" x="12" y="174">Face image</text>
+  <text class="s" x="12" y="194">256 by 256 pixels;</text>
+  <text class="s" x="12" y="212">during training</text>
+  <text class="s" x="12" y="230">only</text>
+
+  <line x1="150" y1="215" x2="172" y2="215" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="177.5" y="150.5" width="146" height="130" rx="7"/>
+  <text class="t" x="189" y="174">Autoencoder</text>
+  <text class="t" x="189" y="192">encoder</text>
+  <text class="s" x="189" y="212">KL, downsamples</text>
+  <text class="s" x="189" y="230">by 8 to a 32 by 32</text>
+  <text class="s" x="189" y="248">latent with</text>
+  <text class="s" x="189" y="266">4 channels</text>
+
+  <line x1="327" y1="215" x2="349" y2="215" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="354.5" y="150.5" width="146" height="130" rx="7"/>
+  <text class="t" x="366" y="174">Noisy latent</text>
+  <text class="s" x="366" y="194">training: buried</text>
+  <text class="s" x="366" y="212">under Gaussian</text>
+  <text class="s" x="366" y="230">noise step by step;</text>
+  <text class="s" x="366" y="248">generating: pure</text>
+  <text class="s" x="366" y="266">noise</text>
+
+  <line x1="504" y1="215" x2="526" y2="215" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="531.5" y="150.5" width="146" height="130" rx="7"/>
+  <text class="t" x="543" y="174">U-Net</text>
+  <text class="s" x="543" y="194">predicts and</text>
+  <text class="s" x="543" y="212">removes a little</text>
+  <text class="s" x="543" y="230">of the noise at</text>
+  <text class="s" x="543" y="248">each step</text>
+
+  <text class="lab" x="12" y="374">Diffusion runs in the latent space:</text>
+  <text class="lab" x="12" y="392">the noisy latent and the U-Net</text>
+
+  <line x1="604.5" y1="284" x2="604.5" y2="324" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Row 3: latent back to a face -->
+  <rect class="box" x="531.5" y="330.5" width="146" height="100" rx="7"/>
+  <text class="t" x="543" y="354">Autoencoder</text>
+  <text class="t" x="543" y="372">decoder</text>
+  <text class="s" x="543" y="392">decodes the latent</text>
+  <text class="s" x="543" y="410">back to an image</text>
+
+  <line x1="528" y1="380" x2="506" y2="380" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="354.5" y="330.5" width="146" height="100" rx="7"/>
+  <text class="t" x="366" y="354">Generated face</text>
+  <text class="s" x="366" y="374">following its</text>
+  <text class="s" x="366" y="392">caption</text>
+</svg>

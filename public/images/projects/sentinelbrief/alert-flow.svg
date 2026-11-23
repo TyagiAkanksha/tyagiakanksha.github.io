@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="380" viewBox="0 0 678 380" role="img" aria-labelledby="t">
+  <title id="t">SentinelBrief alert flow: from the honeypot through ingestion and the triage worker, then through the rate limited read API to the dashboard</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .lab { font-size: 13px; fill: #0c5d57; }
+    .host { font-size: 14px; font-weight: 700; fill: #0c5d57; }
+    .bar-t { font-size: 14px; font-weight: 600; fill: #ffffff; }
+    .bar-s { font-size: 13px; fill: #ffffff; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .ctr { fill: #ffffff; stroke: #0f766e; stroke-opacity: .45; }
+  </style>
+  <rect width="678" height="380" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Honeypot host -->
+  <rect class="box" x="0.5" y="0.5" width="206" height="110" rx="7"/>
+  <text class="t" x="12" y="24">Honeypot host</text>
+  <text class="s" x="12" y="44">Cowrie SSH, own AWS VPC</text>
+  <text class="s" x="12" y="62">shipper: HMAC signed,</text>
+  <text class="s" x="12" y="80">disk spool and retries,</text>
+  <text class="s" x="12" y="98">dead letter folder</text>
+
+  <line x1="210" y1="55" x2="244" y2="55" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- FastAPI ingest -->
+  <rect class="box" x="250.5" y="0.5" width="196" height="110" rx="7"/>
+  <text class="t" x="262" y="24">FastAPI ingest</text>
+  <text class="s" x="262" y="44">verifies the signature</text>
+  <text class="s" x="262" y="62">drops duplicates</text>
+  <text class="s" x="262" y="80">stores, returns</text>
+  <text class="s" x="262" y="98">right away</text>
+
+  <line x1="450" y1="55" x2="484" y2="55" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- PostgreSQL -->
+  <rect class="box" x="490.5" y="0.5" width="187" height="110" rx="7"/>
+  <text class="t" x="502" y="24">PostgreSQL</text>
+  <text class="s" x="502" y="44">alerts, verdicts</text>
+  <text class="s" x="502" y="62">and every tool call</text>
+  <text class="s" x="502" y="80">as a reviewable trace</text>
+
+  <!-- enqueue -->
+  <line x1="348" y1="114" x2="348" y2="142" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <text class="lab" x="358" y="134">enqueue</text>
+
+  <!-- Worker -->
+  <rect x="0.5" y="148.5" width="446" height="230" rx="9" fill="#eef6f5" stroke="#0f766e" stroke-width="1.5"/>
+  <rect x="12" y="160" width="423" height="38" rx="6" fill="#0f766e"/>
+  <text class="bar-t" x="24" y="184">Redis + ARQ worker</text>
+  <text class="bar-s" x="178" y="184">all model work, off the request path</text>
+
+  <rect class="ctr" x="12.5" y="210.5" width="422" height="74" rx="6"/>
+  <text class="t" x="24" y="232">Triage agent with five enrichment tools</text>
+  <text class="s" x="24" y="252">session commands, asset info, geo and network</text>
+  <text class="s" x="24" y="270">owner, IP reputation, alert history; six steps at most</text>
+
+  <rect class="ctr" x="12.5" y="296.5" width="138" height="74" rx="6"/>
+  <text class="t" x="24" y="320">Fast model</text>
+  <text class="s" x="24" y="340">every alert first</text>
+
+  <line x1="154" y1="333" x2="290" y2="333" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <text class="lab" x="222" y="323" text-anchor="middle">high severity or</text>
+  <text class="lab" x="222" y="353" text-anchor="middle">low confidence</text>
+
+  <rect class="ctr" x="296.5" y="296.5" width="138" height="74" rx="6"/>
+  <text class="t" x="308" y="320">Stronger model</text>
+  <text class="s" x="308" y="340">same evidence,</text>
+  <text class="s" x="308" y="358">not the first verdict</text>
+
+  <!-- verdict back to PostgreSQL -->
+  <polyline points="450,179 464,179 464,90 484,90" fill="none" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Read API -->
+  <line x1="584" y1="114" x2="584" y2="142" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <text class="lab" x="594" y="134">read only</text>
+  <rect class="box" x="490.5" y="148.5" width="187" height="74" rx="7"/>
+  <text class="t" x="502" y="172">Read API</text>
+  <text class="s" x="502" y="192">public read endpoints,</text>
+  <text class="s" x="502" y="210">rate limited per IP</text>
+
+  <!-- Dashboard -->
+  <line x1="584" y1="226" x2="584" y2="268" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+  <rect class="box" x="490.5" y="274.5" width="187" height="104" rx="7"/>
+  <text class="t" x="502" y="298">Dashboard</text>
+  <text class="s" x="502" y="318">public Next.js, no login</text>
+  <text class="s" x="502" y="336">live over Server-Sent</text>
+  <text class="s" x="502" y="354">Events; polls every</text>
+  <text class="s" x="502" y="372">30 seconds if it drops</text>
+</svg>

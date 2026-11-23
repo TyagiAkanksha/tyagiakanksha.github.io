@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="278" viewBox="0 0 678 278" role="img" aria-labelledby="t">
+  <title id="t">How a complaint moves: a citizen files it online, the reporting form validates it on the client and the server, the system routes it to the department responsible, and it reaches the department queue complete; each complaint record moves through the handling states submission, routing and resolution</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .bar-t { font-size: 14px; font-weight: 600; fill: #ffffff; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .ctr { fill: #ffffff; stroke: #0f766e; stroke-opacity: .45; }
+  </style>
+  <rect width="678" height="278" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1: from the citizen to the department -->
+  <rect class="box" x="0.5" y="0.5" width="146" height="116" rx="7"/>
+  <text class="t" x="12" y="24">Citizen</text>
+  <text class="s" x="12" y="44">files a complaint</text>
+  <text class="s" x="12" y="62">online</text>
+
+  <line x1="150" y1="58" x2="172" y2="58" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="177.5" y="0.5" width="146" height="116" rx="7"/>
+  <text class="t" x="189" y="24">Reporting form</text>
+  <text class="s" x="189" y="44">validation on the</text>
+  <text class="s" x="189" y="62">client and the</text>
+  <text class="s" x="189" y="80">server catches</text>
+  <text class="s" x="189" y="98">missing details</text>
+
+  <line x1="327" y1="58" x2="349" y2="58" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="354.5" y="0.5" width="146" height="116" rx="7"/>
+  <text class="t" x="366" y="24">Routing</text>
+  <text class="s" x="366" y="44">to the department</text>
+  <text class="s" x="366" y="62">responsible for it</text>
+
+  <line x1="504" y1="58" x2="526" y2="58" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="531.5" y="0.5" width="146" height="116" rx="7"/>
+  <text class="t" x="543" y="24">Department</text>
+  <text class="t" x="543" y="42">queue</text>
+  <text class="s" x="543" y="62">the complaint</text>
+  <text class="s" x="543" y="80">arrives complete</text>
+
+  <!-- Handling states -->
+  <rect x="0.5" y="134.5" width="677" height="143" rx="9" fill="#eef6f5" stroke="#0f766e" stroke-width="1.5"/>
+  <rect x="12" y="146" width="654" height="38" rx="6" fill="#0f766e"/>
+  <text class="bar-t" x="24" y="170">Handling states of each complaint record, in MySQL</text>
+
+  <text class="s" x="12" y="216">the complaint</text>
+  <text class="s" x="12" y="234">moves through</text>
+  <text class="s" x="12" y="252">them until it is</text>
+  <text class="s" x="12" y="270">resolved</text>
+
+  <rect class="ctr" x="177.5" y="204.5" width="146" height="52" rx="6"/>
+  <text class="t" x="189" y="235">Submission</text>
+
+  <line x1="327" y1="230" x2="349" y2="230" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="ctr" x="354.5" y="204.5" width="146" height="52" rx="6"/>
+  <text class="t" x="366" y="235">Routing</text>
+
+  <line x1="504" y1="230" x2="526" y2="230" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="ctr" x="531.5" y="204.5" width="134" height="52" rx="6"/>
+  <text class="t" x="543" y="235">Resolution</text>
+</svg>

@@ -9,6 +9,10 @@ tech: ["Python", "PyTorch", "CNN", "Medical Imaging"]
 tags: ["ML", "CV"]
 category: "coursework"
 order: 4
+materials:
+  - label: "Model-Based Deep Learning PET Image Reconstruction Using Forward-Backward Splitting Expectation Maximisation (IEEE NSS/MIC 2019)"
+    href: "https://doi.org/10.1109/NSS/MIC42101.2019.9059998"
+    note: "the paper we reproduced"
 ---
 
 ## The paper
@@ -38,6 +42,8 @@ that FBSEM performs as well as U-Net denoising with fewer parameters. On
 simulated test data, the PET only variant of FBSEM underestimated hot lesion intensity
 by 7.4% on average, against 25.7% for MAPEM, which tends to smooth lesions
 away.
+
+<Figure src="/images/projects/fbsem-pet-reconstruction/fbsem-iteration.svg" alt="Flow diagram. A starting image from 10 iterations of OSEM becomes the current image. Inside a dashed box labelled each iteration, the current image goes two ways: to the EM update, which pulls it back toward what the scanner actually measured and also takes the measured data, the raw detector data that is noisy at low dose; and to the learned prior, where a small convolutional network denoises the current image. Both go to a fusion step that weighs the two. An arrow loops back to the current image for the next iteration, with the same parameters at every step. The fusion output leaves as the reconstructed image, which training compares with the high dose images by minimizing the mean squared error. A legend marks the learned prior as the learned part: FBSEM keeps the physics of the scanner and learns only the prior." caption="How FBSEM reconstructs an image. Only the prior is learned; the EM update keeps the scanner's physics, and every iteration reuses the same parameters, which keeps the model small. Drawn from the text on this page." width="678" height="532" />
 
 ## What we reproduced
 
@@ -75,6 +81,8 @@ close to the high dose reference. The MAPEM reconstruction of the same data
 stayed somewhat oversmoothed. Because the network shares its parameters
 across iterations, it can also run more iterations at test time without
 retraining.
+
+<Figure src="/images/projects/fbsem-pet-reconstruction/reconstructions-epoch-4-and-50.webp" alt="Brain slices in a top and a bottom row, each under the column titles mrImg, imgHD, imgLD_psf, MAPEM and FBSEM. The first column is a grey MR image on black; the other four are PET images in greyscale on white. Top row, after epoch 4: the FBSEM image is dark and blotchy next to the finely detailed high dose image. Bottom row, after epoch 50, a different slice: the FBSEM image shows gray and white matter boundaries much like the high dose image, while the MAPEM image looks softer." caption="Our reconstructions after epoch 4 (top) and epoch 50 (bottom); each row is a different slice. The column titles are code names. Left to right, mrImg is the MR image the model also takes as input, imgHD the high dose reference, imgLD_psf the low dose image, MAPEM the MAPEM reconstruction and FBSEM the FBSEM reconstruction. By the last epoch FBSEM is close to the high dose reference, while MAPEM stays somewhat oversmoothed. Simulated data from BrainWeb." width="1600" height="782" />
 
 We did not get as far as the paper's main comparison. We trained only the
 PET and MR variant, so our next steps were to train the PET only

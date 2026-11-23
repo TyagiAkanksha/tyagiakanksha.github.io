@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="678" height="506" viewBox="0 0 678 506" role="img" aria-labelledby="t">
+  <title id="t">How we hide and reveal an encrypted secret image: the secret is scrambled with a permutation, then the preparation, hiding and reveal networks hide it in a cover image and recover it; the permutation list is protected with AES and RSA so the receiver can unscramble the revealed image</title>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .t { font-size: 14px; font-weight: 600; fill: #333333; }
+    .s { font-size: 13px; fill: #555555; }
+    .lab { font-size: 13px; font-weight: 600; fill: #0c5d57; }
+    .box { fill: #f9f9f9; stroke: #555555; stroke-opacity: .3; }
+    .net { fill: #eef6f5; stroke: #0f766e; stroke-width: 1.5; }
+  </style>
+  <rect width="678" height="506" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <!-- Cover image -->
+  <rect class="box" x="531.5" y="0.5" width="146" height="44" rx="7"/>
+  <text class="t" x="543" y="28">Cover image</text>
+  <line x1="604.5" y1="48" x2="604.5" y2="70" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Row 1: secret to hiding network -->
+  <rect class="box" x="0.5" y="76.5" width="146" height="110" rx="7"/>
+  <text class="t" x="12" y="100">Secret image</text>
+  <text class="s" x="12" y="120">the image to hide</text>
+
+  <line x1="150" y1="131" x2="172" y2="131" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="177.5" y="76.5" width="146" height="110" rx="7"/>
+  <text class="t" x="189" y="100">Permutation</text>
+  <text class="s" x="189" y="120">scrambles the</text>
+  <text class="s" x="189" y="138">positions of its</text>
+  <text class="s" x="189" y="156">pixels</text>
+
+  <line x1="327" y1="131" x2="349" y2="131" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="354.5" y="76.5" width="146" height="110" rx="7"/>
+  <text class="t" x="366" y="100">Preparation</text>
+  <text class="t" x="366" y="118">network</text>
+  <text class="s" x="366" y="138">turns the secret</text>
+  <text class="s" x="366" y="156">into useful</text>
+  <text class="s" x="366" y="174">features</text>
+
+  <line x1="504" y1="131" x2="526" y2="131" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="531.5" y="76.5" width="146" height="110" rx="7"/>
+  <text class="t" x="543" y="100">Hiding network</text>
+  <text class="s" x="543" y="120">blends them into</text>
+  <text class="s" x="543" y="138">the cover image</text>
+
+  <line x1="604.5" y1="190" x2="604.5" y2="212" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Row 2: container back to unscramble -->
+  <rect class="box" x="531.5" y="218.5" width="146" height="100" rx="7"/>
+  <text class="t" x="543" y="242">Container image</text>
+
+  <line x1="528" y1="268" x2="506" y2="268" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="net" x="354.5" y="218.5" width="146" height="100" rx="7"/>
+  <text class="t" x="366" y="242">Reveal network</text>
+  <text class="s" x="366" y="262">recovers the</text>
+  <text class="s" x="366" y="280">secret from the</text>
+  <text class="s" x="366" y="298">container</text>
+
+  <line x1="351" y1="268" x2="329" y2="268" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="177.5" y="218.5" width="146" height="100" rx="7"/>
+  <text class="t" x="189" y="242">Revealed image</text>
+  <text class="s" x="189" y="262">without the</text>
+  <text class="s" x="189" y="280">permutation, just</text>
+  <text class="s" x="189" y="298">scrambled pixels</text>
+
+  <line x1="174" y1="268" x2="152" y2="268" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="0.5" y="218.5" width="146" height="100" rx="7"/>
+  <text class="t" x="12" y="242">Unscramble</text>
+  <text class="s" x="12" y="262">the revealed</text>
+  <text class="s" x="12" y="280">image</text>
+
+  <!-- Row 3: protecting the permutation -->
+  <text class="lab" x="189" y="350">Protecting the permutation</text>
+
+  <rect class="box" x="531.5" y="364.5" width="146" height="100" rx="7"/>
+  <text class="t" x="543" y="388">AES</text>
+  <text class="s" x="543" y="408">encrypts the</text>
+  <text class="s" x="543" y="426">permutation list,</text>
+  <text class="s" x="543" y="444">which is large</text>
+
+  <line x1="528" y1="414" x2="506" y2="414" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="354.5" y="364.5" width="146" height="100" rx="7"/>
+  <text class="t" x="366" y="388">RSA</text>
+  <text class="s" x="366" y="408">encrypts the</text>
+  <text class="s" x="366" y="426">AES key</text>
+
+  <line x1="351" y1="414" x2="329" y2="414" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="177.5" y="364.5" width="146" height="100" rx="7"/>
+  <text class="t" x="189" y="388">RSA private key</text>
+  <text class="s" x="189" y="408">the receiver</text>
+  <text class="s" x="189" y="426">recovers the</text>
+  <text class="s" x="189" y="444">AES key</text>
+
+  <line x1="174" y1="414" x2="152" y2="414" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <rect class="box" x="0.5" y="364.5" width="146" height="100" rx="7"/>
+  <text class="t" x="12" y="388">AES key</text>
+  <text class="s" x="12" y="408">decrypts the</text>
+  <text class="s" x="12" y="426">permutation</text>
+
+  <line x1="73.5" y1="361" x2="73.5" y2="324" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- Legend -->
+  <rect class="net" x="0.5" y="482.5" width="22" height="16" rx="4"/>
+  <text class="s" x="32" y="495">the three convolutional neural networks, trained together</text>
+</svg>

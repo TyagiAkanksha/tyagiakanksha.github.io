@@ -4,7 +4,7 @@ summary: "A publishing platform for financial advisory content, with an admin CM
 role: "Full Stack AI Engineer · Independent project"
 dates: "Mar 2026 – Present"
 tech: ["Next.js", "React", "TypeScript", "FastAPI", "Supabase (Postgres + pgvector)", "OpenAI", "MCP", "OAuth 2.1", "Docker", "AWS"]
-tags: ["Full-Stack", "ML"]
+tags: ["Full stack", "ML"]
 links:
   demo: "https://advisordesk.tyagiakanksha.com/"
   github: "https://github.com/TyagiAkanksha/AdvisorDesk"
@@ -12,7 +12,13 @@ highlights:
   - "93% mean source support on an 80 question evaluation, 733 ms median time to first token in production"
 category: "engineering"
 order: 1
+materials:
+  - label: "Full walkthrough video"
+    href: "/projects/advisordesk#walkthrough"
+    note: "4 minutes, no sound"
 ---
+
+<Video id="walkthrough" src="/videos/projects/advisordesk/walkthrough.mp4" poster="/videos/projects/advisordesk/walkthrough.jpg" title="Video: the full AdvisorDesk walkthrough" caption="My full walkthrough of AdvisorDesk, four minutes with no sound, in three acts: the app and the admin from 0:04, AdvisorDesk inside Claude over MCP from 1:01, and the deployment on AWS with live checks against production from 2:36." width="1280" height="720" duration="4:05" />
 
 ## Problem
 
@@ -26,10 +32,14 @@ the firm's own published guidance creates risk instead of value.
 I built AdvisorDesk to show how I would solve this, as a working platform
 for a fictional advisory firm that runs on sample content I wrote.
 
+<Figure src="/images/projects/advisordesk/architecture.svg" alt="Architecture diagram. A client browser, an admin browser and Claude over MCP connect to one EC2 host, where Caddy handles HTTPS certificates and routing for three containers: the client and admin Next.js apps and the FastAPI API with MCP. The host uses three managed services: Postgres with pgvector for articles, embeddings and OAuth, an LLM API for embeddings and answers, and Parameter Store and ECR for secrets and images." caption="How the pieces fit together. Both Next.js apps and the FastAPI backend run as containers on one EC2 host behind Caddy, while the content, the model calls and the secrets live in managed services. Redrawn from the architecture document I wrote for the project." width="678" height="226" />
+
 ## Approach
 
 I treated the firm's published content as the single source of truth and
 built the platform around it.
+
+<Video src="/videos/projects/advisordesk/refusal-and-tracking.mp4" poster="/videos/projects/advisordesk/refusal-and-tracking.jpg" title="Video: the assistant refuses a question nothing published covers, and the admin dashboard tracks it" caption="I ask the assistant how stock options are divided in a divorce. Nothing published covers that, so it says so instead of guessing. The admin dashboard then shows the same question flagged as a near miss, the kind of weak answer the evaluation loop collects." width="1280" height="720" duration="0:19" />
 
 - An admin CMS lets advisors create, edit, tag, and publish guidance.
   Publishing is what makes content available to the assistant. Drafts stay
@@ -47,6 +57,8 @@ built the platform around it.
   sources. It collects weak answers from negative feedback, refusals, near
   misses, and low confidence retrieval, turns proposed fixes into drafts,
   and refuses any fix that makes the evaluation worse.
+
+<Figure src="/images/projects/advisordesk/chat-cited-answer.webp" alt="An answer from the AdvisorDesk assistant to the question what happens to RSUs when they vest. Each point cites source [1], and a Sources list below names four published articles, starting with What Happens to Your RSUs at Vest." caption="The public assistant answering “What happens to my RSUs when they vest?” The answer cites its source by number, and the Sources list links back to the published articles behind it." width="846" height="467" />
 
 ## Architecture & Tech
 
@@ -68,12 +80,16 @@ anything below a similarity of 0.5 is dropped. OpenAI then writes the cited
 answer, which streams to the browser over Server-Sent Events. Public chat
 is rate limited per IP address and per session.
 
+<Video src="/videos/projects/advisordesk/mcp-approval.mp4" poster="/videos/projects/advisordesk/mcp-approval.jpg" title="Video: Claude rewrites a draft over MCP after one approval" caption="AdvisorDesk inside Claude over MCP. I ask Claude to rewrite an existing draft and publish nothing. It writes the article, then asks before writing it back, and one click on the approval card lets the edit through. The draft is replaced in place and stays unpublished. The wait while Claude writes is sped up." width="1280" height="720" duration="0:31" />
+
 The CMS calls the 14 MCP tools in process, and a remote MCP server exposes
 the same tools to Claude. To let Claude connect, I wrote my own OAuth 2.1
 authorization server with PKCE, dynamic client registration, tokens that
 are checked against their intended audience, and refresh token rotation
 that detects a reused token. Only an allowlisted admin can reach the tools,
 after Google sign in and a consent screen.
+
+<Figure src="/images/projects/advisordesk/mcp-tools.webp" alt="The 14 MCP tools in two groups. Five read tools: search_content, count_content, list_proposals, report_content_gaps and report_weak_queries. Nine write tools: create_draft, edit_content, publish, tag_content, archive, delete_content, propose_content_fix, accept_proposal and reject_proposal." caption="The 14 MCP tools that the CMS agent panel and Claude share. Five only read the library, and the other nine change it. From my architecture document." width="1600" height="475" />
 
 CI in GitHub Actions holds a 95% coverage floor on the backend, along with
 strict mypy, ESLint, Vitest, and a dependency audit that blocks the build.
@@ -82,6 +98,8 @@ The suites hold over 1,200 backend tests and over 500 frontend tests.
 The API and both frontends run as Docker containers on one AWS EC2 host
 behind Caddy, which handles TLS. Images live in ECR, secrets live in SSM
 Parameter Store, and the host has no SSH access.
+
+<Video src="/videos/projects/advisordesk/aws-live-checks.mp4" poster="/videos/projects/advisordesk/aws-live-checks.jpg" title="Video: the AWS deployment and live checks against production" caption="The deployment in the AWS console: one small EC2 instance with an instance role and no key pair, only ports 80 and 443 open, secrets in Parameter Store, images in ECR, and two CloudWatch alarms. Then the first live checks against production, sped up: the client, admin and API hosts all answer over HTTPS, an answer streams back from the API, and all three names resolve to one Elastic IP with a certificate from Let's Encrypt." width="1280" height="720" duration="0:44" />
 
 ## Results & Impact
 
