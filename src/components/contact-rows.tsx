@@ -8,21 +8,21 @@ const rows = [
     label: "Email",
     value: site.email,
     href: `mailto:${site.email}`,
-    icon: <Mail className="size-4" aria-hidden />,
+    icon: <Mail className="size-4 shrink-0" aria-hidden />,
     external: false,
   },
   {
     label: "GitHub",
     value: site.github.replace("https://", ""),
     href: site.github,
-    icon: <GitHubIcon className="size-4" />,
+    icon: <GitHubIcon className="size-4 shrink-0" />,
     external: true,
   },
   {
     label: "LinkedIn",
     value: site.linkedin.replace("https://", ""),
     href: site.linkedin,
-    icon: <LinkedInIcon className="size-4" />,
+    icon: <LinkedInIcon className="size-4 shrink-0" />,
     external: true,
   },
 ];
@@ -43,10 +43,10 @@ export function ContactRows() {
             {...(row.external
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}
-            className="inline-flex items-center gap-2.5 text-sm text-accent transition-colors hover:text-accent-strong"
+            className="inline-flex min-w-0 items-center gap-2.5 text-sm text-accent transition-colors hover:text-accent-strong"
           >
             {row.icon}
-            {row.value}
+            <span className="min-w-0 break-all">{row.value}</span>
           </a>
         </div>
       ))}

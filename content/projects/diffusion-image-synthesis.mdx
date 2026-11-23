@@ -1,53 +1,74 @@
 ---
-title: "Generative Image Synthesis with Diffusion Models"
-summary: "DDPM texture synthesis on ALOT and latent diffusion models for text-to-image generation, evaluated on CelebA-HQ and LAION with FID and IS."
-role: "Graduate Researcher"
-dates: "Jan 2024 – May 2026"
-tech: ["Python", "PyTorch", "Diffusion Models", "U-Net", "Autoencoders"]
+title: "Text to Image Generation with Latent Diffusion"
+summary: "Fine tuned a latent diffusion model on captioned faces and fixed a training run whose loss would not move."
+role: "MS coursework · University of Arkansas"
+dates: "Spring 2025"
+team: "Team of 2"
+kind: "Course project"
+tech: ["Python", "PyTorch", "Latent Diffusion", "U-Net", "CLIP", "BERT"]
 tags: ["ML", "CV"]
-order: 7
+category: "coursework"
+order: 3
+materials:
+  - label: "High-Resolution Image Synthesis with Latent Diffusion Models"
+    href: "https://arxiv.org/abs/2112.10752"
+    note: "the model we fine tuned"
 ---
 
-## Problem
+## The paper
 
-This line of work asked two related questions. Can diffusion models
-synthesize training data that is useful in practice, meaning textures
-diverse and faithful enough to augment real datasets? And can they
-generate high resolution images efficiently, without paying the full cost
-of diffusion in pixel space?
+A diffusion model learns to make images by learning to undo noise. During
+training, an image is buried step by step under Gaussian noise, and a U-Net
+learns to predict and remove a little of that noise at each step. To generate,
+the model starts from pure noise and denoises it into a picture. Doing this on
+raw pixels is expensive: the paper notes that training the strongest pixel
+space models can take hundreds of GPU days.
 
-## Approach
+The latent diffusion paper splits the job in two. An autoencoder first learns
+to compress an image into a much smaller latent representation and to decode
+it back. Diffusion then runs in that small latent space, so the U-Net spends
+its effort on what the image shows rather than on every pixel. For text to
+image generation, a text encoder turns the prompt into embeddings, and the
+U-Net reads them through cross attention at each denoising step. The paper's
+own conclusion, which we restated in our presentation, is that this makes both
+training and sampling more efficient while keeping image quality.
 
-For texture synthesis, I trained denoising diffusion probabilistic models
-(DDPM) on the Amsterdam Library of Textures (ALOT) to generate artificial
-textures that resemble the originals while adding diversity, which makes
-them directly usable for augmenting texture datasets.
+## What we did
 
-For latent diffusion, I implemented latent diffusion models (LDM). A
-pretrained autoencoder compresses images into a latent space, diffusion
-runs in that space instead of in pixels, and a cross-attention U-Net
-conditions the generation on text prompts.
+This was a two person project for an MS course. Rather
+than train a model from scratch, we took a pretrained latent diffusion
+checkpoint and fine tuned it on a new domain: faces described in words. We
+used CelebA-Dialog, a dataset of over 200,000 celebrity photos, each with
+captions describing the face, such as how broadly the person is smiling. We
+wrote a data loader that feeds each image to the model together with its
+caption.
 
-## Architecture & Tech
+The model kept the paper's structure. A pretrained KL autoencoder that
+downsamples by 8 turns each 256 by 256 image into a 32 by 32 latent with 4
+channels. The U-Net denoises in that latent space and is conditioned on
+captions from two frozen text encoders, BERT and the CLIP ViT-L/14 text model.
 
-The implementation is PyTorch end to end. It covers DDPM noise schedule
-training on ALOT, and for the LDM work a pretrained autoencoder pair,
-diffusion in the latent space, and cross-attention conditioning wired into
-the U-Net. Evaluation used CelebA-HQ and LAION with FID and Inception
-Score.
+## My part
 
-## Results & Impact
+- I ran the fine tuning: 256 pixel images at batch size 32 on a single A100
+  GPU, the largest batch that fit in its memory.
+- I found and fixed the run that was not learning. With a learning rate of
+  5e-5, the loss stayed flat for 65 epochs, about three to four days of
+  continuous training. After more experiments I dropped the rate to 2e-7,
+  with a 100 step warmup followed by a cosine schedule.
+- I presented the method and our results at the course's final
+  presentation.
 
-- The DDPM produced diverse, high fidelity artificial textures that
-  resemble the ALOT originals, providing a practical augmentation source
-  for texture datasets.
-- The LDM implementation reproduced the core efficiency result. Diffusion
-  in latent space delivers conditional high resolution synthesis at a
-  fraction of the pixel space compute, quantified with FID and IS on
-  CelebA-HQ and LAION.
+## What we found
 
-## What I'd do next
+The lower learning rate is what made the fine tuning work. The loss fell to
+about a tenth of what the first run had reached, with less training. Samples
+from the first run were still mostly noise, while by epoch 37 the tuned model
+produced faces that followed their captions, for prompts such as "a young
+woman with broad smile" and "a man with no smile".
 
-I would measure the downstream effect directly by training a texture
-classifier with and without synthetic augmentation, and I would explore
-fine tuning the LDM text encoder for domain specific vocabularies.
+The lesson we took away is about fine tuning in general. The learning rate
+the authors used for their own models did not suit fine tuning on our
+dataset. Adapting the pretrained model to captioned faces called for a
+learning rate 250 times smaller than our first run's 5e-5, and with that rate
+fine tuning gave good results even with fewer epochs.

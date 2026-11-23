@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { z } from "zod";
+import { SHELVES, type ShelfId } from "./shelves";
 
 /**
  * Project content layer.
@@ -20,6 +21,18 @@ const projectSchema = z.object({
   dates: z.string().min(1),
   tech: z.array(z.string().min(1)).min(1),
   tags: z.array(z.enum(PROJECT_TAGS)).min(1),
+  category: z.enum(SHELVES.map((s) => s.id) as [ShelfId, ...ShelfId[]]),
+  team: z.string().min(1).optional(),
+  kind: z.string().min(1).optional(),
+  materials: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        href: z.string().regex(/^(\/|http)/, "href must start with / or http"),
+        note: z.string().min(1).optional(),
+      }),
+    )
+    .default([]),
   links: z
     .object({
       github: z.string().url().optional(),
@@ -29,7 +42,6 @@ const projectSchema = z.object({
     .default({}),
   image: z.string().startsWith("/").optional(),
   highlights: z.array(z.string().min(1)).max(3).optional(),
-  featured: z.boolean().default(false),
   order: z.number().int().default(999),
   draft: z.boolean().default(false),
 });
@@ -58,7 +70,9 @@ function loadProject(filename: string): Project {
   return { ...parsed.data, slug, body: content };
 }
 
-/** All non-draft projects: featured first, then by `order`, then title. */
+const shelfIndex = (id: ShelfId) => SHELVES.findIndex((s) => s.id === id);
+
+/** All non-draft projects: by shelf order, then `order`, then title. */
 export function getAllProjects(): Project[] {
   if (!fs.existsSync(PROJECTS_DIR)) return [];
   return fs
@@ -68,10 +82,18 @@ export function getAllProjects(): Project[] {
     .filter((p) => !p.draft)
     .sort(
       (a, b) =>
-        Number(b.featured) - Number(a.featured) ||
+        shelfIndex(a.category) - shelfIndex(b.category) ||
         a.order - b.order ||
         a.title.localeCompare(b.title),
     );
+}
+
+export function getProjectsByShelf(): Record<ShelfId, Project[]> {
+  const byShelf = Object.fromEntries(
+    SHELVES.map((s) => [s.id, [] as Project[]]),
+  ) as Record<ShelfId, Project[]>;
+  for (const p of getAllProjects()) byShelf[p.category].push(p);
+  return byShelf;
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {

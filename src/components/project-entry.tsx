@@ -71,11 +71,43 @@ export function ProjectEntry({ project }: { project: Project }) {
   );
 }
 
-export function ProjectEntryList({ projects }: { projects: Project[] }) {
+/** Short entry for the coursework shelf: title, summary, one mono line. */
+function CompactProjectEntry({ project }: { project: Project }) {
+  const meta = [project.kind, project.team, project.dates]
+    .filter(Boolean)
+    .join(" · ");
+  return (
+    <article className="border-b border-line py-5 first:pt-1 last:border-b-0">
+      <h3 className="font-display text-[17px] font-semibold leading-snug">
+        <Link
+          href={`/projects/${project.slug}`}
+          className="text-accent transition-colors hover:text-accent-strong"
+        >
+          {project.title}
+        </Link>
+      </h3>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+        {project.summary}
+      </p>
+      {meta ? (
+        <p className="mt-2 font-mono text-xs text-faint">{meta}</p>
+      ) : null}
+    </article>
+  );
+}
+
+export function ProjectEntryList({
+  projects,
+  variant = "full",
+}: {
+  projects: Project[];
+  variant?: "full" | "compact";
+}) {
+  const Entry = variant === "compact" ? CompactProjectEntry : ProjectEntry;
   return (
     <div>
       {projects.map((p) => (
-        <ProjectEntry key={p.slug} project={p} />
+        <Entry key={p.slug} project={p} />
       ))}
     </div>
   );

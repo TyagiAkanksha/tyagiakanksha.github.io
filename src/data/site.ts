@@ -1,8 +1,8 @@
 export const site = {
   name: "Akanksha Tyagi",
-  headline: "Full stack engineer for AI integrated web apps",
+  headline: "Full stack AI engineer",
   description:
-    "Akanksha Tyagi is a full stack software engineer with 3+ years of professional experience who builds web applications with Python, FastAPI, React, Next.js, and PostgreSQL, integrates AI features, and deploys on AWS. MS Computer Science, University of Arkansas.",
+    "Akanksha Tyagi is a full stack AI engineer with 3+ years of professional experience who builds web applications and AI features with Python, FastAPI, TypeScript, React, Next.js, and PostgreSQL, and deploys them on AWS. MS Computer Science, University of Arkansas.",
   url: "https://tyagiakanksha.com",
   email: "tyagiakanksha805@gmail.com",
   location: "Charlotte, NC",

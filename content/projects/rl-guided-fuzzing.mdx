@@ -3,53 +3,71 @@ title: "Reinforcement Learning Guided Fuzzing"
 summary: "An RL fuzzer that mutates multiple input parameters per round, reaching 70% code coverage and twice the crashes of traditional fuzzing. IEEE CSR 2025."
 role: "Graduate Research Assistant"
 dates: "Jan 2024 – May 2026"
-tech: ["Python", "Reinforcement Learning", "Fuzzing", "Security Tooling"]
+tech: ["Python", "Reinforcement Learning", "Fuzzing"]
 tags: ["ML", "Security"]
 links:
   paper: "https://doi.org/10.1109/CSR64739.2025.11129986"
 highlights:
   - "70% code coverage and twice the crashes of traditional fuzzing, published at IEEE CSR 2025"
-featured: true
-order: 3
+category: "research"
+order: 2
 ---
 
 ## Problem
 
-Fuzzers find bugs by mutating program inputs and watching what breaks, but
-classic mutation strategies are blind. They spend most of their budget on
-inputs that exercise the same shallow paths, while the interesting program
-states sit behind specific mutation sequences that the fuzzer has no way
-to prefer.
+A fuzzer looks for bugs by feeding a program a stream of mutated inputs and
+watching what breaks. Classic fuzzers mutate blindly: they pick a mutation
+and a place to apply it at random, so much of their budget goes on inputs
+that exercise the same shallow paths. Our target was the control software of
+a power generation system, whose inputs are configuration files full of
+frequency and RPM settings. We wanted a fuzzer that learns which settings
+are worth mutating, and how.
 
 ## Approach
 
-We framed mutation selection as a reinforcement learning problem. The
-agent observes feedback from the target program and learns which mutation
-parameters are worth spending budget on, covering both the choice of
-mutator and how it is applied. The multi-parametric formulation is the
-core idea. Instead of making a single discrete mutator choice, the agent
-controls several mutation parameters jointly, which lets it discover
-strategies that fixed heuristics cannot express. I designed this core
-algorithm, which mutates multiple input parameters in each round.
+We framed fuzzing as a Markov decision process and solved it with
+reinforcement learning. I designed the core algorithm, which mutates several
+input parameters in each round rather than one, and I built the parts that
+let it learn.
+
+- **The environment.** A Gym style environment whose state is 40 parameters
+  read from the target's configuration files: 20 frequency settings and 20
+  RPM settings, such as setpoints, offsets, limits and error ranges.
+- **The actions.** A multi-discrete action space, so on every step the agent
+  chooses both the mutation and the parameter it applies to. Traditional
+  fuzzers apply mutations to parameters picked at random. Letting the agent
+  pick the target is the new part, and it cuts down on wasted mutations.
+- **The mutators.** The agent chooses from six mutators: flip one bit, flip
+  several bits, replace a byte, erase a byte, insert a random byte, and
+  shuffle the bytes.
+- **The reward.** Each mutated input runs through the target, and the reward
+  combines whether it crashed with how much of the code it covered. A crash
+  counts far more than coverage (in my design notes the weights are 1000 and
+  5), so the agent hunts for crashes first while still being pushed toward
+  more coverage.
+- **The agent.** A2C, short for Advantage Actor Critic. An actor network
+  chooses the action, a critic network estimates how good the current state
+  is, and the advantage, how much better an action turned out than the
+  critic expected, steers each update. A2C learns from the steps it samples,
+  so it needs no model of how the target program will respond.
 
 ## Architecture & Tech
 
-A Python training loop couples the RL agent to the fuzzing harness.
-Program feedback in the form of coverage and crash signals becomes the
-reward, and the agent's policy updates steer the following mutation
-batches. Experiments compare the learned policy against traditional
-fuzzing baselines on coverage growth and vulnerability discovery.
+A Python training loop couples the A2C agent to the fuzzing harness. On each
+step the agent picks a mutation and a parameter, the harness applies it to
+the configuration, runs the target, measures code coverage and checks for a
+crash, and the reward goes back to the agent. The experiments compare the
+learned policy with traditional fuzzing on coverage and on crashes found.
 
 ## Results & Impact
 
-On a power generation control system, the fuzzer reached 70% code coverage
-and found twice the crashes of traditional fuzzing. The work was peer
-reviewed and published as "A Reinforcement Learning Approach to
-Multi-Parametric Input Mutation for Fuzzing" at the 2025 IEEE
-International Conference on Cyber Security and Resilience (CSR).
+On the power generation control system, the fuzzer reached 70% code coverage
+and found twice the crashes of traditional fuzzing. I am a coauthor of the
+paper, "A Reinforcement Learning Approach to Multi-Parametric Input Mutation
+for Fuzzing", which was published at IEEE CSR 2025.
 
 ## What I'd do next
 
-I would scale the evaluation to a broader set of target programs, study
-whether a policy trained on one target family transfers to another, and
-package the harness so the RL layer can be attached to existing fuzzers.
+I would run the fuzzer against a broader set of target programs, study
+whether a policy trained on one family of targets transfers to another, and
+package the learning layer so it can be attached to existing fuzzers.

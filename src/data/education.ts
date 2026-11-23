@@ -4,6 +4,7 @@ export type Education = {
   location: string;
   date: string;
   gpa?: string;
+  thesis?: string;
   coursework?: string[];
 };
 
@@ -14,6 +15,8 @@ export const education: Education[] = [
     location: "Fayetteville, AR",
     date: "May 2026",
     gpa: "3.75 / 4.0",
+    thesis:
+      "Thesis: Graph-Based and Ensemble Anomaly Detection for Smart Water Treatment Systems, advised by Dr. Qinghua Li",
     coursework: [
       "Image Processing",
       "Privacy Enhancing Technology",

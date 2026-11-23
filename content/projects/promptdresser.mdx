@@ -1,0 +1,79 @@
+---
+title: "PromptDresser: Prompt Controlled Virtual Try-On"
+summary: "Reproduced a text editable virtual try-on model built on Stable Diffusion XL, and built the live demo."
+role: "MS coursework · University of Arkansas"
+dates: "Fall 2025"
+team: "Team of 3"
+kind: "Paper reproduction"
+tech: ["Python", "PyTorch", "Stable Diffusion XL", "Hugging Face diffusers", "Gradio", "DensePose"]
+tags: ["ML", "CV"]
+category: "coursework"
+order: 1
+materials:
+  - label: "PromptDresser: Improving the Quality and Controllability of Virtual Try-On via Generative Textual Prompt and Prompt-aware Mask"
+    href: "https://arxiv.org/abs/2412.16978"
+    note: "the paper we reproduced"
+---
+
+## The paper
+
+Virtual try-on takes two photos, one of a person and one of a garment, and
+generates an image of that person wearing the garment while keeping their
+face, hair, pose and background. Earlier methods take the garment's style
+from its photo alone, which leaves little room to ask for the same shirt worn
+differently.
+
+PromptDresser adds text to the inputs. A large multimodal model describes
+the person and the garment as a set of attributes, such as body shape, pose,
+fit, sleeves and tucking style, and those attributes become text prompts.
+Change a word in the prompt, from tucked in to untucked or from tight to
+loose, and the output changes with it. The paper also generates the editing
+mask from the prompt, so the region being repainted can grow or shrink to fit
+the new style instead of following the outline of the old clothes.
+
+The model is built on Stable Diffusion XL and its inpainting variant: images
+are encoded into a compact latent space, a U-Net denoises the masked region
+while reading the prompts and features of the garment photo, and the result
+is decoded and blended back so only the clothing changes. The authors report
+better image quality than earlier try-on methods in most of their tests, and
+closer agreement with the text. Those results are the paper's; we used the
+released weights and did not retrain the model.
+
+## What we reproduced
+
+We were a team of three in an MS deep learning course. We ran the authors'
+released code and pretrained weights on VITON-HD, a public try-on dataset of
+about 11,000 training and 2,000 test pairs of women wearing tops. For every
+test pair the code needs more than the two photos: a clothing mask, a mask of
+the region to repaint, pose keypoints, a body part segmentation and a
+DensePose map of the body's surface, plus a text prompt for the person and
+one for the garment.
+
+## My part
+
+Within the team, I was responsible for getting the code to run, for how data
+moved through it, and for the live demo.
+
+- I set up the environment, matching library versions to what the released
+  code expected.
+- I built the preprocessing that turns a new photo into model inputs: human
+  parsing to label each pixel as a body part or clothing, the clothing
+  agnostic mask that marks where the new garment goes, and the DensePose map.
+  The released code only ran on the prepared test set, so this is what let us
+  try on photos of our own.
+- I put together the inference pipeline that loads a person and garment,
+  builds the prompts, runs the model and saves the result.
+- I built a Gradio web app for the live demo, where a user can change the
+  tucking, fit or sleeve attributes in the prompt and see the result.
+
+## What we found
+
+Our analysis of the dataset showed how narrow its text prompts are. Of the
+2,032 test prompts, only 1 described a man. The clothing attributes
+covered upper body garments only. And the prompts are not free text: a user
+supplies attribute values that fill a fixed sentence template.
+
+So the text control in this setup is a choice among the template's
+attributes, and the test data says little about how the model handles men or
+clothing other than tops. Within those bounds, the demo let us change
+tucking, fit and sleeves by prompt.

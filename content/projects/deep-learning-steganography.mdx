@@ -1,49 +1,77 @@
 ---
-title: "Deep Learning Image Steganography"
-summary: "A deep learning framework that hides a full image inside another with high imperceptibility and robust recovery of the hidden data."
-role: "Graduate Researcher"
-dates: "Jan 2024 – May 2026"
-tech: ["Python", "PyTorch", "Computer Vision", "Encoder-Decoder Networks"]
+title: "Deep Steganography with Encrypted Hidden Images"
+summary: "Reproduced a network that hides one image inside another, then added encryption so the hidden image stays unreadable without the key."
+role: "MS coursework · University of Arkansas"
+dates: "Spring 2024"
+team: "Team of 3"
+kind: "Paper reproduction"
+tech: ["Python", "TensorFlow", "Keras", "CNN", "AES", "RSA"]
 tags: ["CV", "Security"]
-order: 8
+category: "coursework"
+order: 6
+materials:
+  - label: "Hiding Images in Plain Sight: Deep Steganography (NeurIPS 2017)"
+    href: "https://papers.nips.cc/paper/2017/hash/838e8afb1ca34354ac209f53d90c3a43-Abstract.html"
+    note: "the paper we reproduced"
 ---
 
-## Problem
+## The paper
 
-Classical steganography hides bits in an image's least significant noise,
-which is easy to detect and easy to destroy. The harder problem is to
-embed an entire image inside another image so that the carrier looks
-untouched to both humans and statistical detectors, while the hidden
-image survives extraction intact.
+Steganography hides a message so that nobody notices there is one. The
+classic way to hide an image inside another is to overwrite the least
+significant bits of each pixel of the cover image with the most significant
+bits of the secret image. The result looks normal to the eye, but it leaves
+traces that steganalysis tools can detect.
 
-## Approach
+The paper we reproduced, from NeurIPS 2017, hides a full size color image
+inside a cover image of the same size using three convolutional neural
+networks trained together. A preparation network turns the secret image into
+useful features, a hiding network blends them into the cover image to make a
+container image, and a reveal network recovers the secret from the container.
+Because the networks are trained as a pair, they decide for themselves where
+and how to spread the secret across the bits of the cover, instead of
+following a fixed rule. The paper trained on images from ImageNet.
 
-The framework is an encoder and decoder pair trained end to end. The
-encoder fuses the secret image into the cover image, and the decoder
-recovers the secret from the resulting container. The loss balances two
-competing objectives, imperceptibility and recoverability, so the network
-learns where in the cover image information can hide without a visible
-cost.
+The paper also shows its own weak spot. If you take the difference between
+the cover and the container and enhance it strongly (the paper uses 20
+times), parts of the secret image become visible. And the method makes no
+explicit attempt to hide from machine detection that a secret is there at
+all.
 
-## Architecture & Tech
+## What we reproduced
 
-The implementation is in PyTorch, with joint training of the hiding and
-reveal networks. I iterated on the network architecture and training
-parameters specifically to improve concealment accuracy, adding deeper
-fusion layers where capacity was the bottleneck and reweighting the loss
-where artifacts appeared in flat image regions.
+We were a team of three in an MS course. We rebuilt the three network model
+and trained it on Tiny ImageNet, since full ImageNet needed more compute than
+we had: 1,250 pairs of cover and secret images at 64 by 64 pixels, with 1,000
+pairs for training and 250 for testing.
 
-## Results & Impact
+We then extended the paper in two directions.
 
-The optimized framework embeds one image within another with high
-imperceptibility and robust recovery of the hidden data, which allows
-image-in-image transmission that survives the round trip. The
-optimization work measurably increased concealment accuracy over the
-initial architecture.
+- **Encryption of the hidden image.** Before hiding the secret image, we
+  scrambled the positions of its pixels with a permutation. Without the
+  permutation, a revealed image is just scrambled pixels. The permutation
+  list is large, so we encrypted it with AES, a fast symmetric cipher, and
+  encrypted the AES key itself with RSA, a public key cipher. The receiver
+  uses the RSA private key to recover the AES key, decrypts the permutation
+  with it, and unscrambles the revealed image.
+- **Training changes.** The paper trains with a mean squared error loss on
+  the pixels. We added a term based on SSIM, the structural similarity index,
+  which scores how alike two images look in structure rather than pixel by
+  pixel. We also compared tanh and ReLU activations, and trained the updated
+  model for 250 epochs.
 
-## What I'd do next
+## What we found
 
-I would test robustness under real world channel distortions such as JPEG
-recompression, resizing, and screenshots, and I would evaluate the
-framework against learned steganalysis detectors rather than only
-statistical ones.
+ReLU activations worked better than tanh, and adding the SSIM term improved
+training and the quality of the results.
+
+To see how much of the secret leaks into the container, we compared the
+residual between cover and container at 1, 3 and 5 times enhancement against
+the reference paper's results. Our model left less visible trace of the
+secret image at all three levels. The comparison has a caveat: we trained on
+small 64 by 64 images, not on the paper's ImageNet images.
+
+The encryption has room to grow. Our permutation was generated from a fixed
+seed, and a stronger scheme would add more security. We also noted that
+newer generative models, such as GANs and diffusion models, could produce
+cleaner container images than an encoder and decoder network.

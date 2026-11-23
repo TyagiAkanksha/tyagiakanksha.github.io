@@ -1,7 +1,7 @@
 # tyagiakanksha.github.io
 
-Personal portfolio of **Akanksha Tyagi** — full-stack engineer with an
-applied-ML research background. Live at
+Personal portfolio of **Akanksha Tyagi** — full stack AI engineer with an
+applied ML research background. Live at
 **[tyagiakanksha.com](https://tyagiakanksha.com)**.
 
 Built with Next.js 16 (App Router, static export), TypeScript, and
@@ -27,8 +27,14 @@ tags: ["Full-Stack"]          # ML | Full-Stack | Security | CV
 links:
   github: "https://github.com/TyagiAkanksha/my-new-project"
   demo: "https://example.com"
-featured: true                # surfaces on the home page
-order: 1                      # sort position
+category: "engineering"       # engineering | research | coursework (home page shelf)
+team: "Solo project"          # optional
+kind: "Web app"               # optional
+materials:                    # optional; href starts with / or http
+  - label: "Slides"
+    href: "/materials/my-new-project/slides.pdf"
+    note: "Optional one line"
+order: 1                      # position within the shelf
 ---
 
 ## Problem

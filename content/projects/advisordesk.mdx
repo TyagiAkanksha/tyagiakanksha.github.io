@@ -1,7 +1,7 @@
 ---
-title: "AdvisorDesk: AI-Powered Advisory Content Platform"
+title: "AdvisorDesk: AI Content Platform with RAG"
 summary: "A publishing platform for financial advisory content, with an admin CMS, a client portal, and an AI assistant that answers with source citations."
-role: "Full Stack Engineer · Independent project"
+role: "Full Stack AI Engineer · Independent project"
 dates: "Mar 2026 – Present"
 tech: ["Next.js", "React", "TypeScript", "FastAPI", "Supabase (Postgres + pgvector)", "OpenAI", "MCP", "OAuth 2.1", "Docker", "AWS"]
 tags: ["Full-Stack", "ML"]
@@ -10,7 +10,7 @@ links:
   github: "https://github.com/TyagiAkanksha/AdvisorDesk"
 highlights:
   - "93% mean source support on an 80 question evaluation, 733 ms median time to first token in production"
-featured: true
+category: "engineering"
 order: 1
 ---
 
@@ -23,6 +23,9 @@ them or wait for an advisor to reply. A generic chatbot does not solve
 this either. In a regulated space, an answer that cannot be traced back to
 the firm's own published guidance creates risk instead of value.
 
+I built AdvisorDesk to show how I would solve this, as a working platform
+for a fictional advisory firm that runs on sample content I wrote.
+
 ## Approach
 
 I treated the firm's published content as the single source of truth and
@@ -31,84 +34,85 @@ built the platform around it.
 - An admin CMS lets advisors create, edit, tag, and publish guidance.
   Publishing is what makes content available to the assistant. Drafts stay
   invisible to it.
-- A client portal includes a RAG assistant that answers questions using
-  vector search over published content only. Every answer includes
-  numbered citations that link back to the source articles. When nothing
-  published covers the question, the assistant says so instead of guessing.
-- An agentic content layer exposes the CMS operations for drafting,
-  tagging, searching, and publishing as MCP tools, so a content manager
-  can run the editorial workflow through natural language, either from an
-  agent panel inside the CMS or from Claude.
+- A public client portal includes a RAG assistant that answers questions
+  from published content only. Every answer carries numbered citations
+  that link back to the source articles. When nothing published covers
+  the question, the assistant says so instead of guessing.
+- An agentic content layer exposes the CMS operations as 14 MCP tools, so
+  a content manager can search, draft, edit, tag, publish, and review
+  content in plain language, either from an agent panel inside the CMS or
+  from Claude. The agent never publishes unless the person explicitly asks
+  it to.
 - An evaluation loop measures how well answers are supported by their
-  sources, flags the weak ones, and checks every proposed content fix
-  before it is accepted.
+  sources. It collects weak answers from negative feedback, refusals, near
+  misses, and low confidence retrieval, turns proposed fixes into drafts,
+  and refuses any fix that makes the evaluation worse.
 
 ## Architecture & Tech
 
-Two Next.js applications, the admin CMS and the client portal, share one
-FastAPI backend. The backend is a modular monolith, and its import
-boundaries are enforced in CI, so the layering holds as the code grows.
-TypeScript API types are generated from the backend's OpenAPI spec, and CI
-fails when the committed spec or the generated types drift, which catches
-frontend and backend mismatches before they ship.
+Two Next.js App Router applications, the admin CMS and the client portal,
+share one FastAPI backend built with Pydantic, SQLAlchemy, and Alembic. The
+backend is a single application split into layered packages for services,
+RAG, auth, MCP, and the agent, and import contracts checked in CI stop one
+layer from reaching into another. TypeScript API types are generated
+from the backend's OpenAPI spec, and CI fails when the spec or the
+generated types drift, which catches frontend and backend mismatches
+before they ship.
 
-Content and embeddings live in Supabase, which provides Postgres with
-pgvector. Publishing an article chunks it, embeds it, and writes the
-vectors in one transaction. Retrieval runs a similarity search over
-published chunks, OpenAI generates the cited answer, and the answer streams
-to the browser over Server-Sent Events.
+Content and embeddings live in PostgreSQL with pgvector on Supabase.
+Publishing an article splits it into chunks of about 400 tokens along its
+headings, embeds them with OpenAI, and writes the vectors in the same
+transaction. A question is embedded the same way and matched against
+published chunks with an HNSW index. The six closest chunks come back, and
+anything below a similarity of 0.5 is dropped. OpenAI then writes the cited
+answer, which streams to the browser over Server-Sent Events. Public chat
+is rate limited per IP address and per session.
 
-All 14 MCP tools live in one registry with two ways in. The agent panel in
-the CMS calls them in process, and a remote MCP server exposes the same
-tools to Claude behind an OAuth 2.1 authorization flow. A tool behaves the
-same way no matter which side calls it. Advisors sign in with Google, and
-access is limited to an email allowlist.
+The CMS calls the 14 MCP tools in process, and a remote MCP server exposes
+the same tools to Claude. To let Claude connect, I wrote my own OAuth 2.1
+authorization server with PKCE, dynamic client registration, tokens that
+are checked against their intended audience, and refresh token rotation
+that detects a reused token. Only an allowlisted admin can reach the tools,
+after Google sign in and a consent screen.
 
-The three services run as Docker images on a single AWS EC2 host behind
-Caddy, which handles TLS.
+CI in GitHub Actions holds a 95% coverage floor on the backend, along with
+strict mypy, ESLint, Vitest, and a dependency audit that blocks the build.
+The suites hold over 1,200 backend tests and over 500 frontend tests.
 
-## Evaluation
-
-I evaluated the assistant on 80 questions across three runs, covering
-answerable questions, near misses, off topic questions, and questions that
-need more than one source. It reached 93% mean source support, and it
-refused correctly every time the published content had no answer.
-
-The same harness drives a feedback loop. Questions that retrieve poorly are
-grouped into a weak query report for content managers. When someone
-proposes a content fix, the platform compares evaluation runs from before
-and after, and it accepts the fix only if no question got worse. In one
-rehearsal, a deliberately bad draft raised the overall score and was still
-blocked, because two individual questions regressed.
+The API and both frontends run as Docker containers on one AWS EC2 host
+behind Caddy, which handles TLS. Images live in ECR, secrets live in SSM
+Parameter Store, and the host has no SSH access.
 
 ## Results & Impact
 
-- In production, the median time to first token is 733 ms, and the
-  estimated model cost is about $0.0013 per answer.
-- An automated check runs every six hours against the deployed site. It
-  asks a real question and verifies that a cited answer streams back, so
-  it tests the whole chat path and not only a health endpoint.
-- The codebase has roughly 1,000 backend tests and 500 frontend tests, and
-  CI enforces a 95% coverage floor on the backend.
-- Content managers can draft, search, and publish articles from Claude
-  through the OAuth protected MCP tools.
-
-The live site is seeded with sample guidance for a fictional advisory
-firm. It holds no real client data. This project is also the case study
-for my talk, Beyond RAG: Building an Evaluated, Self-Improving Agentic AI
-System.
-
-## Try it
+- On an 80 question golden set, scored by an LLM judge over three
+  recorded runs, a mean 93% of answerable questions were fully supported
+  by their cited sources. The assistant refused every out of scope
+  question correctly. The set mixes plainly answerable questions with
+  near misses, off topic questions, and questions that need more than one
+  source, and the judge is a stronger model than the one that answers.
+- In production, the median time to first token is 733 ms and the p95 is
+  1.27 seconds, measured over 24 chats. Each answer costs about $0.0013.
+- The regression gate works. In one rehearsal I wrote a deliberately bad
+  draft that raised the overall score, and the gate still blocked it,
+  because two individual questions got worse.
+- A probe runs against the live site every six hours. It asks a real
+  question and checks that a cited answer streams back, so it tests the
+  whole chat path and not only a health endpoint.
 
 The [client portal](https://advisordesk.tyagiakanksha.com/) is public and
 needs no login, including the
-[assistant](https://advisordesk.tyagiakanksha.com/chat). The admin CMS
-runs at admin.advisordesk.tyagiakanksha.com and accepts only allowlisted
-Google accounts, so it is described here instead of linked.
+[assistant](https://advisordesk.tyagiakanksha.com/chat). The admin CMS is
+open only to the allowlisted owner account, so I describe it here instead
+of linking to it. The site holds no real client data. This project is also
+the case study for my talk, Beyond RAG: Building an Evaluated,
+Self-Improving Agentic AI System.
 
 ## What I'd do next
 
 I would finish a larger round of human labels to calibrate the evaluation
 judge, since the current agreement check rests on a small sample. I would
-also move the in process rate limit and latency counters into Redis, so
-the API can run more than one worker.
+run the acceptance gate against a staging copy of the content, so a fix is
+judged before it reaches the live site rather than after. I would also move
+the in process rate limit and latency counters into Redis, so the API can
+run more than one worker.

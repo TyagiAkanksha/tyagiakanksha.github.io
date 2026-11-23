@@ -1,0 +1,67 @@
+---
+title: "Fashion-MNIST Image Classification"
+summary: "Compared classical and deep models on Fashion-MNIST, reaching 93.39% test accuracy with a deeper CNN."
+role: "MS coursework · University of Arkansas"
+dates: "Fall 2025"
+team: "Individual project"
+tech: ["Python", "PyTorch", "scikit-learn", "CNN", "SVM", "PCA"]
+tags: ["ML", "CV"]
+category: "coursework"
+order: 2
+---
+
+## Problem
+
+Fashion-MNIST is a standard benchmark of small grayscale photos of clothing:
+28 by 28 pixels, ten classes such as T-shirt, trouser, coat, sandal and bag,
+and a test set of 10,000 images. Some classes look much alike at that size.
+A shirt, a T-shirt and a coat differ mostly in the neckline and sleeves.
+
+This was an individual project for an MS machine learning course. The
+question was how far each family of model gets on the same data, from a
+classical support vector machine to a convolutional network, and what it
+takes to close the gap.
+
+## Approach
+
+I built every model in one codebase, with a configuration file per
+experiment so each run could be repeated and compared.
+
+- **Classical baseline.** I reduced each image to its main components with
+  principal component analysis (PCA) and trained a support vector machine
+  (SVM) with a radial basis function kernel on them, testing how many
+  components to keep. I also trained a plain fully connected network on the
+  pixels.
+- **Convolutional network.** The SVM and the fully connected network both
+  see an image as one long row of pixels, which throws away which pixels are
+  next to each other. A convolutional neural network (CNN) keeps the 2D
+  layout and learns local shapes such as edges and curves. My baseline CNN
+  used the Adam optimizer at a fixed learning rate of 0.002, with no dropout
+  and no schedule.
+- **Tuned CNN.** I then added a third convolutional layer, dropout of 0.3,
+  the AdamW optimizer with weight decay, and a cosine schedule that lowers
+  the learning rate smoothly over training.
+- **A sanity check.** Finally I collapsed the ten classes into two,
+  footwear (sandal, sneaker, ankle boot) and everything else, to see how
+  well the CNN captures overall shape.
+
+## Results & Impact
+
+Test accuracy on the 10,000 test images:
+
+- SVM on PCA features, best at 100 components: 86.62%
+- SVM and standard fully connected network, best runs: both topped out near 88%
+- Baseline CNN: 90.87%
+- Deeper CNN with dropout, AdamW and a cosine schedule: 93.39%
+
+The baseline CNN beat the SVM on PCA features by more than 4 points and
+reached a weighted F1 score of 0.91, a sign that keeping the image's spatial
+structure matters on this data. The tuned network raised accuracy to 93.39%
+with a weighted F1 of 0.93, and its loss curve was smoother and steadier than
+the baseline's.
+
+The confusion matrices showed where the remaining errors are. Shirt was the
+hardest class, most often mistaken for T-shirt or coat. The
+tuned CNN improved it but did not solve it. On the footwear task the CNN made
+only 14 mistakes in 10,000 test images. Telling a shoe from a piece of
+clothing is easy for it. The hard part is telling similar tops apart.

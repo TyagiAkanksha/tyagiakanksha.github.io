@@ -3,49 +3,63 @@ export type SkillGroup = {
   skills: string[];
 };
 
-// Mirrors the resume's six groups (updated Sep 2026); six fills the two column grid evenly.
+// Mirrors the master resume's eight groups, in its order and wording (updated Nov 2026); eight fills the two column grid evenly.
 export const skillGroups: SkillGroup[] = [
   {
     label: "Languages",
-    skills: ["Python", "TypeScript", "JavaScript", "SQL", "C", "PHP", "HTML/CSS"],
+    skills: ["Python", "TypeScript", "JavaScript", "SQL", "PHP", "C", "HTML", "CSS"],
   },
   {
-    label: "Backend & APIs",
+    label: "AI and Machine Learning",
+    skills: [
+      "LLM integration with the OpenAI and Claude APIs",
+      "tool calling",
+      "prompt engineering",
+      "RAG",
+      "AI agents",
+      "LangGraph",
+      "Model Context Protocol (MCP)",
+      "LLM evaluation",
+      "PyTorch",
+      "reinforcement learning",
+      "graph neural networks",
+      "anomaly detection",
+      "diffusion models",
+      "Stable Diffusion XL",
+      "Hugging Face diffusers and transformers",
+      "scikit-learn",
+      "Gym-style RL environments",
+      "Google Colab",
+    ],
+  },
+  {
+    label: "Backend and APIs",
     skills: [
       "FastAPI",
       "Node.js",
-      "Pydantic",
-      "SQLAlchemy",
       "REST APIs",
       "OpenAPI",
+      "Pydantic",
+      "SQLAlchemy",
+      "Alembic",
       "Server-Sent Events",
       "OAuth 2.1",
+      "WordPress",
     ],
   },
   {
     label: "Frontend",
     skills: [
-      "Next.js 16 (App Router, RSC)",
+      "Next.js 16 App Router",
       "React 19",
       "Redux Toolkit",
       "Material UI",
       "Tailwind CSS",
+      "Gradio",
     ],
   },
   {
-    label: "AI & ML",
-    skills: [
-      "LLM integration",
-      "RAG",
-      "AI agents",
-      "MCP",
-      "PyTorch",
-      "Reinforcement Learning",
-      "Graph Neural Networks",
-    ],
-  },
-  {
-    label: "Data & Cloud",
+    label: "Data and Cloud",
     skills: [
       "PostgreSQL",
       "pgvector",
@@ -53,22 +67,44 @@ export const skillGroups: SkillGroup[] = [
       "MySQL",
       "Redis",
       "ARQ",
-      "AWS (EC2, ECR, S3, SSM, VPC)",
-      "Docker",
-      "Caddy",
+      "AWS EC2",
+      "ECR",
+      "S3",
+      "SSM Parameter Store",
+      "IAM",
+      "VPC",
     ],
   },
   {
-    label: "Testing & DevOps",
+    label: "Security",
+    skills: [
+      "OAuth 2.1 with PKCE",
+      "HMAC request signing",
+      "rate limiting",
+      "Cowrie SSH honeypots",
+    ],
+  },
+  {
+    label: "Testing and DevOps",
     skills: [
       "pytest",
       "mypy",
       "Vitest",
       "ESLint",
+      "Docker",
+      "Docker Compose",
+      "Caddy",
       "GitHub Actions",
       "CI/CD",
       "Git",
       "Linux",
+    ],
+  },
+  {
+    label: "Research Tools",
+    skills: [
+      "SUMO traffic simulator",
+      "SWaT, WADI and ACWA industrial control datasets",
     ],
   },
 ];

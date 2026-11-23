@@ -7,6 +7,7 @@ export type Publication = {
   doi: string;
   doiUrl: string;
   award?: string;
+  note?: string;
 };
 
 export const publications: Publication[] = [
@@ -32,6 +33,7 @@ export const publications: Publication[] = [
     doi: "10.5220/0012637200003702",
     doiUrl: "https://doi.org/10.5220/0012637200003702",
     award: "Best Student Paper Award Nominee",
+    note: "Full paper, 21% full paper acceptance rate",
   },
 ];
 
@@ -47,7 +49,22 @@ export const talks: Talk[] = [
     title:
       "Beyond RAG: Building an Evaluated, Self-Improving Agentic AI System",
     kind: "Technical talk",
-    location: "Charlotte, NC",
+    location:
+      "Charlotte, NC, and the New Jersey AI Meetup (online, Sep 24, 2026), co-presented with Abhishek Reddy Malreddy",
     date: "Sep 2026",
+  },
+  {
+    title:
+      "Improving Lane Level Dynamics for EV Traversal: A Reinforcement Learning Approach",
+    kind: "Conference presentation",
+    location: "VEHITS 2024 (online)",
+    date: "May 2024",
+  },
+  {
+    title: "Four research paper presentations in MS course seminars",
+    kind: "Seminar presentations",
+    location:
+      "WGAN-VGG for low dose CT denoising, the Graph Deviation Network, Sphinx, and WiKey",
+    date: "2024 – 2025",
   },
 ];

@@ -2,7 +2,7 @@ import type { SkillGroup as SkillGroupData } from "@/data/skills";
 
 export function SkillGroup({ group }: { group: SkillGroupData }) {
   return (
-    <div>
+    <div className="mb-6 break-inside-avoid">
       <h4 className="mb-2 font-display text-sm font-semibold tracking-tight">
         {group.label}
       </h4>

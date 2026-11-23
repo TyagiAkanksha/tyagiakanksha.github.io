@@ -17,14 +17,14 @@ export const experience: Experience[] = [
     dates: "Jan 2024 – May 2026",
     advisor: "Dr. Qinghua Li",
     bullets: [
-      "Designed the core algorithm of a reinforcement learning fuzzer that mutates multiple input parameters per round. It reached 70% code coverage and twice the crashes of traditional fuzzing on a power generation control system. This work was published at IEEE CSR 2025.",
-      "For my master's thesis, I built graph based and ensemble anomaly detection models for the SWaT water treatment testbed (51 sensors across 6 stages, 35 labeled attacks). They reached a mean F1 of 0.886 (SD 0.009) across five seeds, against a published benchmark of 0.81.",
-      "Made model training reproducible with orthogonal embedding initialization, gradient clipping, and cosine annealed learning rate warmup. Failed training runs dropped from 40% to 2%, and the F1 standard deviation fell from 0.066 to 0.020.",
+      "Designed the core algorithm of a reinforcement learning fuzzer that mutates multiple input parameters in each round. On a power generation control system it reached 70% code coverage and found twice as many crashes as traditional fuzzing, and the work was published at IEEE CSR 2025.",
+      "For my master's thesis, I built graph based and ensemble anomaly detection on the Graph Deviation Network (GDN) for the SWaT water treatment testbed, which has 51 sensors and actuators across six process stages, and wrote plain language operator alerts with the Claude API.",
+      "Audited my own evaluation and found that, although training was clean, every number I had reported depended on test labels or test statistics. I rebuilt the protocol so that training and model choice use attack free data only and seeds are fixed before any run, and I now report each result with the normalization statistics it depends on.",
+      "Under that protocol, with the test set normalization of the original GDN code, a single model reaches an Oracle F1 (the best F1 over all thresholds, chosen with test labels, so an upper bound) of 0.709 ± 0.101 over 20 seeds with 4 of 20 runs failing, and 0.760 ± 0.014 with no failures once the 14 sensors constant in training are left out. On those 37 sensors an ensemble of 45 models detects 18 of 35 attack segments at the best threshold, against about 11 for a single model.",
     ],
     projects: [
       "rl-guided-fuzzing",
       "water-anomaly-detection",
-      "diffusion-image-synthesis",
     ],
   },
   {
@@ -34,9 +34,10 @@ export const experience: Experience[] = [
     dates: "Jun 2022 – Dec 2023",
     advisor: "Dr. Praveen Paruchuri",
     bullets: [
-      "Trained reinforcement learning lane selection policies in Python and PyTorch on a 2 km four lane network in the SUMO traffic simulator. They cut emergency vehicle traversal time by up to 10.9% against the strongest of three heuristic baselines, evaluated over 100 runs per setting.",
-      "Benchmarked the learned policy against SUMO's default lane changing, a fixed lane policy, and a utility weighted best lane heuristic, using an empty road run as the theoretical lower bound.",
-      "Validated the policy against New York City traffic speed data and wrote the peer review response defending the method. The paper was accepted at VEHITS 2024 and nominated for the Best Student Paper Award.",
+      "As first author of a VEHITS 2024 paper, I cut emergency vehicle traversal time by up to 10.9% against the strongest of three heuristic baselines. The paper was a Best Student Paper nominee.",
+      "Trained an A2C reinforcement learning lane selection policy for 700,000 steps in Python and PyTorch, on a 2 km four lane road network in the SUMO traffic simulator.",
+      "Tested the policy on a week of New York City traffic speed data (9,670 minutes), where it beat the best lane heuristic by 2.5% in normal traffic and 4% in congested traffic, over 100 runs per setting.",
+      "Compared the policy with SUMO's default lane changing, a fixed lane policy, and a utility weighted best lane heuristic, with an empty road run as the theoretical lower bound. I also wrote the peer review response that defended the method and led to the paper's acceptance.",
     ],
     projects: ["ev-traffic-optimization"],
   },
@@ -47,7 +48,7 @@ export const experience: Experience[] = [
     dates: "Jun 2021 – Apr 2022",
     bullets: [
       "Launched a complaint management system for Roorkee's municipal body in PHP, JavaScript, and MySQL on WordPress. It routed about 300 citizen complaints a month to the responsible departments.",
-      "Built the citizen facing reporting interface with client and server side validation, so complaints reached department queues complete and staff no longer had to contact citizens again for missing details.",
+      "Built the citizen facing reporting interface with client and server side validation, so complaints reached department queues complete and staff had to go back to citizens for missing details less often.",
       "Designed the relational schema for complaint records and their handling states, from submission through routing to resolution, and trained administrative staff on the response workflow at handover.",
     ],
     projects: ["city-complaint-system"],

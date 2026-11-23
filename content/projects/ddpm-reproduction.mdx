@@ -1,0 +1,56 @@
+---
+title: "Reproducing Denoising Diffusion Probabilistic Models"
+summary: "Reproduced the DDPM paper on CIFAR-10, then trained it to generate handwritten digits and textures."
+role: "MS coursework · University of Arkansas"
+dates: "Spring 2024"
+team: "Team of 2"
+kind: "Paper reproduction"
+tech: ["Python", "PyTorch", "Diffusion Models", "U-Net"]
+tags: ["ML", "CV"]
+category: "coursework"
+order: 5
+materials:
+  - label: "Denoising Diffusion Probabilistic Models (arXiv 2006.11239)"
+    href: "https://arxiv.org/abs/2006.11239"
+    note: "the paper we reproduced"
+---
+
+## The paper
+
+A generative model learns what a set of images has in common, so that it
+can produce new images that look as if they came from the same set. Diffusion
+models do this in two directions. The forward process takes a real image and
+adds a little Gaussian noise to it, again and again, until nothing is left
+but noise. The reverse process learns to undo that one small step at a time,
+so that starting from pure noise it ends with a new image.
+
+The idea came from a 2015 paper inspired by nonequilibrium physics, which
+was hard to scale. Denoising Diffusion Probabilistic Models (DDPM), from
+2020, made it practical. Its network is trained to predict the noise that was
+added at a given step, rather than the clean image. The authors showed that
+this gives high quality images with an efficient training procedure, and
+that training resembles denoising score matching while sampling resembles
+Langevin dynamics, two known techniques. Those are the paper's results.
+
+## What we reproduced
+
+We were a team of two in an MS course.
+
+- **CIFAR-10.** We first reproduced the paper's image generation on
+  CIFAR-10, the small color image dataset the paper itself uses.
+- **New datasets.** We then trained DDPM on two other datasets: MNIST, to
+  generate handwritten digits, and the Amsterdam Library of Textures (ALOT),
+  in its quarter resolution version of 384 by 256 pixels, to generate
+  textures.
+- **Settings.** The noise schedule ran for 1,000 steps. The U-Net widened
+  from 32 to 256 channels as it went down in resolution and used attention
+  with 4 heads. We trained for 40 epochs on each dataset at batch size 64.
+- **Output.** For each dataset we produced grids of generated samples and
+  videos of the generation process, from noise to image.
+
+## What we found
+
+After the CIFAR-10 reproduction, one U-Net design and one set of training
+settings ran on both MNIST, whose digits have a single gray channel, and the
+color textures of ALOT. Both trained for 40 epochs with the same noise
+schedule and produced the sample grids and generation videos described above.

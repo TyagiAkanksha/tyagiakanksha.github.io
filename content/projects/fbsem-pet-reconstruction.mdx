@@ -1,0 +1,83 @@
+---
+title: "PET Reconstruction with FBSEM"
+summary: "Implemented a deep learning method that reconstructs low dose PET brain images from a learned prior and PET physics."
+role: "MS coursework · University of Arkansas"
+dates: "Spring 2025"
+team: "Team of 3"
+kind: "Paper reproduction"
+tech: ["Python", "PyTorch", "CNN", "Medical Imaging"]
+tags: ["ML", "CV"]
+category: "coursework"
+order: 4
+---
+
+## The paper
+
+A PET scan measures where a radioactive tracer collects in the body, and
+software has to reconstruct a 3D image from the raw detector data. With a
+low dose of tracer or a short scan, that data is noisy and so is the image.
+The standard iterative method, OSEM, uses no prior knowledge about the
+image. MAPEM adds a hand designed prior, here guided by an MR scan of
+the same patient, which suppresses noise but tends to blur real detail,
+including small lesions.
+
+Deep learning offers other routes. A network can clean up an image after a
+standard reconstruction, as a U-Net denoiser does, or learn the whole
+mapping from raw data to image, which takes a great deal of training data.
+The paper we reproduced, "Model-Based Deep Learning PET Image Reconstruction
+Using Forward-Backward Splitting Expectation Maximisation", takes a middle
+path. Its method, FBSEM, keeps the physics of the scanner and learns only
+the prior. Each iteration has three steps: a small convolutional network
+denoises the current image, an expectation maximisation (EM) update pulls it
+back toward what the scanner actually measured, and a fusion step weighs the
+two. The iterations are unrolled into a recurrent network that reuses the
+same parameters at every step, so the model stays small.
+
+The results in this section are the paper's, not ours. The authors report
+that FBSEM performs as well as U-Net denoising with fewer parameters. On
+simulated test data, the PET only variant of FBSEM underestimated hot lesion intensity
+by 7.4% on average, against 25.7% for MAPEM, which tends to smooth lesions
+away.
+
+## What we reproduced
+
+We were a team of three in an MS course, and we implemented and trained
+FBSEM.
+
+- **Data.** We used BrainWeb, a widely used set of simulated brain scans:
+  70 PET and MR brain phantoms with hot and cold lesions added at random,
+  with low dose and high dose scans simulated for each, including noise and
+  the scanner's blur. Each PET volume is 344 by 344 by 128 voxels. We
+  trained on 200 datasets and tested on 10.
+- **Preparation.** We trimmed the raw sinograms radially to cut computation,
+  and started each reconstruction from 10 iterations of OSEM.
+- **Model.** The learned prior is a 5 layer convolutional network with 32
+  filters per layer, batch normalization, ReLU activations and a residual
+  connection. With the EM update and the fusion step, and all of it shared
+  across iterations, the whole network has about 28,000 parameters. We
+  trained the variant that takes both PET and MR as input.
+- **Training.** We minimized the mean squared error against the high dose
+  images with the Adam optimizer at a learning rate of 0.05, one 3D volume
+  per batch. Training from scratch for 50 epochs took about 36 hours.
+- **Evaluation.** We measured contrast to noise ratio between gray and white
+  matter, normalized root mean squared error against the high dose image,
+  and the error in hot lesion intensity.
+
+## What we found
+
+The 7.4% and 25.7% error figures above are the paper's, and our run did not
+reproduce that comparison.
+
+Training converged gradually but stably. Comparing reconstructions at
+epochs 4, 17, 38 and 50, FBSEM's images grew sharper, with clearer
+boundaries between gray and white matter, and by the last epoch they were
+close to the high dose reference. The MAPEM reconstruction of the same data
+stayed somewhat oversmoothed. Because the network shares its parameters
+across iterations, it can also run more iterations at test time without
+retraining.
+
+We did not get as far as the paper's main comparison. We trained only the
+PET and MR variant, so our next steps were to train the PET only
+FBSEM and the U-Net baselines under the same settings and data. Until then,
+the finding that FBSEM keeps up with U-Net using fewer parameters rests on
+the paper, not on our run.

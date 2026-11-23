@@ -12,6 +12,12 @@ export function PublicationCard({ pub }: { pub: Publication }) {
           {pub.venue}
           {pub.pages ? `, pp. ${pub.pages}` : ""}.
         </span>
+        {pub.note ? (
+          <>
+            {" "}
+            <span className="text-muted">{pub.note}.</span>
+          </>
+        ) : null}
       </p>
       <p className="mt-1.5 pl-5 font-mono text-xs">
         <a

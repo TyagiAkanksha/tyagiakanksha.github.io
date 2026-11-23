@@ -18,6 +18,9 @@ export function EducationItem({ edu }: { edu: Education }) {
           </span>
         ) : null}
       </p>
+      {edu.thesis ? (
+        <p className="mt-0.5 text-sm text-muted">{edu.thesis}</p>
+      ) : null}
       {edu.coursework?.length ? (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {edu.coursework.map((c) => (

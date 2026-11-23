@@ -4,9 +4,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MdxContent } from "@/components/mdx-content";
+import { ProjectMaterials } from "@/components/project-materials";
 import { ProjectMeta } from "@/components/project-meta";
 import { TechChip } from "@/components/badge";
 import { getAllProjects, getProjectBySlug } from "@/lib/content";
+import { SHELVES } from "@/lib/shelves";
 
 // Static export: every slug is prerendered; unknown slugs 404 at build time.
 export const dynamicParams = false;
@@ -45,14 +47,15 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
+  const shelf = SHELVES.find((s) => s.id === project.category);
 
   return (
     <article className="pt-10 sm:pt-14">
       <Link
-        href="/#projects"
+        href={`/#${project.category}`}
         className="inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors hover:text-accent"
       >
-        <ArrowLeft className="size-3.5" aria-hidden /> All projects
+        <ArrowLeft className="size-3.5" aria-hidden /> All projects{shelf ? ` · ${shelf.tab}` : ""}
       </Link>
 
       <header className="mt-6">
@@ -88,6 +91,8 @@ export default async function ProjectPage({
       <div className="mt-10">
         <MdxContent source={project.body} />
       </div>
+
+      <ProjectMaterials items={project.materials} />
     </article>
   );
 }

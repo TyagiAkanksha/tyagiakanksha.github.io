@@ -1,7 +1,7 @@
 ---
 title: "SentinelBrief: AI Security Alert Triage Platform"
 summary: "Turns live SSH honeypot sessions into prioritized security alerts with severity, reasoning, and recommended actions, backed by a measured evaluation harness."
-role: "Full Stack Engineer · Independent project"
+role: "Full Stack AI Engineer · Independent project"
 dates: "Jul 2026 – Present"
 tech: ["Python", "FastAPI", "PostgreSQL", "Redis", "ARQ", "Next.js", "TypeScript", "OpenAI", "Docker", "AWS"]
 tags: ["Security", "Full-Stack", "ML"]
@@ -9,8 +9,8 @@ links:
   demo: "https://sentinelbrief.tyagiakanksha.com/"
   github: "https://github.com/TyagiAkanksha/SentinelBrief"
 highlights:
-  - "About $0.0012 per alert and 1.1 s median model latency across 252 evaluation sessions"
-featured: true
+  - "6,561 live alerts triaged at about $0.0017 each, with 24% escalated to the stronger model"
+category: "engineering"
 order: 2
 ---
 
@@ -32,63 +32,76 @@ confidence score, written reasoning, and a recommended action.
 The human always decides. Nothing in the system blocks an address,
 isolates a host, or answers an attacker. It only ranks and explains.
 
-I also built it to be measured. Accuracy, cost, and latency are scored
-against a fixed set of sessions whenever the prompt or the model changes,
-and the results are published in the repository, including the runs that
-came out worse than the ones before them.
+I also built it to be measured. An evaluation harness scores accuracy,
+cost, and latency against a fixed set of real sessions, and it runs as a
+gate in CI, so a prompt or model change that makes triage worse does not
+ship. The results are kept on an append only record, including the runs
+that came out worse than the ones before them.
 
 ## Architecture & Tech
 
-A Cowrie SSH honeypot runs on its own host in a separate network. When a
-session ends, a small shipper posts it to the API with an HMAC signature.
-The FastAPI service verifies the signature, drops duplicates by
-fingerprint, stores the alert in PostgreSQL, and returns right away.
+A Cowrie SSH honeypot runs on its own host, isolated in a separate AWS
+VPC. When a session ends, a small Python shipper posts it to the API with
+an HMAC signature. If the API cannot be reached, the shipper keeps the
+session in a spool on disk and retries, and a session that keeps failing
+goes to a dead letter folder instead of being lost. The FastAPI service
+verifies the signature, drops duplicates by fingerprint, stores the alert
+in PostgreSQL, and returns right away.
 
-All model work happens in a background worker built on ARQ and Redis, so
-alert ingestion never waits for a model response. The worker runs a triage
-agent with five enrichment tools: IP reputation, geolocation and network
-owner, alert history for the same source, the commands typed in the
-session, and information about the targeted asset. The verdict is
-validated against a schema and retried once if it does not parse.
+All model work happens in background workers built on ARQ and Redis, so
+ingestion never waits for a model response. No public request can trigger
+a model call at all, and an import contract in CI keeps the model client
+out of the API process. The worker runs a triage agent with five
+enrichment tools: the commands typed in the session, information about
+the targeted asset, geolocation and network owner, IP reputation, and the
+alert history for the same source.
 
-A small model handles every alert first. When it reports a high severity
-or a low confidence, the alert is run again on a stronger model. Every
-tool call is stored with its arguments, result, and latency, so the
-timeline on the dashboard is the real trace and not a summary.
+Attacker sessions are hostile input. Everything the attacker typed reaches
+the model only inside clearly marked delimiters, and the tool loop stops
+after six steps. The verdict is validated against a schema and retried
+once if it does not parse, and every verdict records its models, tokens,
+cost, and latency.
 
-Failed jobs retry automatically with backoff. Attacker controlled text
-reaches the model only as clearly marked data, and the public endpoints
-are rate limited.
+A fast model handles every alert first. When it reports a high severity or
+a low confidence, the alert goes to a stronger model, which sees the same
+evidence but not the first verdict, so it is not anchored by it. Every tool
+call is stored as a reviewable trace.
 
-The dashboard is a public Next.js app with no login. It receives new
-verdicts live over Server-Sent Events and falls back to polling. The
-whole stack runs as Docker containers on AWS behind Caddy.
+Triage is idempotent. Jobs have deterministic IDs, the alert row is locked
+while it is triaged, and retries are bounded. Integration tests on real
+PostgreSQL and Redis crash and restart the worker and confirm that each
+alert still gets exactly one verdict. CI also runs strict mypy and fails
+the build if backend test coverage drops below 90%.
 
-## Evaluation
+The dashboard is a public Next.js app with no login. New alerts arrive on
+it live over Server-Sent Events, and if the stream drops it falls back to
+polling every 30 seconds. Each alert page shows its recorded tool calls.
+Every public read endpoint is rate limited per IP address, with the
+counters kept in Redis.
 
-The evaluation harness uses 252 real honeypot sessions, including a group
-chosen because they attempt prompt injection. The labels are AI generated
-by a stronger model, so the scores measure agreement with that model and
-not human ground truth. I state that plainly next to the results.
-
-The same harness runs as a regression check in CI. It compares severity
-agreement and critical alert recall against a stored baseline. To prove
-the check works, I ran it against a deliberately degraded prompt, and it
-rejected the change.
+The stack runs on AWS EC2 with Docker Compose behind Caddy, with images in
+ECR, secrets in SSM Parameter Store, and IAM deny policies. PostgreSQL is
+backed up to S3 every night, and a restore script brings a backup back.
 
 ## Results & Impact
 
-- Triage costs an estimated $0.0012 per alert, with a 1.1 second median
-  model latency across the 252 evaluation sessions.
-- In its first week live, the platform triaged more than 800 real attacker
-  sessions with no failed jobs.
-- In a controlled restart test, the system recovered from a worker crash
-  without producing duplicate verdicts.
-- The backend test suite enforces a 90% coverage floor in CI, along with
-  strict type checks and import boundary rules that keep model calls
-  inside the worker.
-
-## Try it
+- Between Sep 12 and Nov 21, 2026, the honeypot fed in 9,896 alerts. The
+  platform triaged 6,561 of them at a mean cost of about $0.0017 per
+  alert, and sent 24% to the stronger model.
+- The first 32 live sessions came from 18 attacker IPs. All of them were
+  triaged, exactly one was escalated, and the other 31 were rated at
+  severity 1 or 2.
+- The evaluation set holds 252 real honeypot sessions, seven of them
+  tagged as possible prompt injection attempts. A stronger model
+  labeled them, so the scores measure agreement with that model and not
+  human ground truth, and I state that plainly next to the results. A
+  nightly CI gate checks severity agreement, critical alert recall, and
+  cost. On that set, triage averaged about $0.0012 per alert with a 1.1
+  second median model latency.
+- To prove the gate works, I ran it against a deliberately degraded
+  prompt. Severity agreement fell from 1.00 to 0.04 and critical alert
+  recall from 1.00 to 0.00, and the gate stopped the change before
+  release.
 
 The [live dashboard](https://sentinelbrief.tyagiakanksha.com/) is public
 and read only. Open any alert to see the verdict, the reasoning, and the
@@ -96,7 +109,7 @@ full tool trace behind it.
 
 ## What I'd do next
 
-I would label a subset of sessions by hand to calibrate the AI generated
-labels. I would also rebalance the evaluation set, because most real
-sessions are low severity, and the rarer high severity cases are the ones
-that matter most.
+I would label a subset of sessions by hand to calibrate the model
+generated labels. I would also rebalance the evaluation set, because most
+real sessions are low severity, and the rarer high severity cases are the
+ones that matter most.

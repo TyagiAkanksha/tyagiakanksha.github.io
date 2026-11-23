@@ -5,6 +5,7 @@ import { ContactRows } from "@/components/contact-rows";
 import { EducationItem } from "@/components/education-item";
 import { Footer } from "@/components/footer";
 import { ProjectEntryList } from "@/components/project-entry";
+import { ProjectShelves } from "@/components/project-shelves";
 import { PublicationCard, TalkCard } from "@/components/publication-card";
 import { Section } from "@/components/section";
 import { Sidebar } from "@/components/sidebar";
@@ -15,7 +16,8 @@ import { experience } from "@/data/experience";
 import { publications, talks } from "@/data/publications";
 import { site } from "@/data/site";
 import { skillGroups } from "@/data/skills";
-import { getAllProjects } from "@/lib/content";
+import { getAllProjects, getProjectsByShelf } from "@/lib/content";
+import { SHELVES } from "@/lib/shelves";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -24,7 +26,7 @@ const personJsonLd = {
   email: `mailto:${site.email}`,
   url: site.url,
   image: `${site.url}/images/dp.jpeg`,
-  jobTitle: "Full Stack Engineer",
+  jobTitle: "Full Stack AI Engineer",
   alumniOf: "University of Arkansas",
   sameAs: [site.github, site.linkedin],
 };
@@ -35,6 +37,7 @@ const SECTION_SCROLL = "scroll-mt-8 lg:scroll-mt-20";
 
 export default function Home() {
   const projects = getAllProjects();
+  const byShelf = getProjectsByShelf();
   const bySlug = new Map(projects.map((p) => [p.slug, p]));
 
   return (
@@ -71,35 +74,35 @@ export default function Home() {
         <Section id="about" label="About" className={SECTION_SCROLL}>
           <div className="space-y-4 text-[15.5px] leading-relaxed text-fg">
             <p>
-              I am a full stack software engineer with more than three years
-              of professional experience. I build web applications with
-              Python, FastAPI, React, Next.js, and PostgreSQL, and I have
-              hands on experience integrating AI features such as retrieval
-              augmented generation, AI agents, and MCP tooling, testing them
-              for reliability, and deploying them on AWS. My two most recent
-              projects, AdvisorDesk and SentinelBrief, are both live, and you
-              can try them from the projects section below.
+              I am a full stack AI engineer with more than three years of
+              professional experience. I build web applications and the AI
+              features inside them with Python, FastAPI, TypeScript, React,
+              Next.js, and PostgreSQL. Lately that has meant retrieval
+              augmented generation that answers with source citations, AI
+              agents that work through tool calling, and evaluation gates in
+              CI that stop regressions. I deploy all of it securely on AWS. My two
+              most recent projects, AdvisorDesk and SentinelBrief, are both
+              live, and you can try them from the projects section below.
             </p>
             <p>
               I hold a Master of Science in Computer Science from the
-              University of Arkansas. During my research years I worked on
-              reinforcement learning for fuzzing and on anomaly detection in
-              cyber-physical water systems, and that work led to two peer
-              reviewed publications. Alongside the research I built the
-              software around the models, including data pipelines, APIs,
-              dashboards, and tooling.
+              University of Arkansas. My graduate research covered graph
+              neural networks, reinforcement learning, and anomaly detection,
+              and it led to two peer reviewed papers. I also worked in teams
+              that reproduced recent deep learning papers, and alongside the
+              research I built the software around the models, including data
+              pipelines, APIs, dashboards, and tooling.
             </p>
             <p>
-              This combination is what I bring to full stack and forward
-              deployed engineering roles. I can take a customer problem,
-              design the system, and ship it in React, Next.js, Node, or
-              Python. When the problem calls for it, I can also build and
-              evaluate the machine learning behind it.
+              That mix is what I bring to AI engineer and full stack roles. I
+              can take a problem, design the system, and ship it in React,
+              Next.js, Node, or Python. When the problem calls for it, I can
+              also build and evaluate the machine learning behind it.
             </p>
           </div>
           <div className="mt-8 flex flex-wrap gap-x-7 gap-y-2 border-y border-line py-3.5 font-mono text-xs text-muted">
             <span>
-              <span className="text-accent">02</span> peer-reviewed publications
+              <span className="text-accent">02</span> peer reviewed publications
             </span>
             <span>Best Student Paper nominee · VEHITS 2024</span>
             <span>MS Computer Science · GPA 3.75/4.0</span>
@@ -107,7 +110,7 @@ export default function Home() {
           <h3 className="mb-4 mt-10 font-display text-lg font-semibold tracking-tight">
             Skills
           </h3>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="columns-1 gap-6 sm:columns-2">
             {skillGroups.map((group) => (
               <SkillGroup key={group.label} group={group} />
             ))}
@@ -127,7 +130,19 @@ export default function Home() {
           label="Projects"
           className={`mt-20 ${SECTION_SCROLL}`}
         >
-          <ProjectEntryList projects={projects} />
+          <ProjectShelves
+            shelves={SHELVES.map((shelf) => ({
+              id: shelf.id,
+              label: shelf.tab,
+              count: byShelf[shelf.id].length,
+              panel: (
+                <ProjectEntryList
+                  projects={byShelf[shelf.id]}
+                  variant={shelf.id === "coursework" ? "compact" : "full"}
+                />
+              ),
+            }))}
+          />
         </Section>
 
         <Section
@@ -166,8 +181,8 @@ export default function Home() {
           className={`mt-20 ${SECTION_SCROLL}`}
         >
           <p className="max-w-lg text-[15.5px] leading-relaxed text-muted">
-            I am open to full stack and forward deployed engineering roles.
-            The fastest way to reach me is by email.
+            I am open to AI engineer and full stack roles. The fastest way to
+            reach me is by email.
           </p>
           <div className="mt-4">
             <ContactRows />

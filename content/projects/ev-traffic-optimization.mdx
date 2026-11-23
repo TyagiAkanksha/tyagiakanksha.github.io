@@ -3,56 +3,85 @@ title: "RL for Emergency Vehicle Traffic Optimization"
 summary: "Reinforcement learning lane selection that cut emergency vehicle traversal time by up to 10.9% in SUMO. Best Student Paper nominee, VEHITS 2024."
 role: "Research Assistant · IIIT Hyderabad"
 dates: "Jun 2022 – Dec 2023"
-tech: ["Python", "PyTorch", "Stable-Baselines3", "SUMO", "Reinforcement Learning", "V2V"]
+tech: ["Python", "PyTorch", "SUMO", "Reinforcement Learning", "V2V"]
 tags: ["ML"]
 links:
   paper: "https://doi.org/10.5220/0012637200003702"
 highlights:
   - "Best Student Paper Award nominee, VEHITS 2024"
-featured: true
-order: 5
+category: "research"
+order: 3
 ---
 
 ## Problem
 
-When an ambulance is stuck in traffic, the seconds lost to surrounding
-vehicles reacting late can cost lives. Lane-level dynamics are the
-bottleneck: which vehicle should yield, into which lane, and at what
-moment. Fixed traffic rules handle this poorly, so we set out to learn
-the behavior instead.
+When an ambulance is stuck in traffic, every second of delay can matter.
+Route planners decide which roads an emergency vehicle takes, but they
+mostly ignore the lane it drives in, and on a busy road with several lanes,
+being in the right lane at the right moment saves real time. Fixed rules for
+lane changes handle this poorly. At IIIT Hyderabad, advised by Dr. Praveen
+Paruchuri, we set out to learn the lane choice instead.
 
 ## Approach
 
-We modeled lane selection as a reinforcement learning problem with
-vehicle-to-vehicle (V2V) communication in the loop. Vehicles share state,
-which allows the policy to coordinate yielding behavior ahead of the
-emergency vehicle rather than reacting to it. Policies were trained with
-Stable-Baselines3 and evaluated in SUMO across multi-modal traffic
-environments, ranging from grid-world abstractions to road networks
-inspired by real layouts.
+I framed lane selection for the emergency vehicle as a Markov decision
+process and trained a reinforcement learning policy on it, which we called
+Reinforcement Learning based Lane Search.
+
+- **State.** What the emergency vehicle knows about the vehicle directly
+  ahead of it (the distance between them, their speed difference and that
+  vehicle's acceleration), plus the free space in each lane within
+  vehicle to vehicle (V2V) communication range.
+- **Action.** Which lane to be in, decided again at every interval.
+- **Reward.** At each interval, the distance the vehicle covered is compared
+  with the distance it would have covered on an empty road. The gap is
+  squared so that large losses count more, clipped to keep learning stable,
+  and summed over the trip for an episode score.
+- **Algorithm.** A2C, trained for 700,000 steps in Python and PyTorch.
+
+I trained three variants: one with only the per interval reward, one that
+added the episode reward, and one that also trained in congested traffic.
+The second, trained on normal traffic with both rewards, did best in every
+setting, including congested traffic it had never trained on.
 
 ## Architecture & Tech
 
-A SUMO simulation stack drives the environments, and a Gym style wrapper
-exposes lane-level state, including V2V shared observations, to the
-Stable-Baselines3 agents. The evaluation suite compares the learned policy
-against three heuristic baselines: SUMO's default lane changing, a fixed
-lane policy, and a utility weighted best lane heuristic. An empty road run
-serves as the theoretical lower bound on traversal time.
+The environment is SUMO, the open source traffic simulator, driven from
+Python through its TraCI interface. The road is a 2 km one way stretch with
+four lanes. In normal traffic a new vehicle enters with a 60% chance every
+second; congestion is simulated by slowing several vehicles at regular
+intervals, for example three every 40 seconds or nine every 60 seconds.
+
+I compared the learned policy with three heuristic baselines: SUMO's default
+lane changing, a policy that stays in one fixed lane, and a best lane
+heuristic that weighs the utility of each lane. A run on an empty road gives
+the lower bound on traversal time.
+
+To check the policy against real traffic, I used a week of New York City
+traffic speed data from the city's arterial roads, 9,670 minutes in all. I
+grouped road speeds into bands 5 m/s wide, made 100 runs per setting, one
+setting for each band, and weighted the bands by how often they occur in the
+data.
 
 ## Results & Impact
 
-- The learned policies cut emergency vehicle traversal time by up to 10.9%
-  against the strongest of the three baselines, on a 2 km four lane
-  network, evaluated over 100 runs per setting.
-- I validated the policy against New York City traffic speed data and
-  wrote the peer review response defending the method.
-- The work was published as "Improving Lane Level Dynamics for EV
-  Traversal: A Reinforcement Learning Approach" at VEHITS 2024, where it
-  was nominated for the Best Student Paper Award.
+- **Simulated congestion.** Traversal time fell by up to 10.9% against the
+  best lane heuristic, the strongest of the three baselines.
+- **Simulated normal traffic.** Traversal time fell by 6% against the same
+  heuristic.
+- **New York City data.** The policy beat the best lane heuristic by 2.5% in
+  normal traffic and 4% in congested traffic.
+
+I wrote the response to the peer reviewers defending the method, and the
+paper, "Improving Lane Level Dynamics for EV Traversal: A Reinforcement
+Learning Approach", was accepted as a full paper at VEHITS 2024, where 21% of
+full paper submissions were accepted. I am its first author, with Meghna
+Lowalekar and Dr. Praveen Paruchuri. It was a Best Student Paper nominee, and
+I presented it online at the conference in May 2024.
 
 ## What I'd do next
 
-I would stress the policies under partial V2V adoption, where only some
-vehicles communicate, add sensor noise to the observations, and test
-sim-to-real transfer on scaled testbeds.
+The policy has been tested on straight roads. I would extend it to
+intersections, combine lane choice with route planning so the two decisions
+are made together, and test it when only some vehicles share data over V2V
+and their readings are noisy.

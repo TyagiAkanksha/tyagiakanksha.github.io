@@ -7,47 +7,43 @@ tech: ["PHP", "WordPress", "JavaScript", "HTML", "CSS", "MySQL"]
 tags: ["Full-Stack"]
 highlights:
   - "About 300 citizen complaints a month routed to the responsible departments"
-featured: true
-order: 6
+category: "engineering"
+order: 3
 ---
 
 ## Problem
 
-In Roorkee, civic complaints about issues such as broken streetlights,
-water problems, and garbage collection were reaching the municipal body
-through phone calls and paper. There was no tracking, no ownership, and no way for a resident to
-know whether anything had happened. Response times suffered because the
-intake process itself was the bottleneck.
+Roorkee's municipal body needed a way for citizens to file complaints and
+for each complaint to reach the department responsible for it. A complaint
+that arrived without the details a department needed meant staff had to
+go back to the citizen before anyone could act on it.
 
 ## Approach
 
-The goal was the simplest system that closes the loop. Residents file a
-complaint online with a category and location, the system routes it to the
-right department, and status updates remain visible until the complaint is
-resolved. I designed and developed the platform end to end within the
-team's WordPress based stack, using custom PHP for the complaint workflow
-and JavaScript for the interactive front end.
+The goal was the simplest system that closes the loop. A citizen files a
+complaint online, the system routes it to the right department, and the
+complaint moves through clear handling states until it is resolved. I
+built it on WordPress, using custom PHP for the complaint workflow,
+JavaScript for the interactive front end, and MySQL for the data.
 
-I built the citizen facing reporting interface with validation on both the
-client and the server, so complaints reached the department queues
-complete.
+I built the citizen facing reporting form with validation on both the
+client and the server, so missing details were caught before a complaint
+reached a department.
 
 ## Architecture & Tech
 
-WordPress serves as the CMS backbone, with custom PHP modules for
-complaint intake, categorization, routing, and status tracking, backed by
-MySQL. I designed the relational schema for complaint records and their
-handling states, from submission through routing to resolution. The front
-end is hand built HTML, CSS, and JavaScript, tuned for
-low-end devices and unreliable connectivity, because the users are
-residents rather than technical staff.
+WordPress serves as the CMS backbone, with custom PHP for complaint
+intake, routing, and status tracking, backed by MySQL. I designed the
+relational schema for complaint records and their handling states, from
+submission through routing to resolution. The front end is HTML, CSS, and
+JavaScript.
 
 ## Results & Impact
 
 - The system launched for Roorkee's municipal body and routed about 300
   citizen complaints a month to the responsible departments.
-- Complaints arrived complete, so staff no longer had to contact citizens
-  again for missing details.
+- Because complaints reached the department queues complete, they needed
+  fewer follow ups with citizens for missing details.
 - At handover, I trained the administrative staff on the response
   workflow.
 

@@ -27,6 +27,7 @@ export function ProjectMeta({ project }: { project: Project }) {
     <dl className="space-y-3 border-y border-line py-4">
       <MetaRow label="Role">{project.role}</MetaRow>
       <MetaRow label="Timeline">{project.dates}</MetaRow>
+      {project.team ? <MetaRow label="Team">{project.team}</MetaRow> : null}
       <MetaRow label="Stack">
         <span className="flex flex-wrap gap-1.5">
           {project.tech.map((t) => (
