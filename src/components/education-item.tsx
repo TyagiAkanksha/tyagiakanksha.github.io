@@ -11,7 +11,8 @@ export function EducationItem({ edu }: { edu: Education }) {
         <span className="font-mono text-[11px] text-faint">{edu.date}</span>
       </div>
       <p className="mt-0.5 text-sm text-muted">
-        {edu.school} · {edu.location}
+        {edu.school}
+        {edu.location ? ` · ${edu.location}` : null}
         {edu.gpa ? (
           <span className="ml-2 font-mono text-xs text-accent">
             GPA {edu.gpa}

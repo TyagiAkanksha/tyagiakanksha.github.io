@@ -1,7 +1,7 @@
 export type Education = {
   degree: string;
   school: string;
-  location: string;
+  location?: string;
   date: string;
   gpa?: string;
   thesis?: string;
@@ -29,5 +29,10 @@ export const education: Education[] = [
     school: "College of Engineering Roorkee (COER)",
     location: "Roorkee, India",
     date: "May 2017",
+  },
+  {
+    degree: "LangChain Certified Agent Engineer",
+    school: "LangChain Academy",
+    date: "Nov 2026",
   },
 ];

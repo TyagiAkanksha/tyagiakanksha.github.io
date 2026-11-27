@@ -116,7 +116,7 @@ export default function Home() {
             ))}
           </div>
           <h3 className="mb-4 mt-10 font-display text-lg font-semibold tracking-tight">
-            Education
+            Education and certifications
           </h3>
           <div className="space-y-5">
             {education.map((edu) => (
