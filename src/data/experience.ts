@@ -12,7 +12,7 @@ export type Experience = {
 export const experience: Experience[] = [
   {
     title: "Graduate Research Assistant",
-    org: "Cybersecurity Lab, University of Arkansas",
+    org: "University of Arkansas, Cybersecurity Lab",
     location: "Fayetteville, AR",
     dates: "Jan 2024 – May 2026",
     advisor: "Dr. Qinghua Li",
@@ -28,8 +28,8 @@ export const experience: Experience[] = [
     ],
   },
   {
-    title: "Research Assistant, RL for Traffic Optimization",
-    org: "IIIT Hyderabad",
+    title: "Machine Learning Intern",
+    org: "IIIT Hyderabad, Machine Learning Lab",
     location: "Hyderabad, India",
     dates: "Jun 2022 – Dec 2023",
     advisor: "Dr. Praveen Paruchuri",
